@@ -4,6 +4,7 @@
 ## Build
 
 ### Dependencies
+* sh
 * cat
 * sed
 * [showdown](https://github.com/showdownjs/showdown)
