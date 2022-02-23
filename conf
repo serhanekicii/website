@@ -1,0 +1,17 @@
+# root is TEMPDIR
+post_header=/index.html/001.html
+post_footer=/index.html/003.html
+
+sitetitle=Serhan Ekici's Webpage
+siteurl=https:\/\/serhanekici.com\/rss.xml
+sitemail=me@serhanekici.com
+
+lang=en
+author=Serhan Ekici
+keywords=serhan, ekici, blog, git, website, searx, donate, webpage
+description=My personal webpage with various projects and articles everything interests me.
+
+title=Serhan Ekici's Webpage
+
+btc=bc1qq7n8xndan7smxynsn4umzdta3yxldyxlx4gxvd
+xmr=82UhwJGS8pFibqkSbtbYongS7WDzEQfFwNZXazVnNqb1T6b1wusfCVxdiQyDKBBo9NPQZPHr9z3RU6p564hXcdS8LdjGkX3

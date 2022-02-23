@@ -1,0 +1,69 @@
+<article>
+<h2>${title}</h2>
+<section class="faq-container">
+<section class="faq-container">
+	<div class="faq-answer">
+		<!-- faq question -->
+		<h3 class="faq-page">How do you maintain all this ?</h3>
+		<!-- faq answer -->
+		<div class="faq-body">
+			<p>I host everything on <a href="https://www.vultr.com/?ref=9006079-8H">Vultr</a>. I generate this website with my <a href="https://github.com/serhanekicii/dotfiles/blob/master/.local/bin/genwebp">static site generator</a>. I have a <a href="https://serhanekici.com/005-mailserver-openbsd.html">casual mail server setup with OpenSMTP and Dovecot</a>. You can check <a href="https://github.com/serhanekicii/webpage">source of this website</a>.</p>
+		</div>
+	</div>
+	<hr class="hr-line">
+	<div class="faq-answer">
+		<!-- faq question -->
+		<h3 class="faq-page">Which OS you are using ?</h3>
+		<!-- faq answer -->
+		<div class="faq-body">
+			<p>On desktop GNU/Linux. More specifically Arch Linux with <a href="https://nosystemd.org">no systemd</a>, <a href="https://artixlinux.org">Artix Linux</a> with <a href="http://smarden.org/runit">runit</a> init system and hardened Linux kernel. In server side I prefer OpenBSD.</p>
+		</div>
+	</div>
+	<hr class="hr-line">
+	<div class="faq-answer">
+		<!-- faq question -->
+		<h3 class="faq-page">How can I reach you?</h3>
+		<!-- faq answer -->
+		<div class="faq-body">
+			<a href="mailto:me@serhanekici.com">Try to e-mail me</a>. If you know me personally, don't come to my place or don't disturb my folks if I decided to dissappear or changed my casual contact informations again.
+		</div>
+	</div>
+	<hr class="hr-line">
+	<div class="faq-answer">
+		<!-- faq question -->
+		<h3 class="faq-page">Can you share about your desktop environment ?</h3>
+		<!-- faq answer -->
+		<div class="faq-body">
+			I mostly use my versions of <a href="https://suckless.org/philosophy">suckless</a> software.
+			<a href="https://github.com/serhanekicii/dwm.git">dwm</a> as window manager,
+			<a href="https://github.com/serhanekicii/st.git">st</a> as terminal emulator,
+			<a href="https://github.com/serhanekicii/dmenu.git">dmenu</a> for dynamic menus,
+			<a href="https://github.com/serhanekicii/tabbed.git">tabbed</a> for window containers,
+			<a href="https://neovim.io">neovim</a> as text editor.
+			<a href="https://git.pwmt.org/pwmt/zathura.git">zathura</a> as pdf reader and
+			<a href="https://calcurse.org">calcurse</a> as agenda.
+
+			You can browse my <a href="https://github.com/serhanekicii/dotfiles">configuration files</a>.
+		</div>
+	</div>
+	<hr class="hr-line">
+	<div class="faq-answer">
+		<!-- faq question -->
+		<h3 class="faq-page">How is your taste ?</h3>
+		<!-- faq answer -->
+		<div class="faq-body">
+			Go check my <a href="002-like.html">What do I like?</a> post.
+		</div>
+	</div>
+	<hr class="hr-line">
+</section>
+<p><strong>Last modification on </strong><time datetime="${updated}">
+	${updated}</time></p>
+</article>
+<style>
+.faq-container hr {
+	border: 0;
+	border-bottom: 1px solid #aaa;
+	margin:30px;
+}
+</style>

@@ -1,0 +1,23 @@
+<article>
+<h2>${title}</h2>
+
+<!-- MARKDOWN -->
+
+<p><strong>Last modification on </strong> <time datetime="${updated}">
+	${updated}</time></p>
+</article>
+
+<style>
+table:not(#menu), th, td:not(#links, #links-contact) {
+  border: 1px solid black;
+}
+table:not(#menu) {
+    table-layout: fixed;
+    width: 100%;
+}
+
+table:not(#menu) td:not(#links, #links-contact) {
+    word-wrap: break-word;         /* All browsers since IE 5.5+ */
+    overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+}
+</style>

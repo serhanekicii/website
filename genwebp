@@ -1,0 +1,73 @@
+#!/bin/sh
+
+TEMPDIR=temps
+POSTDIR=posts
+BUILDDIR=build
+PIXDIR=pix
+STYLE=style.css
+CONF=conf
+
+conf_read() {
+    (grep -E "^${2}=" -m 1 "${1}" 2>/dev/null) | head -n 1 | cut -d '=' -f 2-;
+}
+
+conf_get() {
+    val="$(conf_read "${1}" "${2}")";
+    printf -- "%s" "${val}";
+}
+
+# pass: variable, config to get value using passed var, file to write
+write_values() {
+	sed -i "s/\${$1}/$(conf_get $2 $1)/" $3
+}
+
+rm -rf build && mkdir build
+
+# create non-post templates
+
+for temp in $TEMPDIR/*
+do
+	[ $temp == "$TEMPDIR/post" ] && continue ||
+		[ "${temp: -4}" == "html" ] &&
+			cat $temp/*.html > $BUILDDIR/$(basename $temp) &&
+			vars=$(grep -Poh '(?<=\{).+?(?=\})' $temp/*.html | sort -u)
+
+		[ "${temp: -3}" == "xml" ] &&
+			cat $temp/*.xml > $BUILDDIR/$(basename $temp) &&
+			vars=$(grep -Poh '(?<=\{).+?(?=\})' $temp/*.xml | sort -u)
+
+		for var in $vars
+		do
+			# write values
+			write_values $var $CONF $BUILDDIR/$(basename $temp)
+		done
+done
+
+# create posts
+for post in $POSTDIR/*
+do
+	post=$(basename $post)
+	[ "${post: -4}" == "html" ] &&
+		cat $TEMPDIR/$(conf_get $CONF post_header) >> $BUILDDIR/$post &&
+		cat $POSTDIR/$post >> $BUILDDIR/$post &&
+		cat $TEMPDIR/$(conf_get $CONF post_footer) >> $BUILDDIR/$post &&
+		vars=$(grep -Poh '(?<=\{).+?(?=\})' $BUILDDIR/$post | sort -u) &&
+		for var in $vars
+		do
+			postconf=$POSTDIR/${post::-4}conf
+			value=$(conf_get $postconf $var)
+			[ -z "$value" ] && sed -i "s/\${$var}/$(conf_get $CONF $var)/" $BUILDDIR/$post
+			write_values $var $postconf $BUILDDIR/$post
+		done &&
+		# add posts to index and rss
+		sed -i "/^<!-- POSTS -->/a <tr><td><a href=$post>$(conf_get $postconf title)</a></td></tr>" $BUILDDIR/index.html &&
+		sed -i "/^<!-- POSTS -->/a <item>\n<title>$(conf_get $postconf title)</title>\n<guid>https://serhanekici.com/$post</guid>\n<pubDate>$(conf_get $postconf created)</pubDate>\n<link>https://serhanekici.com/$post</link>\n<description>$(conf_get $postconf description)</description>\n</item>" $BUILDDIR/rss.xml &&
+		# check if post is a markdown
+		[ "$(conf_get $postconf "md")" = "True" ] &&
+			MDHTML=$(npx showdown makehtml --noHeaderId --backslashEscapesHTMLTags --literalMidWordUnderscores --simplifiedAutoLink --tables -i $POSTDIR/${post::-4}md) &&
+			sed -i "/<!-- MARKDOWN -->/r /dev/stdin" <<< "$MDHTML" $BUILDDIR/$post
+		done
+
+# copy pixdir and style.css to build
+cp -r $PIXDIR $BUILDDIR
+cp $STYLE $BUILDDIR

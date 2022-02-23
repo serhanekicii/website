@@ -1,0 +1,612 @@
+### Introduction
+
+Mail server is an everyday requirement for everyone. Why trust and rely on 3rd party mail servers? There are many reasons to host your mail server today, in just one sitting! The following section mentions the significant benefits of hosting a mail server.
+
+#### Why You Should Host Your Mail Server?
+
+It is:
+
+* **private**.
+* **secure**.
+* **transparent**.
+* **reliable**.
+* **configurable**.
+* **flexible**.
+* not free, but **cheap**.
+
+This article shows how to host a modern, secure and fully functional mail server on **OpenBSD** using **OpenSMTPD**, **Dovecot** and **RspamD**.
+
+#### How does a Mail Server Work?
+
+Before starting, a user needs to understand how a modern mail server works because a user who understands the system can prevent possible misconfiguration and error during creating and maintaining the system.
+
+A modern mail server can look complex at first sight. However, first sight shouldn't make people abstain from creating or maintaining one. Besides the benefits of having one, a mail server can break down into parts well and can easily be understandable by an average user. Briefly, a mail server is just a set of software that works together.
+
+If we break down to major pieces what a modern mail server does, a mail server:
+
+* transfers
+* delivers
+* filters
+* accesses
+
+A mail server uses software or sets of software to practice these tasks. To understand how a mail server executes the goals above, let's examine the software mail servers use while performing these tasks.
+
+##### Transfer
+
+Transferring is one of the two fundamental tasks of a mail server. A mail server receives incoming mail from Mail User Agents (**MUA**, for short), transfers it to another **MUA** using two other agents. Let's understand how this works by examining those two agents in order.
+
+###### Mail Submission Agent
+
+Mail submission agent (**MSA**, for short) is software that receives mail **directly** from an **MUA** using **SMTP** protocol. Since **MSA** is the first layer after **MUA**, **MSA** corrects minor format issues (e.g., missing fields) and reports those issues back to the author (**MUA**). **MSA** collaborates with a mail transfer agent (explained in the following section) to transfer mails. **MSA** usually listens to port **587**.
+
+###### Mail Transfer Agent
+
+A mail transfer agent (**MTA**, for short) is software that transfers mail to the mail delivery agent (explained in the following section). **MTA** uses **SMTP** protocol while sending mail to a mail delivery agent on a recipient server.
+
+##### Deliver
+
+Delivering is another essential of a mail server. A mail server receives mails (a mail sent by the sender's **MTA**) from its mail delivery agent.
+###### Mail Delivery Agent
+
+A message delivery agent (**MDA**, for short) is software that delivers to a local user's or virtual user's mailbox.
+
+Note: These days, **MSA** and **MTA** are usually two functions in one software (e.g., **OpenSMTPD**), also **MDA** and **IMAP server** (e.g., **Dovecot**).
+
+##### Filter
+
+The filtering process handles by another piece of software (e.g., **SpamAssassin and Rspamd**) of the user's choice. **MDA** software uses this software to filter mail before delivering mail to the user's mailbox. Filtering is not a fundamental part of a mail server. Local filtering is also a choice if the mail server is not public. However, filtering on the server-side counts as a "present-day requirement" since email spamming and advertising is typical.
+
+##### Access
+
+Access is also an essential part of a mail server. User (**MUA**) should access the **IMAP** server (**MDA** software creates this, e.g., **Dovecot**) through a local or a web client to read emails in the inbox.
+
+###### User and Mailbox Management
+
+Naturally, only system users receive emails, but creating a local system user for every mail address owner is not ideal for everyone. Usually, **MDA**/**IMAP** software (e.g., Dovecot) and **MSA**/**MTA** software (e.g., **OpenSMTPD**) is configurable to create virtual users and mailboxes.
+
+###### Webmail Client
+
+Webmail client is also not an essential part of a mail server. Webmail client allows users to access and send emails without a local client. Accessing mail servers through local software clients (e.g., **Thunderbird** and **mutt**) is not ideal for everyone. It is common to access mail servers using a web client (e.g., Gmail and Yahoo).
+
+##### Security
+
+These days, spam and email scams are a never-ending struggle. As a result, people and companies developed many security standards to prevent these attacks and fraud. The following sections cover up these security standards. Deciding not to include these security standards on a mail server is not a good choice. A mail server without modern security standards will struggle to send & receive emails with other mail servers (e.g., **Gmail**, **Yahoo**, and **Outlook**).
+
+###### Firewall
+
+A firewall is a software that uses rule-based configuration to regulate incoming and outgoing traffic in a network. A firewall is a wall (layer) that separates a network from the Internet. For example, a server without a firewall cannot control incoming and outgoing traffic from TCP and UDP ports. A firewall also can block mail from particular senders before the filtering process. Not having a firewall produces security vulnerabilities. Like other types of servers, also a mail server needs this software for security.
+
+###### Transport Layer Security
+
+Transport Layer Security (**TLS**, for short) helps clients and servers establish a secure encrypted connection through a handshake. A handshake requires a private key and a public key related to the private key. Certificates by Certificate Authorities (CA, for short) can verify ownership of public keys. This article gets a certificate for free, using fully autonomous **CA** [Let's Encrypt](https://letsencrypt.org/) to verify ownership of the mail server's public key.
+
+###### Sender Policy Framework
+
+Sender Policy Framework (**SPF**, for short) is standard to prevent spoofing of sender addresses. **SPF** is a DNS record that holds data. An **SPF** record allows the domain to state the IPv4, IPv6, and FQDN of a mail server. This record empowers recipients to check if the sender is the correct mail server. The domain owner can also include other 3rd party services' (e.g., **Sendgrid**) FQDNs or IPs to send email using them. Controlling the mail server's **SPF** record is another security benefit for the owner.
+
+###### Domain Keys Identified Mail
+
+Domain Keys Identified Mail (**DKIM**, for short) is a DNS record that holds our **public** **DKIM** key/signature. A modern mail server signs mail with the server's internal private **DKIM** key while sending. A **DKIM** record enables recipients to check the signature of emails with data **DKIM** record holds. DKIM standard required to send mail to major third parties (e.g., **Gmail**, **Yahoo**, and **Outlook**)
+
+###### Domain-based Message Authentication, Reporting, and Conformance
+
+Domain-based Message Authentication, Reporting, and Conformance (**DMARC**, for short) is a standard on top of **DKIM** and **SPF**. A **DMARC** record describes what a mail server will do if message authentication fails due to **DKIM** or **SPF**.
+
+This record can specify these actions to mail server on fail of authentication:
+
+* Reject the mail.
+* Quarantine the mail.
+* Do nothing about the message.
+
+##### Conclusion
+
+###### Transfer
+
+On transferring process, a modern mail server:
+
+1. Receives mail from the sender user (MUA) using SMTP protocol to its **MSA**.
+2. **MSA** checks, filters with a filtering software (if configured), and corrects mail format.
+3. **MSA** sends mail to **MTA** locally using **SMTP**.
+4. **MTA** sends mail to the recipient mail server's **MTA**.
+
+###### Deliver
+
+On delivering process, a modern mail server:
+
+1. Receives mail from sender server's **MTA** to its **MTA** using **SMTP** protocol.
+2. **MTA** filters with a filtering software (if configured) and sends mail to its **MDA** using **SMTP** protocol.
+3. **MDA** delivers mail to the recipient's mailbox.
+4. Recipient **MUA** accesses sent mail using the **IMAP** server.
+
+### Prerequisites
+
+Before you begin, you should:
+
+1. Get a domain name.
+2. Get an OpenBSD Server (set hostname to `<hostname>.example.com`)
+3. Adjust server's reverse DNS (PTR) to `<hostname>.example.com` (don't omit the `<hostname>`, valid reverse DNS should be a full FQDN.)
+
+Replace corresponding parts with your domain while following this article. For security, the best practice is using random `<hostname>`.
+
+#### Adjust DNS
+
+3. Enable DNSSEC (optional).
+4. Create an **A** record points to your server's IPv4 (skip, if present already).
+5. Create an **AAAA** record points to your server's IPv6 address.
+6. Create an **A** record named `mail` and points to your server's IPv4 address.
+7. Create an **AAAA** record named `mail` and points to your server's IPv6 address.
+8. Create an **MX** record points to `mail.example.com` with `0` priority.
+9. Create an **CAA** record `0 issue "letsencrypt.org"` in the data section.
+
+DNS records should look like this after following the steps above:
+
+| Type  | Name | Data             | TTL (seconds) | Priority |
+|-------|------|------------------|---------------|----------|
+| A     | mail |                  | 300           |          |
+| A     |      |                  | 300           |          |
+| AAAA  | mail |                  | 300           |          |
+| AAAA  |      |                  | 300           |          |
+| CNAME | *    | example.com      | 300           |          |
+| MX    |      | mail.example.com | 300           | 0        |
+| MX    |      | example.com      | 300           | 10       |
+| NS    |      | ns1.vultr.com    | 300           |          |
+| NS    |      | ns2.vultr.com    | 300           |          |
+
+DNS records may take up to 48 hours to get active.
+
+#### Make Environment Secure
+
+1. Login to server as a **root**.
+2. Change root password.
+3. Create a non-root user.
+4. Add a non-root user to wheel group.
+5. Configure doas **or** sudo (**this article uses doas**).
+6. Logout from server.
+7. Log in to server as **non-root user**.
+
+### 1. Configure Firewall
+
+Keep present default configuration as back-up.
+
+```
+$ doas mv /etc/pf.conf /etc/pf.conf.defaults
+```
+
+Following configuration sets firewall rules:
+
+1. Don't filter on the local network.
+2. Block all **in** and **out** traffic.
+3. Define ICMP types to let **in**.
+4. Define ICMPv6 types to let **in**.
+5. Define TCP ports to let in.
+6. Set a block policy.
+7. Enable logging on the **out** interface.
+8. Allow all rest **out**.
+
+Create `/etc/pf.conf`:
+
+```
+# ----- DEFINITIONS -----
+
+# Don't filter on following interfaces.
+no_filter = "{ lo }"
+
+# Define ICMP message types to let in.
+icmp_in= "{ 0, 8, 3, 4, 11, 30 }"
+
+# Define ICMPv6 message types to let in.
+icmpv6_in = "{ echoreq routeradv neighbrsol neighbradv }"
+
+# Pass in from following TCP ports.
+tcp_in = "{ sshd http https submission smtp imaps }"
+
+# ----- SETTINGS -----
+
+# Set block policy to return.
+set block-policy return
+
+# Enable logging on egress.
+set loginterface egress
+
+# Don't filter traffic on $no_filter.
+set skip on $no_filter
+
+# Block all
+block all
+
+# ----- INBOUND TRAFFIC RULES -----
+
+# -- ICMP --
+
+# Pass in defined ICMP types defined in $icmp_in.
+pass in quick inet proto icmp icmp-type $icmp_in
+
+# Pass in defined ICMPv6 types defined in $icmpv6_in.
+pass in quick inet6 proto icmp6 all icmp6-type $icmpv6_in
+
+# -- TCP --
+
+# Pass in TCP ports defined in $tcp_in.
+pass in on egress proto tcp to port $tcp_in
+
+# ----- OUTBOUND TRAFFIC RULES ----- #
+
+# Allow all rest out.
+pass out
+```
+
+Reload firewall rules.
+
+    $ doas pfctl -f /etc/pf.conf
+
+Information on further configuration available on [OpenBSD's man pages](https://man.openbsd.org/pf.conf).
+
+### 2. Get a Free SSL Certificate from Let's Encrypt
+
+This article describes getting a free SSL certificate using OpenBSD's **acme-client**, autonomous **CA** the [Let's Encrypt](https://letsencrypt.org/), and the OpenBSD's default web server **httpd** in order to handle verification requests from **CA**.
+
+Create `/etc/acme-client.conf`:
+
+```
+authority letsencrypt {
+  api url "https://acme-v02.api.letsencrypt.org/directory"
+  account key "/etc/ssl/private/letsencrypt.key"
+}
+domain mail.example.com {
+  domain key "/etc/ssl/private/mail.example.com.key"
+  domain full chain certificate "/etc/ssl/mail.example.com.pem"
+  sign with letsencrypt
+}
+```
+
+Create `/etc/httpd.conf`:
+
+```
+    server "mail.example.com" {
+        listen on * port 80
+
+        location "/.well-known/acme-challenge/*" {
+        root "/acme"
+        request strip 2
+        }
+    }
+```
+
+Make directory **/etc/ssl/private** if not present.
+
+```
+$ doas mkdir -p -m 700 /etc/ssl/private
+```
+
+Make directory **/var/www/acme** if not present.
+
+```
+$ doas mkdir -p -m 755 /var/www/acme
+```
+
+Append `httpd_flags=` line to `/etc/rc.conf.local`.
+
+```
+$ echo "httpd_flags=" | doas tee -a /etc/rc.conf.local
+```
+
+Start **httpd** web server daemon.
+
+```
+$ doas rcctl start httpd
+```
+
+Generate TLS key and get TLS certificate.
+
+```
+$ doas acme-client -v mail.example.com
+```
+
+### 3. Install and Configure MSA & MTA Software
+
+The mail server this article describes uses **OpenSMTPD** software for **MSA** and **MTA**. As a user management solution, this article shows creating virtual users.
+
+**OpenSMTPD** is present on the server. Install **opensmtpd-extras** for virtual users and credentials support.
+
+```
+$ doas pkg_add opensmtpd-extras
+```
+
+Keep present configuration as back-up.
+```
+$ doas cp /etc/mail/smtpd.conf /etc/smtpd.conf.bak && doas rm /etc/mail/smtpd.conf
+```
+
+Create `/etc/mail/smtpd.conf`:
+
+```
+# ----- DEFINITIONS -----
+
+# Define certificates and keys for the domain.
+pki mail.example.com cert "/etc/ssl/mail.example.com.pem"
+pki mail.example.com key  "/etc/ssl/private/mail.example.com.key"
+
+# Define tables:
+# - aliases
+# - credentials
+# - virtuals
+table aliases file:/etc/mail/aliases
+table credentials passwd:/etc/mail/credentials
+table virtuals file:/etc/mail/virtuals
+
+# Define filter.
+filter "rspamd" proc-exec "/usr/local/libexec/smtpd/filter-rspamd"
+
+# Define actions (directives, basically):
+# - inbound
+# - local_inbound
+# - outbound
+action "inbound" maildir "/var/vmail/example.com/%{dest.user:lowercase}" virtual <virtuals>
+action "local_inbound" mbox alias <aliases>
+action "outbound" relay
+
+# ----- SETTINGS -----
+
+# Store queue files in a compressed format, useful to save disk space.
+queue compression
+
+# Encrypt queue files with EVP_aes_256_gcm(3).
+# (generate a key with 'openssl rand -hex 16')
+queue encryption 0e12345678912345678912345678912
+
+# Set maximum message size.
+smtp max-message-size 35M
+
+# ----- INBOUND EMAIL -----
+
+# Mail submission agent (MSA).
+listen on all port submission tls-require pki mail.example.com auth <credentials> filter "rspamd"
+
+# Inbound email.
+match from any for domain "example.com" action "inbound"
+match from local for local action "local_inbound"
+
+# ----- OUTBOUND EMAIL -----
+
+# Mail transfer agent (MTA).
+listen on all tls pki mail.example.com filter "rspamd"
+
+# Outbound email.
+match auth from any for any action "outbound"
+match from local for any action "outbound"
+```
+
+#### Configure User Management
+
+##### Create Virtual Mail User
+
+```
+$ doas chmod 0440 /etc/mail/credentials
+$ doas chown _smtpd:_dovecot /etc/mail/credentials
+$ doas useradd -c "Virtual Mail User" -d /var/vmail -s /sbin/nologin -u 2000 -g =uid -L staff vmail
+$ doas mkdir /var/vmail
+$ doas chown vmail:vmail /var/vmail
+```
+
+##### Define Virtual User Addresses and Aliases
+
+Create `/etc/mail/virtuals`:
+
+```
+# Users
+example_user@example.com: vmail
+
+# Aliases
+root@example.com: example_user@example.com
+abuse@example.com: example_user@example.com
+hostmaster@example.com: example_user@example.com
+postmaster@example.com: example_user@example.com
+webmaster@example.com: example_user@example.com
+
+dmarcreport@example.com: example_user@example.com
+caareport@example.com: example_user@example.com
+```
+
+##### Create Credential Database
+
+```
+$ doas touch /etc/mail/credentials
+$ echo "example_user@example.com:$(smtpctl encrypt example_password):vmail:2000:2000:/var/vmail/example.com/example_user::userdb_mail=maildir:/var/vmail/example.com/example_user" | doas tee -a /etc/mail/credentials
+```
+
+### 4. Install and Configure MDA & IMAP Software
+
+The mail server this article describes uses **Dovecot** software for **MDA** and **IMAP server**.
+
+Install **dovecot** and **dovecot-pigeonhole** packages.
+```
+$ doas pkg_add dovecot dovecot-pigeonhole
+```
+
+Create `/etc/ssl/dovecot` directory, and generate Diffie-Hellman parameters for security.
+```
+$ doas mkdir -p /etc/ssl/dovecot
+$ openssl dhparam 2048 | doas tee /etc/ssl/dovecot/dh.pem
+```
+Create `/etc/dovecot/local.conf`:
+
+```
+# ----- TRANSPORT LAYER SECURITY (TLS) -----
+
+# TLS is always required, otherwise will cause an authentication failure.
+ssl = required
+
+# Define mail server's TLS key and certificate.
+ssl_cert = </etc/ssl/mail.example.com.pem
+ssl_key = </etc/ssl/private/mail.example.com.key
+
+# Define Diffie-Hellman parameters for security.
+# (generated with `openssl dhparam 2048`)
+ssl_dh = </etc/ssl/dovecot/dh.pem
+
+# Recommended for security.
+ssl_prefer_server_ciphers = yes
+
+# ----- AUTHENTICATION -----
+
+# Define auth mechanism.
+# Since the mail server uses TLS,
+# don't need to bother worrying about anything else than the PLAIN mechanism.
+auth_mechanisms = plain
+
+# Define username database from credentials file.
+userdb {
+  args = username_format=%u /etc/mail/credentials
+  driver = passwd-file
+  name =
+}
+
+# Define password database from credentials file.
+passdb {
+  args = scheme=CRYPT username_format=%u /etc/mail/credentials
+  driver = passwd-file
+  name =
+}
+
+# ----- MAIL -----
+
+# Define uid and gid of the user Virtual Mail Account.
+first_valid_uid = 2000
+first_valid_gid = 2000
+
+# Define location of mailboxes.
+mail_location = maildir:/var/vmail/%d/%n
+
+# Define mailboxes.
+namespace inbox {
+  inbox = yes
+  location =
+  mailbox Archive {
+  auto = subscribe
+  special_use = \Archive
+  }
+  mailbox Drafts {
+  auto = subscribe
+  special_use = \Drafts
+  }
+  mailbox Junk {
+  auto = subscribe
+  special_use = \Junk
+  }
+  mailbox Sent {
+  auto = subscribe
+  special_use = \Sent
+  }
+  mailbox Trash {
+  auto = subscribe
+  special_use = \Trash
+  }
+  prefix =
+}
+
+protocols = imap sieve
+
+protocol imap {
+  mail_plugins = " imap_sieve"
+}
+
+mail_plugin_dir = /usr/local/lib/dovecot
+
+managesieve_notify_capability = mailto
+
+managesieve_sieve_capability = fileinto reject envelope encoded-character vacation subaddress comparator-i;ascii-numeric relational regex imap4flags copy include variables body enotify environment mailbox date index ihave duplicate mime foreverypart extracttext imapsieve vnd.dovecot.imapsieve
+
+plugin {
+  imapsieve_mailbox1_before = file:/usr/local/lib/dovecot/sieve/report-spam.sieve
+  imapsieve_mailbox1_causes = COPY
+  imapsieve_mailbox1_name = Junk
+  imapsieve_mailbox2_before = file:/usr/local/lib/dovecot/sieve/report-ham.sieve
+  imapsieve_mailbox2_causes = COPY
+  imapsieve_mailbox2_from = Junk
+  imapsieve_mailbox2_name = *
+  sieve = file:~/sieve;active=~/.dovecot.sieve
+  sieve_global_extensions = +vnd.dovecot.pipe +vnd.dovecot.environment
+  sieve_pipe_bin_dir = /usr/local/lib/dovecot/sieve
+  sieve_plugins = sieve_imapsieve sieve_extprograms
+}
+
+service imap-login {
+  inet_listener imap {
+  port = 0
+  }
+}
+
+service managesieve-login {
+  inet_listener sieve {
+  port = 4190
+  }
+  inet_listener sieve_deprecated {
+  port = 2000
+  }
+}
+```
+
+Define a login class for Dovecot daemon, add following lines to **/etc/login.conf**:
+```
+dovecot:\
+    :openfiles-cur=1024:\
+    :openfiles-max=2048:\
+    :tc=daemon:
+```
+
+### 5. Install and Configure Filtering Software
+
+The mail server this article describes uses **RspamD** software for filtering and DKIM-signing.
+
+Install rspamd.
+
+```
+$ doas pkg_add rspamd-hyperscan
+```
+
+#### Configure DKIM Signing
+
+```
+doas mkdir /etc/mail/dkim
+openssl genrsa -out /etc/mail/dkim/example.com.key 2048
+openssl rsa -in example.com.key -pubout -out /etc/mail/dkim/example.com.pubkey
+chmod 0440 /etc/mail/dkim/example.com.key
+chown root:_rspamd /etc/mail/dkim/example.com.key
+```
+
+Create `/etc/rspamd/local.d/dkim_signing.conf`:
+
+```
+domain {
+    example.com {
+        path = "/etc/mail/dkim/example.com.key";
+        selector = "selector0";
+    }
+}
+```
+### 6. Create SPF, DMARC, and DKIM DNS Records
+
+DNS records should look like this after following the steps above:
+
+| Type  | Name | Data             | TTL (seconds) | Priority |
+|-------|------|------------------|---------------|----------|
+| A     | mail |                  | 300           |          |
+| A     |      |                  | 300           |          |
+| AAAA  | mail |                  | 300           |          |
+| AAAA  |      |                  | 300           |          |
+| CNAME | *    | example.com      | 300           |          |
+| MX    |      | mail.example.com | 300           | 0        |
+| MX    |      | example.com      | 300           | 10       |
+| NS    |      | ns1.vultr.com    | 300           |          |
+| NS    |      | ns2.vultr.com    | 300           |          |
+|TXT|selector0._domainkey|"v=DKIM1;k=rsa;p=\<dkim-pub-key>"|300||
+|TXT||"v=spf1 ip4:\<IPv4-of-server> ip6:\<IPv6-of-server> ~all"|300||
+|TXT|_dmarc|"v=DMARC1;p=quarantine;pct=100;rua=mailto:dmarcreport@example.com"|300||
+
+### Final
+
+Enable and start services.
+```
+$ doas rcctl enable redis rspamd smtpd dovecot
+$ doas rcctl start redis rspamd smtpd dovecot
+```
