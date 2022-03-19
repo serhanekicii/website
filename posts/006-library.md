@@ -44,7 +44,7 @@ Here is a list of books that my personal, humble library includes. I haven't rea
 
 ## Germanic Languages
 
-* Morgan, B. Q. / Strothmann, F. W. - Shorter Reading Grammar
+* Morgan, B. Q. / Strothmann, F. W. - Shorter German Reading Grammar
 * Berlitz – Berlitz Self-Teaching German
 
 ## Latin Language
