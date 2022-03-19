@@ -82,6 +82,9 @@ Here is a list of books that my personal, humble library includes. I haven't rea
 * Kierkegaard, Søren - Ya/Ya da
 * Hannay, Alastair - Kierkegaard
 
+## Technology
+* Kaczynski, Theodore John - Industrial Society and Its Future (self-printed & self-binded)
+
 ## History
 
 * Von Hammer-Purgstall, Joseph - Geschichte des osmanischen Reiches
