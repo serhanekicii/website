@@ -146,6 +146,7 @@ DNS records should look like this after following the steps above:
 | A     |      |                  | 300           |          |
 | AAAA  | mail |                  | 300           |          |
 | AAAA  |      |                  | 300           |          |
+| CAA   |      |0 iodef "mailto:caareport@serhanekici.com"| 300           |          |
 | CNAME | *    | example.com      | 300           |          |
 | MX    |      | mail.example.com | 300           | 0        |
 | MX    |      | example.com      | 300           | 10       |
