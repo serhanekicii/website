@@ -310,7 +310,7 @@ The mail server this article describes uses **OpenSMTPD** software for **MSA** a
 **OpenSMTPD** is present on the server. Install **opensmtpd-extras** for virtual users and credentials support.
 
 ```
-$ doas pkg_add opensmtpd-extras
+$ doas pkg_add opensmtpd-extras opensmtpd-filter-rspamd
 ```
 
 Keep present configuration as back-up.
