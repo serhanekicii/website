@@ -128,8 +128,12 @@ header h1 {
 	display:none;
 }
 
-#hoverme {
-	padding:20px;
+.hoverspan:hover .hidden_elmnt {
+	display: inline;
+}
+
+.hoverspan:hover .hover_elmnt {
+	display:none;
 }
 
 .cv img {
