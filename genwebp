@@ -47,6 +47,8 @@ done
 for post in $POSTDIR/*
 do
 	post=$(basename $post)
+	postconf=$POSTDIR/${post::-4}conf
+	postctime=$(conf_get $postconf created)
 	[ "${post: -4}" == "html" ] &&
 		cat $TEMPDIR/$(conf_get $CONF post_header) >> $BUILDDIR/$post &&
 		cat $POSTDIR/$post >> $BUILDDIR/$post &&
@@ -54,14 +56,13 @@ do
 		vars=$(grep -Poh '(?<=\{).+?(?=\})' $BUILDDIR/$post | sort -u) &&
 		for var in $vars
 		do
-			postconf=$POSTDIR/${post::-4}conf
 			value=$(conf_get $postconf $var)
 			[ -z "$value" ] && sed -i "s/\${$var}/$(conf_get $CONF $var)/" $BUILDDIR/$post
 			write_values $var $postconf $BUILDDIR/$post
 		done &&
 		# add posts to index and rss
-		sed -i "/^<!-- POSTS -->/a <li><a href=$post>$(conf_get $postconf title)</a></li>" $BUILDDIR/index.html &&
-		sed -i "/^<!-- POSTS -->/a <item>\n<title>$(conf_get $postconf title)</title>\n<guid>https://serhanekici.com/$post</guid>\n<pubDate>$(conf_get $postconf created)</pubDate>\n<link>https://serhanekici.com/$post</link>\n<description>$(conf_get $postconf description)</description>\n</item>" $BUILDDIR/rss.xml &&
+		sed -i "/^<!-- POSTS -->/a <li><time datetime=$postctime>${postctime::-15}</time> &ndash; <a href=$post>$(conf_get $postconf title)</a></li>" $BUILDDIR/index.html &&
+		sed -i "/^<!-- POSTS -->/a <item>\n<title>$(conf_get $postconf title)</title>\n<guid>https://serhanekici.com/$post</guid>\n<pubDate>$postctime</pubDate>\n<link>https://serhanekici.com/$post</link>\n<description>$(conf_get $postconf description)</description>\n</item>" $BUILDDIR/rss.xml &&
 		# check if post is a markdown
 		[ "$(conf_get $postconf "md")" = "True" ] &&
 			MDHTML=$(npx showdown makehtml --noHeaderId --backslashEscapesHTMLTags --literalMidWordUnderscores --simplifiedAutoLink --tables -i $POSTDIR/${post::-4}md) &&
