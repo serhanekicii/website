@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TEMPDIR=temps
+TEMPLDIR=temps
 POSTDIR=posts
 BUILDDIR=build
 PIXDIR=pix
@@ -25,9 +25,9 @@ rm -rf build && mkdir build
 
 # create non-post templates
 
-for temp in $TEMPDIR/*
+for temp in $TEMPLDIR/*
 do
-	[ $temp == "$TEMPDIR/post" ] && continue ||
+	[ $temp == "$TEMPLDIR/post" ] && continue ||
 		[ "${temp: -4}" == "html" ] &&
 			cat $temp/*.html > $BUILDDIR/$(basename $temp) &&
 			vars=$(grep -Poh '(?<=\{).+?(?=\})' $temp/*.html | sort -u)
@@ -50,23 +50,23 @@ do
 	postconf=$POSTDIR/${post::-4}conf
 	postctime=$(conf_get $postconf created)
 	[ "${post: -4}" == "html" ] &&
-		cat $TEMPDIR/$(conf_get $CONF post_header) >> $BUILDDIR/$post &&
-		cat $POSTDIR/$post >> $BUILDDIR/$post &&
-		cat $TEMPDIR/$(conf_get $CONF post_footer) >> $BUILDDIR/$post &&
-		vars=$(grep -Poh '(?<=\{).+?(?=\})' $BUILDDIR/$post | sort -u) &&
+		cat $TEMPLDIR/$(conf_get $CONF post_header) >> $BUILDDIR/${post:4} &&
+		cat $POSTDIR/$post >> $BUILDDIR/${post:4} &&
+		cat $TEMPLDIR/$(conf_get $CONF post_footer) >> $BUILDDIR/${post:4} &&
+		vars=$(grep -Poh '(?<=\{).+?(?=\})' $BUILDDIR/${post:4} | sort -u) &&
 		for var in $vars
 		do
 			value=$(conf_get $postconf $var)
-			[ -z "$value" ] && sed -i "s/\${$var}/$(conf_get $CONF $var)/" $BUILDDIR/$post
-			write_values $var $postconf $BUILDDIR/$post
+			[ -z "$value" ] && sed -i "s/\${$var}/$(conf_get $CONF $var)/" $BUILDDIR/${post:4}
+			write_values $var $postconf $BUILDDIR/${post:4}
 		done &&
 		# add posts to index and rss
-		sed -i "/^<!-- POSTS -->/a <li><time datetime=$postctime>${postctime::-15}</time> &ndash; <a href=$post>$(conf_get $postconf title)</a></li>" $BUILDDIR/index.html &&
-		sed -i "/^<!-- POSTS -->/a <item>\n<title>$(conf_get $postconf title)</title>\n<guid>https://serhanekici.com/$post</guid>\n<pubDate>$postctime</pubDate>\n<link>https://serhanekici.com/$post</link>\n<description>$(conf_get $postconf description)</description>\n</item>" $BUILDDIR/rss.xml &&
+		sed -i "/^<!-- POSTS -->/a <li><time datetime=$postctime>${postctime::-15}</time> &ndash; <a href=${post:4}>$(conf_get $postconf title)</a></li>" $BUILDDIR/index.html &&
+		sed -i "/^<!-- POSTS -->/a <item>\n<title>$(conf_get $postconf title)</title>\n<guid>https://serhanekici.com/${post:4}</guid>\n<pubDate>$postctime</pubDate>\n<link>https://serhanekici.com/${post:4}</link>\n<description>$(conf_get $postconf description)</description>\n</item>" $BUILDDIR/rss.xml &&
 		# check if post is a markdown
 		[ "$(conf_get $postconf "md")" = "True" ] &&
 			MDHTML=$(npx showdown makehtml --noHeaderId --backslashEscapesHTMLTags --literalMidWordUnderscores --simplifiedAutoLink --tables -i $POSTDIR/${post::-4}md) &&
-			sed -i "/<!-- MARKDOWN -->/r /dev/stdin" <<< "$MDHTML" $BUILDDIR/$post
+			sed -i "/<!-- MARKDOWN -->/r /dev/stdin" <<< "$MDHTML" $BUILDDIR/${post:4}
 		done
 
 # copy pixdir and style.css to build
