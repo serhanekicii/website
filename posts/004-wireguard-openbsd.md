@@ -201,10 +201,47 @@ Install unbound DNS resolver.
 
 Configure unbound DNS:
 
-    $ cat /var/unbound/etc/unbound.conf
-    [ ... simplified for demonstration ...]
-    access-control: 10.0.0.1/24 allow
-    [ ... simplified for demonstration ...]
+	server:
+
+	    # Logging
+	    verbosity: 1
+	    log-queries: yes
+
+	    # Respond to DNS requests on all interfaces
+	    interface: 0.0.0.0
+
+	    # IP Authorization
+	    access-control: 0.0.0.0/0 refuse
+	    access-control: ::/0 refuse
+
+	    access-control: 127.0.0.1 allow
+	    access-control: ::1 allow
+
+		    # WireGuard Peer
+	    access-control: 10.0.0.2/24 allow
+
+	    # Hide DNS Server info
+	    hide-identity: yes
+	    hide-version: yes
+
+	    # Limit DNS Fraud and use DNSSEC
+	    harden-glue: yes
+	    harden-dnssec-stripped: yes
+	    harden-referral-path: yes
+
+	    # Add an unwanted reply threshold to clean the cache and avoid when possible a DNS Poisoning
+	    unwanted-reply-threshold: 10000000
+
+	    # Have the validator print validation failures to the log.
+	    val-log-level: 1
+
+	    # Minimum lifetime of cache entries in seconds
+	    cache-min-ttl: 1800
+
+	    # Maximum lifetime of cached entries
+	    cache-max-ttl: 14400
+	    prefetch: yes
+	    prefetch-key: yes
 
 On the client-side:
 
