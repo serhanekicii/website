@@ -146,15 +146,26 @@ header h1 {
 .bio h1 {
 	white-space: nowrap;
 }
+
 #posts ul {
 	padding: 0;
 }
+
 #posts li {
 	list-style-position:inside;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+
 #posts li time {
 	font-family: monospace;
 }
+
+#article-timestamp {
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border: 1px solid var(--main-fg-color);
+}
+
