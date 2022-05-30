@@ -61,13 +61,15 @@ do
 			write_values $var $postconf $BUILDDIR/${post:4}
 		done &&
 		# add posts to index and rss
+		[ "$(conf_get $postconf "add_index")" != "False" ] &&
 		sed -i "/^<!-- POSTS -->/a <li><time datetime=$postctime>${postctime::-15}</time> &ndash; <a href=${post:4}>$(conf_get $postconf title)</a></li>" $BUILDDIR/index.html &&
+		[ "$(conf_get $postconf "add_rss")" != "False" ] &&
 		sed -i "/^<!-- POSTS -->/a <item>\n<title>$(conf_get $postconf title)</title>\n<guid>https://serhanekici.com/${post:4}</guid>\n<pubDate>$postctime</pubDate>\n<link>https://serhanekici.com/${post:4}</link>\n<description>$(conf_get $postconf description)</description>\n</item>" $BUILDDIR/rss.xml &&
 		# check if post is a markdown
 		[ "$(conf_get $postconf "md")" = "True" ] &&
 			MDHTML=$(npx showdown makehtml --noHeaderId --backslashEscapesHTMLTags --literalMidWordUnderscores --simplifiedAutoLink --tables -i $POSTDIR/${post::-4}md) &&
 			sed -i "/<!-- MARKDOWN -->/r /dev/stdin" <<< "$MDHTML" $BUILDDIR/${post:4}
-		done
+done
 
 # copy pixdir and style.css to build
 cp -r $PIXDIR $BUILDDIR
