@@ -66,7 +66,7 @@ for conf in $POSTDIR/*.conf; do
 
 	# check if post is a markdown
 	[ "$(conf_get $POSTDIR/$conf "md")" = "True" ] &&
-	MDHTML=$(npx showdown makehtml --noHeaderId --backslashEscapesHTMLTags --literalMidWordUnderscores --simplifiedAutoLink --tables -i $POSTDIR/${conf::-5}.md) &&
+	MDHTML=$(pandoc $POSTDIR/${conf::-5}.md) &&
 	sed -i "/<!-- MARKDOWN -->/r /dev/stdin" <<< "$MDHTML" $BUILDDIR/$post
 
 	# add post to index
