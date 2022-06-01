@@ -24,7 +24,6 @@ write_values() {
 rm -rf build && mkdir build
 
 # create non-post templates
-
 for temp in $TEMPLDIR/*
 do
 	[ $temp == "$TEMPLDIR/post" ] && continue ||
@@ -38,37 +37,47 @@ do
 
 		for var in $vars
 		do
-			# write values
 			write_values $var $CONF $BUILDDIR/$(basename $temp)
 		done
 done
 
-# create posts
-for post in $POSTDIR/*
-do
-	post=$(basename $post)
-	postconf=$POSTDIR/${post::-4}conf
-	postctime=$(conf_get $postconf created)
-	[ "${post: -4}" == "html" ] &&
-		cat $TEMPLDIR/$(conf_get $CONF post_header) >> $BUILDDIR/${post:4} &&
-		cat $POSTDIR/$post >> $BUILDDIR/${post:4} &&
-		cat $TEMPLDIR/$(conf_get $CONF post_footer) >> $BUILDDIR/${post:4} &&
-		vars=$(grep -Poh '(?<=\{).+?(?=\})' $BUILDDIR/${post:4} | sort -u) &&
-		for var in $vars
-		do
-			value=$(conf_get $postconf $var)
-			[ -z "$value" ] && sed -i "s/\${$var}/$(conf_get $CONF $var)/" $BUILDDIR/${post:4}
-			write_values $var $postconf $BUILDDIR/${post:4}
-		done &&
-		# add posts to index and rss
-		[ "$(conf_get $postconf "add_index")" != "False" ] &&
-		sed -i "/^<!-- POSTS -->/a <li><time datetime=$postctime>${postctime::-15}</time> &ndash; <a href=${post:4}>$(conf_get $postconf title)</a></li>" $BUILDDIR/index.html &&
-		[ "$(conf_get $postconf "add_rss")" != "False" ] &&
-		sed -i "/^<!-- POSTS -->/a <item>\n<title>$(conf_get $postconf title)</title>\n<guid>https://serhanekici.com/${post:4}</guid>\n<pubDate>$postctime</pubDate>\n<link>https://serhanekici.com/${post:4}</link>\n<description>$(conf_get $postconf description)</description>\n</item>" $BUILDDIR/rss.xml &&
-		# check if post is a markdown
-		[ "$(conf_get $postconf "md")" = "True" ] &&
-			MDHTML=$(npx showdown makehtml --noHeaderId --backslashEscapesHTMLTags --literalMidWordUnderscores --simplifiedAutoLink --tables -i $POSTDIR/${post::-4}md) &&
-			sed -i "/<!-- MARKDOWN -->/r /dev/stdin" <<< "$MDHTML" $BUILDDIR/${post:4}
+for conf in $POSTDIR/*.conf; do
+	conf=$(basename $conf)
+
+	# skip if html doesn't exist
+	! [ -e $POSTDIR/${conf::-5}.html ] && echo "$conf html file doesn't exist." && continue
+	# skip if md is true but markdown file doesn't exist
+	[ "$(conf_get $POSTDIR/$conf "md")" = "True" ] && ! [ -e $POSTDIR/${conf::-5}.md ] && echo "$conf md=True but ${conf::-5}.md file doesn't exist." && continue
+
+	post="$(echo ${conf::-5}.html | cut -c 5-)"
+	cat $TEMPLDIR/$(conf_get $CONF post_header) >> $BUILDDIR/$post &&
+	cat $POSTDIR/${conf::-5}.html >> $BUILDDIR/$post &&
+	cat $TEMPLDIR/$(conf_get $CONF post_footer) >> $BUILDDIR/$post
+
+	# write vars in config to posts
+	vars=$(grep -Poh '(?<=\{).+?(?=\})' $BUILDDIR/$post | sort -u) &&
+	for var in $vars
+	do
+		value=$(conf_get $POSTDIR/$conf $var)
+		[ -z "$value" ] && sed -i "s/\${$var}/$(conf_get $CONF $var)/" $BUILDDIR/$post
+		write_values $var $POSTDIR/$conf $BUILDDIR/$post
+	done
+
+
+	# check if post is a markdown
+	[ "$(conf_get $POSTDIR/$conf "md")" = "True" ] &&
+	MDHTML=$(npx showdown makehtml --noHeaderId --backslashEscapesHTMLTags --literalMidWordUnderscores --simplifiedAutoLink --tables -i $POSTDIR/${conf::-5}.md) &&
+	sed -i "/<!-- MARKDOWN -->/r /dev/stdin" <<< "$MDHTML" $BUILDDIR/$post
+
+	# add post to index
+	[ "$(conf_get $POSTDIR/$conf "add_index")" != "False" ] &&
+	postctime=$(conf_get $POSTDIR/$conf created) &&
+	sed -i "/^<!-- POSTS -->/a <li><time datetime=$postctime>${postctime::-15}</time> &ndash; <a href=$post>$(conf_get $POSTDIR/$conf title)</a></li>" $BUILDDIR/index.html
+
+	# add post to rss
+	[ "$(conf_get $POSTDIR/$conf "add_rss")" != "False" ] &&
+	sed -i "/^<!-- POSTS -->/a <item>\n<title>$(conf_get $POSTDIR/$conf title)</title>\n<guid>https://serhanekici.com/${post:4}</guid>\n<pubDate>$postctime</pubDate>\n<link>https://serhanekici.com/$post</link>\n<description>$(conf_get $POSTDIR/$conf description)</description>\n</item>" $BUILDDIR/rss.xml
+
 done
 
 # copy pixdir and style.css to build
