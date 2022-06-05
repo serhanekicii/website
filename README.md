@@ -7,7 +7,7 @@
 * sh
 * cat
 * sed
-* [showdown](https://github.com/showdownjs/showdown)
+* [pandoc](https://pandoc.org/)
 
 ### Instructions
 ```
