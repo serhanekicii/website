@@ -80,6 +80,37 @@ for conf in $POSTDIR/*.conf; do
 
 done
 
+### add last n git commits to index ###
+REPO="https://api.github.com/repos/serhanekicii/webpage"
+BRANCH="master"
+COMMITS_NUM=7 # Get last "N" number of commits
+
+USERNAME="" # Github username
+TOKEN="" # Github Personal Access Token
+
+commit_h=$(curl --silent -u $USERNAME:$TOKEN \
+  -H "Accept: application/vnd.github.v3+json" \
+  $REPO/commits \
+  | jq '.[] | "|\(.commit.author.date)|\(.commit.message)|\(.html_url)|" | gsub("[\n\t]"; "")' \
+  | head -$COMMITS_NUM)
+
+# reverse order without tac or tail -r nonsense
+commit_h=$(awk '{a[NR]=$0} END {for(i=NR; i>=1; i--) printf("%s\n",a[i]);}' <<< $commit_h)
+
+while read line
+do
+	date=$(awk -F "|" '{print $2}' <<< $line)
+
+	# convert ISO 8601 date to RSS format
+	date=$(date --date="$date" +"%a, %d %b %Y")
+
+	commit_msg=$(awk -F "|" '{print $3}' <<< $line)
+	commit_url=$(awk -F "|" '{print $4}' <<< $line)
+
+	sed -i "/^<!-- GIT -->/a <li><time datetime=$date>$date</time> &ndash; <a target=_blank href=$commit_url>$commit_msg</a></li>" $BUILDDIR/index.html
+
+done <<< $commit_h
+
 # copy pixdir and style.css to build
 cp -r $PIXDIR $BUILDDIR
 cp $STYLE $BUILDDIR
