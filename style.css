@@ -38,6 +38,11 @@ footer ul {
 	padding:0;
 }
 
+footer ul li img {
+	width: 1em;
+	vertical-align: middle;
+}
+
 a {
 	color: var(--main-fg-color);
 	text-decoration: none;
