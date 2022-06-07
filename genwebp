@@ -1,6 +1,6 @@
 #!/bin/sh
 
-TEMPLDIR=temps
+TEMPLDIR=templs
 POSTDIR=posts
 BUILDDIR=build
 PIXDIR=pix
