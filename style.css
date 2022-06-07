@@ -25,7 +25,7 @@ a {
 	text-decoration: none;
 }
 
-a:hover, a:active {
+a:hover {
 	color: var(--main-fg-color);
 	text-decoration: underline;
 }
@@ -105,19 +105,19 @@ header h1 {
 	display: none;
 }
 
-.hoverdiv:hover .hidden_elmnt, .hoverdiv:active .hidden_elmnt {
+.hoverdiv:hover .hidden_elmnt {
 	display: block;
 }
 
-.hoverdiv:hover .hover_elmnt, .hoverdiv:active .hover_elmnt {
+.hoverdiv:hover .hover_elmnt {
 	display:none;
 }
 
-.hoverspan:hover .hidden_elmnt, .hoverspan:active .hidden_elmnt {
+.hoverspan:hover .hidden_elmnt {
 	display: inline;
 }
 
-.hoverspan:hover .hover_elmnt, .hoverspan:active .hover_elmnt {
+.hoverspan:hover .hover_elmnt {
 	display:none;
 }
 
