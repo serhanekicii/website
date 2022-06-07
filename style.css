@@ -5,6 +5,7 @@
   --main-border-color: white;
   --code-bg-color: #282828;
   --code-fg-color: white;
+  --link: cornsilk;
 }
 
 body {
@@ -23,6 +24,7 @@ header {
 a {
 	color: var(--main-fg-color);
 	text-decoration: none;
+	color: var(--link);
 }
 
 a:hover {
