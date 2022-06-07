@@ -6,6 +6,7 @@
   --code-bg-color: #282828;
   --code-fg-color: white;
   --link: cornsilk;
+  --header: beige;
 }
 
 body {
@@ -97,6 +98,10 @@ article h2{
 
 header h1 {
 	font-size: 45px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: var(--header);
 }
 
 .hidden {
