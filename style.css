@@ -1,6 +1,6 @@
 :root {
   --behind: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(36,35,35,1) 54%, rgba(63,70,82,1) 100%) fixed;
-  --main-bg-color: #000;
+  --main-bg-color: #222;
   --main-fg-color: white;
   --main-border-color: white;
   --code-bg-color: #282828;
