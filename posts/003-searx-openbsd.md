@@ -69,19 +69,19 @@ $ echo "https://cdn.openbsd.org/pub/OpenBSD" | doas tee /etc/installurl
 Install required packages as root.
 
 ```
-$ doas pkg_add nginx python-3.8.12 py3-pip git py3-lxml go
+$ doas pkg_add nginx python3 py3-pip git py3-lxml go
 ```
 
-Use pip 3.8 as default pip:
+Use pip3 as default pip:
 
 ```
-$ doas ln -s /usr/local/bin/pip3.8 /usr/local/bin/pip
+$ doas ln -s /usr/local/bin/pip3 /usr/local/bin/pip
 ```
 
-Use python-3.8.12 as default python:
+Use python-3 as default python:
 
 ```
-$ doas ln -s /usr/local/bin/python3.8 /usr/local/bin/python
+$ doas ln -s /usr/local/bin/python3 /usr/local/bin/python
 ```
 
 Install Gunicorn using pip.
