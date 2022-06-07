@@ -49,7 +49,7 @@ for conf in $POSTDIR/*.conf; do
 	# skip if md is true but markdown file doesn't exist
 	[ "$(conf_get $POSTDIR/$conf "md")" = "True" ] && ! [ -e $POSTDIR/${conf::-5}.md ] && echo "$conf md=True but ${conf::-5}.md file doesn't exist." && continue
 
-	post="$(echo ${conf::-5}.html | cut -c 5-)"
+	post="$(cut -c 5- <<< ${conf::-5}.html)"
 	cat $TEMPLDIR/$(conf_get $CONF post_header) >> $BUILDDIR/$post &&
 	cat $POSTDIR/${conf::-5}.html >> $BUILDDIR/$post &&
 	cat $TEMPLDIR/$(conf_get $CONF post_footer) >> $BUILDDIR/$post
