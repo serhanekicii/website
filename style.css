@@ -21,6 +21,22 @@ header {
 	text-align: center;
 }
 
+footer {
+	margin-top: 2em;
+	text-align: center;
+}
+
+footer a {
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+footer ul {
+	list-style-type: none;
+	margin:0;
+	padding:0;
+}
+
 a {
 	color: var(--main-fg-color);
 	text-decoration: none;
@@ -75,32 +91,16 @@ pre code::selection {
 	background: var(--main-bg-color);
 }
 
-.hidden {
-	display: none;
-}
-
-footer {
-	margin-top: 2em;
-	text-align: center;
-}
-
-footer a {
-	vertical-align: middle;
-	font-weight: bold;
-}
-
-footer ul {
-	list-style-type: none;
-	margin:0;
-	padding:0;
-}
-
 article h2{
 	text-align: center;
 }
 
 header h1 {
 	font-size: 45px;
+}
+
+.hidden {
+	display: none;
 }
 
 .hidden_elmnt {
@@ -123,28 +123,6 @@ header h1 {
 	display:none;
 }
 
-#init img {
-	max-height: 200px;
-	max-width: 200px;
-	padding: 20px;
-	float: left;
-}
-
-#posts ul {
-	padding: 0;
-}
-
-#posts li {
-	list-style-position:inside;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-#posts li time {
-	font-family: monospace;
-}
-
 #article-timestamp {
     text-align: center;
     margin-top: 1em;
@@ -161,16 +139,19 @@ header h1 {
 	background: var(--main-bg-color);
 	padding: 1em;
 }
+
 #menuwrap,
 #menu,
 #main {
 	margin: 0px auto;
 	max-width: 100ex;
 }
+
 #menuwrap,
 #menu {
 	background: var(--behind);
 }
+
 #menu a {
 	font-weight: bold;
 	vertical-align: middle;
