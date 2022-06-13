@@ -1,0 +1,14 @@
+title="Contact Information"
+description="Serhan Ekici's contact information."
+keywords="contact, serhan, ekici, mail, social, media, website"
+
+date_created="Sun, 29 May 2022 02:28:12 +0300" # Creation
+date_updated="Sun, 29 May 2022 04:52:58 +0300" # Latest update
+
+is_markdown=false # Convert .md file and append to this file after <!-- MARKDOWN -->
+
+link_index="false" # Link this file to index after '<!-- POSTS -->'
+link_rss="false" # Link this file to RSS feed after '<!-- POSTS -->'
+
+add_header="true" # automatically add footer 'true, false or path'
+add_footer="true" # add footer 'true, false or path'

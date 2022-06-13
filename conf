@@ -1,17 +1,33 @@
-# root is TEMPDIR
-post_header=/index.html/001.html
-post_footer=/index.html/003.html
+BUILD_DIR="build"
+PICS_DIR="pix"
+CSS_FILE="style.css"
 
-sitetitle=Serhan Ekici's Webpage
-siteurl=https:\/\/serhanekici.com\/rss.xml
-sitemail=me@serhanekici.com
+default_header="header.html"
+default_footer="footer.html"
 
-lang=en
-author=Serhan Ekici
-keywords=serhan, ekici, blog, git, website, searx, donate, webpage
-description=Serhan Ekici's personal webpage.
+site_lang="en"
+site_keywords="serhan, ekici, website, webpage, software, articles, blog, donate"
+site_title="Serhan Ekici's Webpage"
+site_url="https://serhanekici.com"
+site_mail="me@serhanekici.com"
+site_description="Serhan Ekici's personal webpage."
+site_author="Serhan Ekici"
 
-title=Serhan Ekici's Webpage
+# Files to build in order
+to_build="
+./index.html
+./rss.xml
+./contact.html
+./faq.html
+./like.html
+./searx-openbsd.html
+./wireguard-openbsd.html
+./mailserver-openbsd.html
+./library.html
+./ttmwm.html
+"
 
-btc=bc1qq7n8xndan7smxynsn4umzdta3yxldyxlx4gxvd
-xmr=82UhwJGS8pFibqkSbtbYongS7WDzEQfFwNZXazVnNqb1T6b1wusfCVxdiQyDKBBo9NPQZPHr9z3RU6p564hXcdS8LdjGkX3
+# Custom variables
+btc="bc1qq7n8xndan7smxynsn4umzdta3yxldyxlx4gxvd"
+xmr="82UhwJGS8pFibqkSbtbYongS7WDzEQfFwNZXazVnNqb1T6b1wusfCVxdiQyDKBBo9NPQZPHr9z3RU6p564hXcdS8LdjGkX3"
+onion_url="http://serhanewcgro6rg3xrh42at5hm553xfwivdf5layisyooaa2rxald4yd.onion"

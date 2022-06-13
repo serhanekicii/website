@@ -1,0 +1,14 @@
+title="Mail Server Hosting on OpenBSD"
+description="This article demonstrates hosting a modern mail server on OpenBSD."
+keywords="openbsd, mail, server, rspamd, redis, opensmtpd, dovecot, serhan, ekici, website"
+
+date_created="Thu, 24 Dec 2021 16:00:00 +0300"
+date_updated="Sun, 29 May 2022 16:11:33 +0300"
+
+is_markdown="true" # Convert .md file and append to this file after <!-- MARKDOWN -->
+
+link_index="true" # Link this file to index after '<!-- POSTS -->'
+link_rss="true" # Link this file to RSS feed after '<!-- POSTS -->'
+
+add_header="true" # automatically add footer 'true, false or path'
+add_footer="true" # add footer 'true, false or path'

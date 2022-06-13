@@ -1,0 +1,14 @@
+title="Frequently Asked Questions"
+description="Frequently asked questions about me and my work."
+keywords="faq, frequently, asked, questons, serhan, ekici, website, blog, setup, linux, distro, openbsd, searx"
+
+date_created="Fri, 17 Dec 2021 21:00:00 +0300" # Creation
+date_updated="Sun, 29 May 2022 02:59:02 +0300" # Latest update
+
+is_markdown="false" # Convert .md file and append to this file after <!-- MARKDOWN -->
+
+link_index="true" # Link this file to index after '<!-- POSTS -->'
+link_rss="true" # Link this file to RSS feed after '<!-- POSTS -->'
+
+add_header="true" # automatically add footer 'true, false or path'
+add_footer="true" # add footer 'true, false or path'

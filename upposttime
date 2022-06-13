@@ -1,6 +1,0 @@
-#!/bin/sh
-
-BASEDIR=$(dirname "$0")
-post=$(basename $1)
-postconf=$BASEDIR/posts/$(echo $post | cut -d'.' -f1).conf
-sed -i "s/^updated=.*/updated=$(date +"%a, %d %b %Y %H:%M:%S %z")/" $postconf

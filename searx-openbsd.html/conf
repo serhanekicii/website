@@ -1,0 +1,14 @@
+title="Searx Instance using Gunicorn and Nginx on OpenBSD"
+description="This article demostrates hosting a Searx instance using Gunicorn on OpenBSD."
+keywords="searx, openbsd, nginx, gunicorn, serhan, ekici, website"
+
+date_created="Fri, 24 Dec 2021 01:00:00 +0300" # Creation
+date_updated="Tue, 07 Jun 2022 21:05:42 +0300" # Latest update
+
+is_markdown="true" # Convert .md file and append to this file after <!-- MARKDOWN -->
+
+link_index="true" # Link this file to index after '<!-- POSTS -->'
+link_rss="true" # Link this file to RSS feed after '<!-- POSTS -->'
+
+add_header="true" # automatically add footer 'true, false or path'
+add_footer="true" # add footer 'true, false or path'

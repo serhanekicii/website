@@ -11,6 +11,6 @@
 
 ### Instructions
 ```
-chmod +x genwebp
-./genwebp
+chmod +x gen
+./gen
 ```
