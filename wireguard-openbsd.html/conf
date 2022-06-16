@@ -1,5 +1,5 @@
 title="WireGuard VPN Server on OpenBSD"
-description="This article demostrates installing WireGuard VPN server on OpenBSD."
+description="Tutorial on installing a WireGuard VPN server on OpenBSD."
 keywords="openbsd, wireguard, serhan, ekici, website"
 
 date_created="Fri, 24 Dec 2021 01:30:00 +0300" # Creation

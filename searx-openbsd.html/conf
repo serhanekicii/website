@@ -1,5 +1,5 @@
 title="Searx Instance using Gunicorn and Nginx on OpenBSD"
-description="This article demostrates hosting a Searx instance using Gunicorn on OpenBSD."
+description="Tutorial on hosting a Searx instance using Gunicorn on OpenBSD."
 keywords="searx, openbsd, nginx, gunicorn, serhan, ekici, website"
 
 date_created="Fri, 24 Dec 2021 01:00:00 +0300" # Creation
