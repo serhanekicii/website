@@ -3,7 +3,7 @@
 CONF_FILE=./conf
 . "$CONF_FILE"
 
-[ -d "$BUILD_DIR" ] && rm -rf "$BUILD_DIR" 	# Delete build dir if exist
+[ -d "$BUILD_DIR" ] && rm -rf "$BUILD_DIR" # Delete build dir if exist
 mkdir "$BUILD_DIR"
 
 ### Build files
