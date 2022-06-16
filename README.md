@@ -6,7 +6,7 @@
 ### Dependencies
 * sh
 * cat
-* sed
+* GNU sed
 * [pandoc](https://pandoc.org/)
 
 ### Instructions
