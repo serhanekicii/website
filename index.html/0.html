@@ -33,7 +33,12 @@
 				<li><a target="_blank" href="https://github.com/serhanekicii/webpage/commits/master">[ ... ]</a></li>
 			</ul>
 		</div>
-
+		<div id=stats>
+			<h2>Statistics</h2>
+			<img src=pix/pfstat_month.jpg>
+			<img src=pix/pfstat-packets_month.jpg>
+			<img src=pix/pfstat-errors_month.jpg>
+		</div>
 <style>
 #init img {
 	max-height: 200px;
@@ -42,12 +47,12 @@
 	float: left;
 }
 
-#posts, #commits {
+#posts, #commits, #stats {
 	background: var(--code-bg-color);
 	border-radius: 10px;
 }
 
-#posts h2, #commits h2 {
+#posts h2, #commits h2, #stats h2 {
 	padding-top: 10px;
 	padding-left: 10px;
 }
@@ -66,5 +71,15 @@
 
 #posts li time, #commits li time {
 	font-family: monospace;
+}
+
+#stats img {
+	display: block;
+	margin-left:auto;
+	margin-right:auto;
+	width: 98%;
+	-webkit-filter: invert(1);
+	filter: invert(1);
+	padding-bottom: 5px;
 }
 </style>
