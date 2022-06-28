@@ -18,7 +18,7 @@
 					<p>In my view, individually answering or explaining is highly inefficient and time-wasting. If you have questions related to me personally, this is the best place to get answers. Check <a href="faq.html">F.A.Q</a>.</p>
 		</div>
 		<div id=posts>
-			<h2>Posts & Articles</h2>
+			<h2>📚 Posts & Articles</h2>
 			<ul>
 <!-- POSTS -->
 			</ul>
@@ -33,8 +33,21 @@
 				<li><a target="_blank" href="https://github.com/serhanekicii/webpage/commits/master">[ ... ]</a></li>
 			</ul>
 		</div>
+		<div id=webring>
+			<h2>💍 Webring</h2>
+			<p>A webring is an alliance of sites which link to their "neighbors" in a circular way. Each site places "Next site" and "Previous site" links which, if a user continues to follow, he will see every site in the ring and end up where he started.</p>
+
+			<p>This is a classic way to discover artisanal sites on the internet without the mediation of search engines, "big tech" or corporate landing pages.</p>
+
+			<p>This one and many more sites are a part of the <a href="https://cedars.xyz">Cedars Webring!</a></p>
+				<a target="_blank" title="Go to previous site in webring." href="https://cedars.xyz/previous">←</a>
+				<a target="_blank" href="https://cedars.xyz/">🌲 Cedars Webring 🌲</a>
+				<a target="_blank" title="Go to next site in webring." href="https://cedars.xyz/next">→</a>
+				<br>
+				<a target="_blank" href="https://cedars.xyz/random">🎲 Random</a>
+		</div>
 		<div id=stats>
-			<h2>Statistics</h2>
+			<h2>📈 Packet Filter Statistics</h2>
 			<img src=pix/pfstat_month.jpg>
 			<img src=pix/pfstat-packets_month.jpg>
 			<img src=pix/pfstat-errors_month.jpg>
@@ -47,14 +60,15 @@
 	float: left;
 }
 
-#posts, #commits, #stats {
+#posts, #commits, #stats, #webring {
 	background: var(--code-bg-color);
 	border-radius: 10px;
 }
 
-#posts h2, #commits h2, #stats h2 {
+#posts h2, #commits h2, #stats h2, #webring h2 {
 	padding-top: 10px;
 	padding-left: 10px;
+	text-align: center;
 }
 
 #posts ul, #commits ul {
@@ -68,7 +82,6 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-
 #posts li time, #commits li time {
 	font-family: monospace;
 }
@@ -81,5 +94,13 @@
 	-webkit-filter: invert(1);
 	filter: invert(1);
 	padding-bottom: 5px;
+}
+
+#webring {
+	text-align: center;
+}
+
+#webring {
+	padding-bottom: 10px;
 }
 </style>
