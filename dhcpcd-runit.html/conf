@@ -2,8 +2,8 @@ title="Network Managing with DHCPCD and Runit"
 description="Tutorial on network managing using DHCPCD and Runit."
 keywords="dhcpcd, runit, wpa-supplicant, hooks, no-systemd, serhan, ekici, website"
 
-date_created="Sun, 03 Jul 2022 16:04:30" # Creation
-date_updated="Sun, 03 Jul 2022 17:40:04 +0300"
+date_created="Sun, 03 Jul 2022 16:04:30 +0300" # Creation
+date_updated="Sun, 03 Jul 2022 17:41:24 +0300"
 
 is_markdown="true" # Convert .md file and append to this file after <!-- MARKDOWN -->
 
