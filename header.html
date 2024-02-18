@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="${site_lang}">
+  <head>
+    <!-- HEAD -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Language" content="${site_lang}" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="keywords" content="${site_keywords}" />
+    <meta name="description" content="${site_description}" />
+    <meta name="author" content="${site_author}" />
+    <title>${page_title}</title>
+
+    <link rel="canonical" href="${site_url}/${page_path}" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="${page_title}" />
+    <meta property="og:description" content="${site_description}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="${site_url}/${page_path}" />
+    <meta property="og:image" content="${ASSETS_DIR}/me.webp" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "${site_title}",
+      "url": "${site_url}",
+      "author": {
+        "@type": "Person",
+        "name": "${site_author}",
+        "url": "${site_url}",
+        "image": "${ASSETS_DIR}/me.webp",
+        "email": "${site_mail}",
+        "jobTitle": "${site_author_job}",
+        "sameAs": ["${site_author_github}", "${site_author_linkedin}"],
+        "knowsAbout": "${site_author_skills}"
+      }
+    }
+    </script>
+
+    <link rel="preconnect" href="${ASSETS_DIR}" crossorigin>
+
+    <link rel="preload" href="style.css" as="style">
+    <link rel="stylesheet" href="style.css" media="all" />
+
+    <link rel="alternate" type="application/rss+xml" title="${site_title} RSS Feed" href="rss.xml" />
+
+    <link rel="preload" href="${ASSETS_DIR}/me.webp" as="image" />
+
+    <link rel="icon" href="${ASSETS_DIR}/favicon-dark.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header>
+      <h1>${site_title}</h1>
+    </header>
+    <nav id="menu">
+      <div id="nav-left">
+        <a href="index.html"${nav_index_active}>Index</a>
+        <a href="https://github.com/${GITHUB_USER}" target="_blank" rel="noopener" title="My Git Repository">Software</a>
+      </div>
+      <div id="nav-right">
+        <a href="contact.html"${nav_contact_active}>Contact</a>
+        <a href="rss.xml" target="_blank" rel="noopener">RSS</a>
+      </div>
+    </nav>
+    <main id="mainwrap">
+      <div id="main">

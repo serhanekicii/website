@@ -1,0 +1,38 @@
+BUILD_DIR="build"
+ASSETS_DIR="assets"
+CSS_FILE="style.css"
+
+GITHUB_REPO="website"
+GITHUB_USER="serhanekicii"
+# Add last n commits to index
+COMMITS_NUM=10
+
+default_header="header.html"
+default_footer="footer.html"
+
+site_lang="en"
+site_keywords="serhan ekici, IT infrastructure, site reliability, SRE, devops, platform engineering, AI, articles, blog, personal website"
+site_title="Serhan Ekici's Website"
+site_url="https://serhanekici.com"
+site_mail="me@serhanekici.com"
+site_description="Some guy interested in boring stuff."
+site_author="Serhan Ekici"
+site_author_job="Platform / SRE Engineer"
+site_author_github="https://github.com/serhanekicii"
+site_author_linkedin="https://linkedin.com/in/serhanekici"
+site_author_skills="Site Reliability Engineering, Platform Engineering, Kubernetes, DevOps, Infrastructure as Code, Terraform, Ansible, GitOps, ArgoCD, Observability, Prometheus, Grafana, Linux Administration, Cloud Infrastructure, AWS, GCP, Zero Trust Security, Vault, Go, Python"
+page_title="$site_title"
+page_path=""
+page_type="website"
+
+# Only link if explicitly set to.
+link_index=false
+link_rss=false
+
+# Files to build in order
+to_build="
+./index.html
+./rss.xml
+./contact.html
+./highlights.html
+"

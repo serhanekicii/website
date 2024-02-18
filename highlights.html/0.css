@@ -1,0 +1,34 @@
+.book-section {
+  margin-bottom: 2em;
+}
+
+.book-cover {
+  float: right;
+  max-width: 120px;
+  margin: 0 0 1em 1em;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 15%);
+}
+
+.book-section::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.book-section blockquote {
+  border-left: 3px solid var(--main-border-color, #ddd);
+  margin: 0.5em 0;
+  padding: 0.5em 1em;
+  font-style: italic;
+  background: var(--code-bg-color, #161b22);
+}
+
+@media (width <= 600px) {
+  .book-cover {
+    float: none;
+    display: block;
+    margin: 0 auto 1em;
+    max-width: 100px;
+  }
+}

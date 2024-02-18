@@ -1,0 +1,14 @@
+title="Contact Information"
+description="Serhan Ekici's contact information."
+site_description="$description"
+page_title="$title"
+page_path="contact.html"
+site_keywords="contact, serhan ekici, email, social media"
+
+is_markdown=false # Convert .md file and append to this file after <!-- MARKDOWN -->
+
+link_index="false" # Link this file to index after '<!-- POSTS -->'
+link_rss="false" # Link this file to RSS feed after '<!-- POSTS -->'
+
+add_header="true" # automatically add footer 'true, false or path'
+add_footer="true" # add footer 'true, false or path'

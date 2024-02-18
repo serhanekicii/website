@@ -1,0 +1,388 @@
+[
+  {
+    "asin": "b7twknogwbby7ltwj8ppeilj",
+    "title": "Minimizing Liabilities Is Making It. | Luke Smith",
+    "author": "Luke Smith",
+    "url": "https://lukesmith.xyz/articles/minimizing-liabilities-is-making-it/",
+    "cover_url": "https://lukesmith.xyz/pix/millennial-paycheck.jpg",
+    "cover_file": null,
+    "highlights": [
+      {
+        "id": "mkxyrtyvmi4jyib4yz1039r9",
+        "text": "The problem I would estimate is that people focus all of their time, money and interest on increasing their income and focus quite literally none on decreasing their liabilities, which is actually substantially easier anyway.\nIn fact, the modern economy, including all the bad advice it gives to people can generally be thought of a system that is desperatly trying to increase everyone\u2019s liabilities within it.\nFinancial libabilities, debt and others, breed even more financial liabilities.",
+        "note": null
+      },
+      {
+        "id": "pop9yl6w8ojvcsqqo8e1ij5x",
+        "text": "If you take the \u201chigh\u201d-income, high-liability route, you\u2019re going to be establishing wasteful antipatterns your early life and when you need to buckle down and root those out, it will be more difficult because it will be the egotistically trying task of going from showly and \u201ceasy\u201d pleasure spending to a Spartan budget.",
+        "note": null
+      },
+      {
+        "id": "urba2nnvc0lldrkjc2ztmwq1",
+        "text": "all money you earn and spend should be directly weaponized to decrease your reliance on money. Property, tools, plants, skills. These are investments much more substantial than investing in boomer stocks because they lessen your need for money.",
+        "note": null
+      },
+      {
+        "id": "ylbd3dv2oe5caryx8bc47s2m",
+        "text": " focusing on minimizing liabilities is that it makes you significantly less reliant on \u201cthe system\u201d and more robust in the case of disaster.",
+        "note": null
+      },
+      {
+        "id": "r5dpg1ir6v05r21kveid0k0x",
+        "text": "\u201cTraining\u201d to get a highly specific corporate job is not going to help you in all possible scenarios in the way that simple the simple craftsmanship of someone who fixes their own cars and things.",
+        "note": null
+      }
+    ],
+    "content_type": "link"
+  },
+  {
+    "asin": "oiiypapnqvjg86ii7ed6hwsl",
+    "title": "The Root Cause Fallacy: Hidden Causes",
+    "author": "Micha\u0142 Poczwardowski",
+    "url": "https://read.perspectiveship.com/p/the-root-cause-fallacy",
+    "cover_url": "https://substackcdn.com/image/fetch/$s_!TW-V!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5bb09721-934d-4262-83f9-dd0d336e0b2d_2048x2048.png",
+    "cover_file": null,
+    "highlights": [
+      {
+        "id": "kuihdhrms5pig9rb9no1n150",
+        "text": "Too much simplification is like saying: water causes drowning or gravity causes planes to crash. It\u2019s somewhat true, but useless.",
+        "note": null
+      },
+      {
+        "id": "qe1wor535gkvjwukigdap14p",
+        "text": "Try inversion, by defining the problem in reverse:Why is our product successful?Why is our application working without problems?There is no simple root cause of success. There are many contributing factors: luck, hard work, attention to detail, and a deep understanding of clients\u2019 needs. It\u2019s similar to failures: many things led to the undesired state.",
+        "note": null
+      },
+      {
+        "id": "ky9wncqbp68g707brh55j0fj",
+        "text": "Trees have many roots, as with success and failure. So look for multiple root causes.",
+        "note": null
+      }
+    ],
+    "content_type": "link"
+  },
+  {
+    "asin": "nbt6070ku40ywn2sh2ig15lj",
+    "title": "Why Big Companies Keep Failing: The Stack Fallacy | TechCrunch",
+    "author": "Anshu Sharma",
+    "url": "https://techcrunch.com/2016/01/18/why-big-companies-keep-failing-the-stack-fallacy/",
+    "cover_url": "https://techcrunch.com/wp-content/uploads/2015/11/jenga.jpg?resize=1200,800",
+    "cover_file": null,
+    "highlights": [
+      {
+        "id": "lskqrlqo0gdinbxgpfeod1nd",
+        "text": "As history has shown, Amazon is dominating the cloud IaaS market, even as the technology vendors that build ingredient, lower-layer technologies struggle to compete\u200a \u2014 VMware is nowhere close to winning against AWS, even though all of AWS runs on virtual machine technology, a core competency of VMware; Oracle has been unable to beat Salesforce in CRM SaaS, despite the fact that Oracle perceives Salesforce to be just a hosted database app. It even runs on their database!",
+        "note": null
+      },
+      {
+        "id": "hdim7bex9bl7p8noctj61bch",
+        "text": "The\u00a0stack\u00a0fallacy\u00a0is a result of human nature\u200a \u2014 we (over) value what we know. In real terms, imagine you work for a large database company\u00a0\u200aand the CEO asks\u200a, \u201cCan we compete with Intel or SAP?\u201d Very few people will imagine\u00a0they can build a computer chip just because they can build relational database software, but because of our\u00a0familiarity with building blocks\u00a0of the layer up, \u200ait is easy to believe you can build the ERP app. After all, we know tables and workflows.",
+        "note": null
+      },
+      {
+        "id": "hivy60uob4mqqd6mk730c1gs",
+        "text": "The bottleneck for success often is not knowledge of the tools, but lack of understanding of the customer needs.",
+        "note": null
+      },
+      {
+        "id": "w7wflzm2kdakjn4av53ce5in",
+        "text": "In a surprising way, it is far easier to innovate down the\u00a0stack\u00a0than up the\u00a0stack.\nThe reason for this is that you are yourself a natural customer of the lower layers. Apple knew what it wanted from an ideal future microprocessor. It did not have the skills necessary to build it, but the customer needs were well understood. Technical skills can be bought/acquired, whereas it is very hard to\u00a0buy a deep understanding of market needs.\nIt is therefore no surprise that Apple had an easier time building semiconductor chips than building Apple Maps.",
+        "note": null
+      },
+      {
+        "id": "p8khj5rry8oo9if1mi9wha0o",
+        "text": "Google is a great example. It owned our email graph and\u00a0our interest data (search), yet found it very difficult to succeed in what looks like a \u201ctrivial to build\u201d app\u200a \u2014 social networks.",
+        "note": null
+      },
+      {
+        "id": "rdpc09f4jr0q40whwo2cnee2",
+        "text": "Product management is the art of knowing what to build.",
+        "note": null
+      }
+    ],
+    "content_type": "link"
+  },
+  {
+    "asin": "w6j1umsim747f8ku9xu69wfz",
+    "title": "The skill of the future is not \u2018AI\u2019, but \u2018Focus\u2019",
+    "author": "Antonin",
+    "url": "https://carette.xyz/posts/focus_will_be_the_skill_of_the_future/",
+    "cover_url": null,
+    "cover_file": null,
+    "highlights": [
+      {
+        "id": "kn9jgn0n1wxpnlowta2xpdz0",
+        "text": "If an engineer wants to \u201creinvent the wheel,\u201d an LLM might offer a solution (good or bad, depending on the prompt). But when faced with truly novel problems, LLMs often provide unreliable responses, placing the burden of error detection squarely on the engineer.",
+        "note": null
+      },
+      {
+        "id": "mfxwmziueut2pqvoao9imwpw",
+        "text": "This reliance on readily available solutions, particularly for familiar problems, creates a real risk: engineers may inadvertently atrophy their own problem-solving skills, hindering their ability to tackle truly novel challenges.\nThe solution lies is balance, and a focus on the \u201cwhy\u201d, not just the \u201cwhat\u201d.\nEngineers should strive to understand the reasoning behind LLM-generated solutions, not simply accept them blindly.  Blind acceptance shifts the focus from solving problems to merely obtaining a solution.  Crucially, solving complex problems often depends on mastering simpler and foundational skills, which the engineer might lose quickly.",
+        "note": null
+      },
+      {
+        "id": "agmmm21vwvew8h2001pa2y5t",
+        "text": "In embracing these \u201cfast-paced solutions\u201d, we risk losing a fundamental skill: focus. Because focus, like any skill, requires practice.",
+        "note": null
+      }
+    ],
+    "content_type": "link"
+  },
+  {
+    "asin": "gfe8skdyn14gl9az10na3e5o",
+    "title": "Observability\u2019s Past, Present, and Future",
+    "author": "Sherwood's Blog",
+    "url": "https://blog.sherwoodcallaway.com/observability-s-past-present-and-future/",
+    "cover_url": "https://bear-images.sfo2.cdn.digitaloceanspaces.com/herman-1683556668-0.png",
+    "cover_file": null,
+    "highlights": [
+      {
+        "id": "xy986ualnpx44gl91slmv09w",
+        "text": "Encouraged by early results, engineering teams started to over-invest in observability tools and processes.\nMore instrumentation. More dashboards. More monitors. SLOs. Error budgets. Runbooks. Postmortems. By the early 2020s, observability was no longer a means to an end. It was an end unto itself.",
+        "note": null
+      },
+      {
+        "id": "x97qs4e2plianob3x2txdgdu",
+        "text": "Today, most engineers will agree: observability is table stakes. If you're running production systems at almost any scale, you need a way to detect, mitigate, and resolve issues when they occur.\nThis is the role of modern observability platforms like Datadog, Grafana, and Sentry.\nYet, when I think about the current state of observability, one question stands out: why, after 10+ years of investment in better tools and processes, does observability still suck?",
+        "note": null
+      },
+      {
+        "id": "w39hcsazbp21upl8gysno5g9",
+        "text": "The amount of effort we put into observability does NOT line up with the progress we've made towards its goals: better detection, faster root-cause analysis, and more reliable apps.\nWhy?\nIt's because the real problem isn't about data, tooling, or process. It's about our ability - or inability - to understand and reason about the data we already have.\nObservability made us very good at producing signals, but only slightly better at what comes after: interpreting them, generating insights, and translating those insights into reliability.",
+        "note": null
+      },
+      {
+        "id": "nd506fbct0uioebkh49n0ify",
+        "text": "AI is cutting the cost of writing code to zero. As a result, engineering teams are shipping vast amounts of features and at breakneck speeds. Codebases are getting bigger and bigger.\nMeanwhile, vibe-coding platforms have brought software development to the masses. More apps will be built and deployed this year than in all previous years combined.\nWe're on the verge of an \"infinite software crisis\".\nThis raises an uncomfortable question: how will we support, maintain, and operate this ever-growing mountain of software? I'm willing to bet the answer is observability.\nJust not the version we have today...",
+        "note": null
+      }
+    ],
+    "content_type": "link"
+  },
+  {
+    "asin": "qc33v9hjq10ulb1m0nhirow7",
+    "title": "Learning European Languages (Michel Thomas) | Luke Smith",
+    "author": "Luke Smith",
+    "url": "https://lukesmith.xyz/articles/learning-european-languages-michel-thomas/",
+    "cover_url": "https://lukesmith.xyz/pix/hensel1741-small.jpg",
+    "cover_file": null,
+    "highlights": [
+      {
+        "id": "djs9q4rsdmqg3fs5tt987lr5",
+        "text": "ideal way for an English\nspeaker to begin learning or excel in learning other major European\nlanguages (Spanish, French, Italian and German) is to use Michel\nThomas's audiotapes.",
+        "note": null
+      },
+      {
+        "id": "gmdzbxgro67hbkv2u5idox00",
+        "text": "Probably the most important part of the tapes is the lack of\nvocabulary taught. You don't get 20 irrelevant nouns with each lesson\nto memorize that you don't even now how to use. What new words you\n\"learn\" are mostly shared in common with English. The goal is to make\nyou fluent before you have to memorize words.",
+        "note": null
+      },
+      {
+        "id": "iez4zz56u1sx5dmglrzr8tm1",
+        "text": "Thomas, instead, actually teaches the language and how to be\nconstructive in it: the verbs, the verb inflections, how to combine\nthem, basic pronouns and the like. Only once the students understand\nthem does he move on to the words for real-world objects. Thomas will\nsometimes explain why he does this in the course, but it amounts to what\nI've said in other places: you can guess or\nfigure out nouns or talk around them, but if you don't know how to put\nverbs together, you just don't know the language and you can't even\nfake it. It is much easier to learn nouns after you actually learn the\nstructure of the language and can actually use them.",
+        "note": null
+      }
+    ],
+    "content_type": "link"
+  },
+  {
+    "asin": "k0irp350os095e1ssgaif1xf",
+    "title": "Why People Do or Do Not Leave Religion | Luke Smith",
+    "author": "Luke Smith",
+    "url": "https://lukesmith.xyz/articles/why-people-leave-religion/",
+    "cover_url": null,
+    "cover_file": null,
+    "highlights": [
+      {
+        "id": "k1vbdf2vcogtp18i2chhrjjr",
+        "text": "religion is the framework that links\nthat meme with others: a meme that expounds on what behaviors are\npermissible, a meme of a specific creation mythology, a meme for\neschatology, a meme for proper family behavior and thousands of\nothers. Thus in a way, religion is not so much a set belief that can\neasily be switch on and off, but abandoning the concept of god can\neasily undermine foundational moral and social beliefs as well. To\nchange one's religion is to alter essential one's entire memeplex,\nwith a desperate need to replace\u00a0 not only factual beliefs, but\nsocial understanding.",
+        "note": null
+      },
+      {
+        "id": "envggqau5dyfoef8pjbqcz9x",
+        "text": "if someone becomes an apostate, they would\nlose a lot of the religion-specific justification for their family\nlife, their moral persuasions and likely even their politics.\nReligion is so powerful over people's lives because it connects with\nso much of the foundations of their everyday interactions, perhaps\nnot practically, but ideologically, and it aids in putting human\naction into context given the wide worldview attached to religion.",
+        "note": null
+      },
+      {
+        "id": "ci05oljkudqbyjr2e5j0e9t1",
+        "text": "people are more likely to\nleave their faith if religion's other memetic counterparts have been\ncompromised. That is, if they lack a religious family or friends, if\nthey don't participate in any religious services and\u00a0 if they don't\ninvoke religion to justify moral or political actions, they'll\nprobably be able to disbelieve in God with greater facility. A person\nin these situations frankly wouldn't be too troubled by the idea of\na godless universe.",
+        "note": null
+      },
+      {
+        "id": "d3pblbvv85vxhw3vetx6pner",
+        "text": "A lot of the difference between\nfundamentalist and liberal Christians or between moderate and\nextremist Muslims can be accounted for by how much of the rest of\ntheir beliefs are determined or influenced by the meme network of\nreligion. Fundamentalists and extremists view religion as fundamental\nto understanding anything in the world, thus in their own minds would\nbe ludicrous and immoral not to let religion guide them in all\npolitical and social affairs. On the other hands, believers who only\nhave a tiny and insular memetic network for religion are likely the\nones to want to keep religion separate from politics and their\ninteractions with their friends.",
+        "note": null
+      },
+      {
+        "id": "i93ryu34a0hltwk7bcm93hge",
+        "text": "It is incredibly rare or likely non-occurring for a person\nof fervorous religious disposition to hear one or two off-the-cuff\narguments against God's existence and then on the spot relinquish\ntheir religion. It's an issue of intellectual economy and the\nideological support of other associated memes. Perhaps an argument\ncan cause some questioning about the existence or justice of God, but\nat the same time it would be unlikely for a believer to toss out the\nGod meme and every meme associated with it, as to them, the testimony\nof their family, church life and moral convictions have not been\nrebutted and thus are supposed to constitute evidence confirming\ntheir ideology. Of course in a way, religion survives because the\nmemes of religion have taken the memes of morality and social\ncohesion as hostages, and for the religious, losing the former means\nlosing the latter.",
+        "note": null
+      }
+    ],
+    "content_type": "link"
+  },
+  {
+    "asin": "jer2fv15oft64avwuz558ia0",
+    "title": "Productivity",
+    "author": "Sam Altman",
+    "url": "https://blog.samaltman.com/productivity",
+    "cover_url": null,
+    "cover_file": null,
+    "highlights": [
+      {
+        "id": "lg3yvfj8osbj4m1ffrcpywzd",
+        "text": "Compound\ngrowth gets discussed as a financial concept, but it works in careers as well,\nand it is magic.\u00a0 A small productivity\ngain, compounded over 50 years, is worth a lot.\u00a0\nSo it\u2019s worth figuring out how to optimize productivity. If you get 10%\nmore done and 1% better every day compared to someone else, the compounded\ndifference is massive.\u00a0",
+        "note": null
+      },
+      {
+        "id": "k5c9vgi2asw9ell0f6zuidil",
+        "text": "It doesn\u2019t\nmatter how fast you move if it\u2019s in a worthless direction.\u00a0 Picking the right thing to work on is the\nmost important element of productivity and usually almost ignored.",
+        "note": null
+      },
+      {
+        "id": "wuowpsxtfbu51rv0y5tuk7o9",
+        "text": "The most\nimpressive people I know have strong beliefs about the world, which is rare in\nthe general population. \u00a0If you find yourself always agreeing with whomever\nyou last spoke with, that\u2019s bad.\u00a0 You\nwill of course be wrong sometimes, but develop the confidence to stick with\nyour convictions.\u00a0 It will let you be\ncourageous when you\u2019re right about something important that most people don\u2019t\nsee.",
+        "note": null
+      },
+      {
+        "id": "q57gnyqo5sh1nybutxuzyqah",
+        "text": "Stuff that you don\u2019t\nlike is a painful drag on morale and momentum.",
+        "note": null
+      },
+      {
+        "id": "zopzso3zygmaw8v9way5b1ks",
+        "text": "Doing great\nwork usually requires colleagues of some sort. \u00a0Try to be around smart,\nproductive, happy, and positive people that don\u2019t belittle your ambitions.\u00a0 I love being around people who push me and\ninspire me to be better.\u00a0 To the degree\nyou able to, avoid the opposite kind of people\u2014the cost of letting them take up\nyour mental cycles is horrific.\u00a0",
+        "note": null
+      },
+      {
+        "id": "ouspntompxh76r6zcs8qvsz9",
+        "text": "You have to\nboth pick the right problem and do the work. \u00a0There aren\u2019t many\nshortcuts.\u00a0 If you\u2019re going to do\nsomething really important, you are very likely going to work both smart and\nhard. \u00a0The biggest prizes are heavily competed for.",
+        "note": null
+      },
+      {
+        "id": "gas6fl53xk3138etsmzyrcjl",
+        "text": "My system has\nthree key pillars: \u201cMake sure to get the important shit done\u201d, \u201cDon\u2019t waste\ntime on stupid shit\u201d, and \u201cmake a lot of lists\u201d.",
+        "note": null
+      },
+      {
+        "id": "oyefpag2mba0tz8l1a7nmxde",
+        "text": "I\u2019ve found that if I\nreally want something to happen and I push hard enough, it usually happens.\u00a0",
+        "note": null
+      },
+      {
+        "id": "qxv5wx6guj0po0itwi0na0im",
+        "text": "Also, don\u2019t\nfall into the trap of productivity porn\u2014chasing productivity for its own sake\nisn\u2019t helpful. \u00a0Many people spend too much time thinking about how to perfectly\noptimize their system, and not nearly enough asking if they\u2019re working on the\nright problems. \u00a0It doesn\u2019t matter what system you use or if you squeeze\nout every second if you\u2019re working on the wrong thing.",
+        "note": null
+      },
+      {
+        "id": "u66ws3k5756sxrgt0ciasyyd",
+        "text": "The right goal\nis to allocate your year optimally, not your day.",
+        "note": null
+      },
+      {
+        "id": "b4it1w9hzwx09lhxzhkh2vjm",
+        "text": "Don\u2019t neglect\nyour family and friends for the sake of productivity\u2014that\u2019s a very stupid\ntradeoff (and very likely a net productivity loss, because you\u2019ll be less\nhappy). \u00a0Don\u2019t neglect doing things you love or that clear your head\neither.",
+        "note": null
+      },
+      {
+        "id": "f3rh6ienj06mwa8tparvgbbw",
+        "text": "productivity in the wrong direction isn\u2019t worth anything\nat all. \u00a0Think more about what to work on.",
+        "note": null
+      }
+    ],
+    "content_type": "link"
+  },
+  {
+    "asin": "x1fypui8w8rpx6okzyldyrif",
+    "title": "The Merge",
+    "author": "Sam Altman",
+    "url": "https://blog.samaltman.com/the-merge",
+    "cover_url": null,
+    "cover_file": null,
+    "highlights": [
+      {
+        "id": "xwtm0b0wv2u61qtd24dr8rgt",
+        "text": "More important than that, unless we destroy ourselves first, superhuman AI is going to happen, genetic enhancement is going to happen, and brain-machine interfaces are going to happen. It is a failure of human imagination and human arrogance to assume that we will never build things smarter than ourselves.",
+        "note": null
+      }
+    ],
+    "content_type": "link"
+  },
+  {
+    "asin": "cl72jtmpfaz1gqg0bm786q9x",
+    "title": "Idea Generation",
+    "author": "Sam Altman",
+    "url": "https://blog.samaltman.com/idea-generation",
+    "cover_url": null,
+    "cover_file": null,
+    "highlights": [
+      {
+        "id": "isqr3y5gxxykseytqiwox1l3",
+        "text": "The best ideas are fragile; most people don\u2019t even start talking about them at all because they sound silly. Perhaps most of all, you want to be around people who don\u2019t make you feel stupid for mentioning a bad idea, and who certainly never feel stupid for doing so themselves.",
+        "note": null
+      },
+      {
+        "id": "c4ezdd30e84q2osln0see4q0",
+        "text": "It\u2019s important to be in the right kind of environment, and around the right kind of people. You want to be around people who have a good feel for the future, will entertain improbable plans, are optimistic, are smart in a creative way, and have a very high idea flux. These sorts of people tend to think without the constraints most people have, not have a lot of filters, and not care too much what other people think.\u00a0",
+        "note": null
+      },
+      {
+        "id": "p2mk9a56oqd2oebjj120qwyl",
+        "text": "When you can say \u201cI am sure this is going to happen, I\u2019m just not sure if we\u2019ll be the ones to do it\u201d, that\u2019s a good sign. ",
+        "note": null
+      },
+      {
+        "id": "vzxk1qcxvkzw1p0f441uqbct",
+        "text": "A good question to ask yourself early in the process of thinking about an idea is \u201ccould this be huge if it worked?\u201d There are many good ideas in the world, but few of them have the inherent advantages that can make a startup massively successful. Most businesses don\u2019t generate a valuable accumulating advantage as they scale. Think early about why an idea might have that property. It\u2019s obvious for Facebook or Airbnb, but it often exists in more subtle ways.",
+        "note": null
+      },
+      {
+        "id": "i6a6o0utg5l1cj255x7s2qpd",
+        "text": " a good test for an idea is if you can articulate why most people think it\u2019s a bad idea, but you understand what makes it good.",
+        "note": null
+      },
+      {
+        "id": "ihhcqxdpqa308w80u8z8nyys",
+        "text": "In such a tectonic shift, the world changes so fast that the big incumbents usually get beaten by fast-moving and focused startups. (By the way, it\u2019s useful to get good at differentiating between real trends and fake trends. A key differentiator is if the new platform is used a lot by a small number of people, or used a little by a lot of people.)",
+        "note": null
+      }
+    ],
+    "content_type": "link"
+  },
+  {
+    "asin": "c5bv0atd4lzttgfzscc8ahmx",
+    "title": "Hard Startups",
+    "author": "Sam Altman",
+    "url": "https://blog.samaltman.com/hard-startups",
+    "cover_url": null,
+    "cover_file": null,
+    "highlights": [
+      {
+        "id": "hkofk30e4006rj2ao9muj91o",
+        "text": "Be willing to make a very long-term commitment to what you\u2019re doing.\u00a0 Most people aren\u2019t, which is part of the reason they pick \u201ceasy\u201d startups.\u00a0 In a world of compounding advantages where most people are operating on a 3 year timeframe and you\u2019re operating on a 10 year timeframe, you\u2019ll have a very large edge.",
+        "note": null
+      },
+      {
+        "id": "t2o7a1q3vt6mkan70pjqq7o6",
+        "text": "Part of the magic of Silicon Valley is that people default to taking you seriously if you\u2019re willing to be serious\u2014they\u2019ve learned it\u2019s a very expensive mistake, in aggregate, not to.\u00a0 If you want to start a company working on a better way to build homes, gene editing, artificial general intelligence, a new education system, or carbon sequestration, you may actually be able to get it funded, even if you don\u2019t have a degree or much experience.\u00a0",
+        "note": null
+      },
+      {
+        "id": "h9xxyin5h7pxpsmq9wuocdcn",
+        "text": "An easy startup is a headwind; a hard startup is a tailwind.\u00a0 If people care about your success because you seem committed to doing something significant, it\u2019s a background force helping you with hiring, advice, partnerships, fundraising, etc.",
+        "note": null
+      },
+      {
+        "id": "pd7r36fp6nucxroa7yiclohg",
+        "text": "Few recruiting messages are as powerful (when true) as \u201cthe world needs this, it won\u2019t happen any time soon if we don\u2019t do it, and we are much less likely to succeed if you don\u2019t join.\u201d",
+        "note": null
+      },
+      {
+        "id": "ij099fgtdytmqcayajc8en2h",
+        "text": "The most counterintuitive secret about startups is that it\u2019s often easier to succeed with a hard startup than an easy one.\u00a0 A hard startup requires a lot more money, time, coordination, or technological development than most startups.  A good hard startup is one that will be valuable if it works (not all hard problems are worth solving!).",
+        "note": null
+      }
+    ],
+    "content_type": "link"
+  }
+]

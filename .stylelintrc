@@ -1,0 +1,8 @@
+{
+  "plugins": ["stylelint-prettier"],
+  "extends": ["stylelint-config-standard", "stylelint-config-html"],
+  "rules": {
+    "prettier/prettier": true,
+    "no-descending-specificity": null
+  }
+}

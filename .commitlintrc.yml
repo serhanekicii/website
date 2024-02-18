@@ -1,0 +1,38 @@
+extends:
+  - "@commitlint/config-conventional"
+
+rules:
+  # type must be one of these
+  type-enum:
+    - 2
+    - always
+    - - feat # new feature
+      - fix # bug fix
+      - docs # documentation
+      - style # formatting, no code change
+      - refactor # refactoring code
+      - perf # performance improvement
+      - test # adding tests
+      - chore # maintenance
+      - ci # CI/CD changes
+      - revert # revert commit
+
+  # scope is optional
+  scope-empty:
+    - 0
+    - never
+
+  # subject must not be empty
+  subject-empty:
+    - 2
+    - never
+
+  # subject case is not enforced (allow mixed case)
+  subject-case:
+    - 0
+
+  # body is optional
+  body-max-line-length:
+    - 1
+    - always
+    - 200

@@ -1,0 +1,13 @@
+title="Highlights & Notes"
+description="A public collection of my highlights and notes from books, articles, and other sources."
+site_description="$description"
+page_title="$title"
+page_path="highlights.html"
+page_type="article"
+site_keywords="highlights, notes, reading, kindle, books, quotes"
+
+is_markdown="true"
+link_index="true"
+link_rss="true"
+add_header="true"
+add_footer="true"

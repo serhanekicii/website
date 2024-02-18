@@ -1,0 +1,434 @@
+#!/bin/sh
+
+# Note: This does not resolve symlinks
+posix_realpath() {
+    [ -z "$1" ] && return 1 # Check if input is provided
+    (
+        cd "$(dirname "$1")" || exit 1        # Change to the directory of the input
+        printf "%s\n" "$PWD/$(basename "$1")" # Combine the absolute path with the basename
+    )
+}
+
+# Escape special XML characters
+xml_escape() {
+    printf '%s' "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g; s/'"'"'/\&apos;/g'
+}
+
+extract_placeholders() {
+    target_file="$1"
+    placeholders=""
+
+    while IFS= read -r line || [ -n "$line" ]; do
+        # Extract all occurrences of ${...} in the line
+        while :; do
+            case "$line" in
+                *\$\{*\}*)
+                    # Extract the first placeholder
+                    before=${line%%\$\{*}
+                    after=${line#*\$\{}
+                    placeholder=${after%%\}*}
+
+                    # Append to placeholders list
+                    placeholders="$placeholders $placeholder"
+
+                    # Remove the processed placeholder from the line
+                    line=${after#*\}}
+                    ;;
+                *)
+                    break
+                    ;;
+            esac
+        done
+    done < "$target_file"
+
+    # Remove duplicates and sort
+    printf "%s" "$placeholders" | tr ' ' '\n' | sort | uniq
+}
+
+# Function to replace or append <!-- %s --> comments and ${x} placeholdesrs.
+replace() {
+    target_file="$1"
+    content="$2"
+    replacement="$3"
+    append="$4"
+
+    temp_file=$(mktemp)
+
+    # Use a single loop to process lines
+    while IFS= read -r line; do
+        # Check if the line contains the comment
+        case "$line" in
+            *"<!-- $content -->"*)
+                printf "%s\n" "$line" >> "$temp_file"
+                [ "$append" = "true" ] && printf "%s\n" "$replacement" >> "$temp_file" || printf "%s\n" "$replacement" >> "$temp_file"
+                ;;
+            *"\${$content}"*)
+                # Initialize variables for replacement
+                modified_line=""
+                remaining="$line"
+
+                # Loop to replace all occurrences of ${content}
+                while :; do
+                    case "$remaining" in
+                        *"\${$content}"*)
+                            # Extract text before the placeholder
+                            before=${remaining%%"\${$content}"*}
+                            # Extract text after the placeholder
+                            after=${remaining#*"\${$content}"}
+                            # Append the part before and the replacement to modified_line
+                            modified_line="${modified_line}${before}${replacement}"
+                            # Update remaining to the part after the placeholder
+                            remaining="$after"
+                            ;;
+                        *)
+                            # No more placeholders; append the rest of the line
+                            modified_line="${modified_line}${remaining}"
+                            break
+                            ;;
+                    esac
+                done
+
+                # Write the modified line to the temp file
+                printf "%s\n" "$modified_line" >> "$temp_file"
+                ;;
+            *)
+                printf "%s\n" "$line" >> "$temp_file"
+                ;;
+        esac
+    done < "$target_file"
+
+    mv "$temp_file" "$target_file"
+    printf "Replaced or appended to \"<!-- %s -->\" in %s\n" "$content" "$target_file"
+}
+
+get_git_info() {
+    target="$1"
+
+    # Get git logs for the target
+    git_info=$(TZ=UTC git log --format='%cd|%h|%an|%s' --date=format-local:'%a, %d %b %Y %H:%M:%S %z' -- "$target")
+
+    git_creation_info=$(printf "%s" "$git_info" | tail -n 1)
+    git_modification_info=$(printf "%s" "$git_info" | head -n 1)
+
+    git_creation_hash=$(printf "%s" "$git_creation_info" | cut -d'|' -f2)
+    git_creation_date=$(printf "%s" "$git_creation_info" | cut -d'|' -f1)
+
+    git_modification_hash=$(printf "%s" "$git_modification_info" | cut -d'|' -f2)
+    git_modification_date=$(printf "%s" "$git_modification_info" | cut -d'|' -f1)
+
+    # shellcheck disable=SC2034
+    git_creation_author=$(printf "%s" "$git_creation_info" | cut -d'|' -f3)
+    # shellcheck disable=SC2034
+    git_modification_author=$(printf "%s" "$git_modification_info" | cut -d'|' -f3)
+
+    # Construct base URL
+    commit_base_url="https://github.com/$GITHUB_USER/$GITHUB_REPO/commit"
+    # shellcheck disable=SC2034
+    git_creation_commit_link="$commit_base_url/$git_creation_hash"
+    # shellcheck disable=SC2034
+    git_modification_commit_link="$commit_base_url/$git_modification_hash"
+
+    # Generate all commits list with newline after each entry
+    all_commits=$(printf "%s" "$git_info" | while IFS='|' read -r commit_date commit_hash commit_author commit_message; do
+        # Create a human-readable version of the date (e.g., "Sun, 07 Jul 2025")
+        commit_date_human=$(printf "%s" "$commit_date" | cut -d' ' -f1,2,3,4)
+        # Create a truncated version for mobile (e.g., "07 Jul 2025")
+        commit_date_short=$(printf "%s" "$commit_date" | cut -d' ' -f2,3,4)
+
+        # Use the full date for 'datetime' and the human-readable one for display
+        printf "<li><time datetime=\"%s\"><span class=\"full-date\">%s</span><span class=\"short-date\">%s</span></time> &ndash; <strong>%s:</strong> <a target=\"_blank\" href=\"%s\">%s</a></li>\n" \
+            "$commit_date" "$commit_date_human" "$commit_date_short" "$commit_author" "$commit_base_url/$commit_hash" "$commit_message"
+    done)
+}
+
+# Function to check if a command exists
+check_command() {
+    cmd="$1"
+    command -v "$cmd" > /dev/null 2>&1 || {
+        printf "Error: %s is not installed or not in PATH. Please install it before running the script.\n" "$cmd"
+        exit 1
+    }
+}
+
+# Function to check if a variable is empty
+check_var() {
+    var_name="$1"
+    # Use eval to fetch the value of the variable dynamically
+    eval var_value=\$"$var_name"
+
+    # Exit with an error message if the variable is empty
+    [ -n "$var_value" ] || {
+        printf "ERROR: The '%s' variable is not set or is empty. Exiting.\n" "$var_name"
+        exit 1
+    }
+}
+
+process_file() {
+    file="$1"
+
+    # Unset variables at the start of processing each file
+    unset title date_created date_updated description is_markdown add_header add_footer link_index link_rss
+
+    file=$(posix_realpath "$file")
+    file_name=$(basename "$file")
+    file_ext="${file_name##*.}"
+    file_wext=${file_name%.*}
+
+    # Check if file is a directory
+    [ -d "$file" ] || {
+        printf "ERROR: %s doesn't exist.\n" "$file"
+        return 1
+    }
+
+    touch "$BUILD_DIR/$file_name"
+
+    printf "Started generating => %s/%s\n" "$BUILD_DIR" "$file_name"
+
+    # Source file-specific conf
+    [ -f "$file/conf" ] && . "$file/conf"
+
+    # Get git info using the correct source path
+    get_git_info "$file"
+
+    # Fallback to git for creation date if not set in conf
+    if [ -z "$date_created" ]; then
+        date_created="$git_creation_date"
+        printf "INFO: Using git creation date for %s\n" "$file_name"
+    fi
+
+    # Create a human-readable version of the final post date
+    date_created_human=$(printf "%s" "$date_created" | cut -d' ' -f1,2,3,4)
+    date_created_short=$(printf "%s" "$date_created" | cut -d' ' -f2,3,4)
+
+    # Set active nav item based on current file (dynamic)
+    # shellcheck disable=SC2034
+    nav_index_active=""
+    # shellcheck disable=SC2034
+    nav_contact_active=""
+    file_base="${file_name%.html}"
+    eval "nav_${file_base}_active=' class=\"active\"'" 2> /dev/null || true
+
+    # Write default header if applicable
+    if [ "$file_ext" = "html" ] && [ "${add_header:-"false"}" != "false" ]; then
+        if [ -f "$default_header" ]; then
+            cat "$(posix_realpath "$default_header")" >> "$BUILD_DIR/$file_name"
+        else
+            printf "ERROR: The default header file '%s' does not exist. Exiting.\n" "$default_header"
+            return 1
+        fi
+    fi
+
+    # Write extension files if they exist
+    for ext_file in "$file"/*."$file_ext"; do
+        [ -e "$ext_file" ] \
+            && printf "Appending content from %s to %s\n" "$ext_file" "$BUILD_DIR/$file_name" \
+            && cat "$ext_file" >> "$BUILD_DIR/$file_name" 2> /dev/null \
+            || printf "WARNING: No such file %s found\n" "$ext_file"
+    done
+
+    # Convert markdown to html if applicable, with placeholder replacement
+    if [ "$file_ext" = "html" ] && [ -n "$is_markdown" ] && [ "$is_markdown" = "true" ]; then
+        for md in "$file"/*.md; do
+            if [ -e "$md" ]; then
+                # Create a temporary file to hold the markdown content for substitution
+                temp_md=$(mktemp)
+                cat "$md" > "$temp_md"
+
+                # Extract placeholders from the markdown file itself
+                md_placeholders=$(extract_placeholders "$temp_md")
+
+                # Replace placeholders within the temporary markdown file before conversion
+                for key in $md_placeholders; do
+                    eval val=\$"$key"
+                    if [ -n "$val" ]; then
+                        replace "$temp_md" "$key" "${val:-}" "false"
+                    else
+                        printf "WARNING: Placeholder \"%s\" in markdown file %s has no value.\n" "$key" "$md"
+                    fi
+                done
+
+                # Convert the substituted markdown to HTML
+                converted_md=$(cmark-gfm --unsafe --extension table "$temp_md")
+                rm "$temp_md" # Clean up the temporary file
+
+                # Inject the final, converted HTML into the main file
+                replace "$BUILD_DIR/$file_name" "MARKDOWN" "$converted_md" "true"
+                printf "Markdown file %s successfully converted to HTML and aggregated into %s\n" "$md" "$BUILD_DIR/$file_name"
+            fi
+        done
+    fi
+
+    # Aggregate CSS files
+    [ "$file_ext" = "html" ] && ls "$file"/*.css > /dev/null 2>&1 \
+        && cat "$file"/*.css > "$BUILD_DIR/$file_wext.css" \
+        && stylesheet=$(printf '%s\n%s' \
+            "<link rel=\"preload\" href=\"$file_wext.css\" as=\"style\">" \
+            "<link rel=\"stylesheet\" href=\"$file_wext.css\" media=\"all\">") \
+        && replace "$BUILD_DIR/$file_name" "HEAD" "$stylesheet" "true" \
+        && printf "Aggregated CSS files into %s\n" "$BUILD_DIR/$file_wext.css"
+
+    # Link file to index.html if link_index is true and file_name is not index.html
+    [ "$file_name" != "index.html" ] && [ "$link_index" = "true" ] \
+        && post_content="<li><time datetime=\"${date_created:-}\"><span class=\"full-date\">${date_created_human:-}</span><span class=\"short-date\">${date_created_short:-}</span></time> &ndash; <a href=\"$file_name\">${title:-"Untitled"}</a></li>" \
+        && replace "$BUILD_DIR/index.html" "POSTS" "$post_content" "true" \
+        && printf "File linked in index.html => %s\n" "$site_url/$file_name"
+
+    # Link file to rss.xml if link_rss is set to true
+    [ "$file_name" != "rss.xml" ] && [ "$link_rss" = "true" ] \
+        && rss_content="<item><title>$(xml_escape "$title")</title><guid>$site_url/$file_name</guid><pubDate>$date_created</pubDate><link>$site_url/$file_name</link><description>$(xml_escape "${description:-""}")</description></item>" \
+        && replace "$BUILD_DIR/rss.xml" "POSTS" "$rss_content" "true" \
+        && printf "File linked in RSS feed => %s\n" "$site_url/$file_name"
+
+    # Write default footer if applicable
+    [ "$file_ext" = "html" ] && [ "${add_footer:-"false"}" = "true" ] \
+        && cat "$(posix_realpath "$default_footer")" >> "$BUILD_DIR/$file_name"
+
+    # Extract and process placeholders
+    placeholders=$(extract_placeholders "$BUILD_DIR/$file_name")
+
+    for key in $placeholders; do
+        eval val=\$"$key"
+
+        # Handle git-derived values or warn about undefined placeholders
+        case "$key" in
+            date_created | date_updated)
+                [ -n "$val" ] || {
+                    [ "$key" = "date_created" ] && val="$git_creation_date" && log_msg="creation date" \
+                        || val="$git_modification_date" && log_msg="modification date"
+                    printf "Replacing placeholder/key \"%s\" with git-derived %s => \"%s\" in %s (value not available in config to override)\n" "$key" "$log_msg" "$val" "$file_name"
+                }
+                ;;
+            *)
+                [ -n "$val" ] || printf "WARNING: Placeholder \"%s\" has no value.\n" "$key"
+                ;;
+        esac
+
+        # Replace the placeholder in the file
+        replace "$BUILD_DIR/$file_name" "$key" "${val:-}" "false"
+        printf "Replacing placeholder/key \"%s\" with value => \"%s\" in %s\n" "$key" "$val" "$file_name"
+    done
+
+    [ "$file_name" != "index.html" ] && {
+        [ "$link_index" = "true" ] \
+            && post_content="<li><time datetime=\"$date_created\">$date_created</time> &ndash; <a href=\"$file_name\">$title</a></li>" \
+            && printf "%s\n" "$post_content" >> "$BUILD_DIR/posts_updates.txt" \
+            && printf "File linked in index.html => %s\n" "$site_url/$file_name"
+
+        [ "$file_name" != "rss.xml" ] && [ "$link_rss" = "true" ] \
+            && rss_content="<item><title>$(xml_escape "$title")</title><guid>$site_url/$file_name</guid><pubDate>$date_created</pubDate><link>$site_url/$file_name</link><description>$(xml_escape "${description:-""}")</description></item>" \
+            && printf "%s\n" "$rss_content" >> "$BUILD_DIR/rss_updates.txt" \
+            && printf "File linked in RSS feed => %s\n" "$site_url/$file_name"
+    }
+
+    # Inject Article JSON-LD for article pages
+    if [ "$page_type" = "article" ]; then
+        article_jsonld=$(
+            cat << JSONLD
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "$title",
+  "description": "$description",
+  "url": "$site_url/$page_path",
+  "datePublished": "$date_created",
+  "dateModified": "$git_modification_date",
+  "author": {
+    "@type": "Person",
+    "name": "$site_author",
+    "url": "$site_url"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "$site_author",
+    "url": "$site_url"
+  }
+}
+</script>
+JSONLD
+        )
+        replace "$BUILD_DIR/$file_name" "ARTICLE_JSONLD" "$article_jsonld" "true"
+        printf "Injected Article JSON-LD for %s\n" "$file_name"
+    fi
+
+    printf "Finished generating %s\n\n" "$BUILD_DIR/$file_name"
+}
+
+# List of required commands
+required_commands="cmark-gfm git"
+
+# Dynamically check each command
+for cmd in $required_commands; do
+    check_command "$cmd"
+done
+
+CONF_FILE=./conf
+if [ -f "$CONF_FILE" ]; then
+    # shellcheck source=./conf
+    . "$CONF_FILE"
+else
+    printf "ERROR: Configuration file (%s) not found. Exiting.\n" "$CONF_FILE"
+    exit 1
+fi
+
+# List of required variables
+required_vars="BUILD_DIR CSS_FILE ASSETS_DIR GITHUB_REPO GITHUB_USER to_build default_header default_footer"
+
+# Dynamically check each variable
+for var in $required_vars; do
+    check_var "$var"
+done
+
+[ -d "$BUILD_DIR" ] && rm -rf "$BUILD_DIR" # Delete build dir if it exists.
+mkdir -p "$BUILD_DIR"
+
+printf "%s" "$to_build" | while IFS= read -r file; do
+    # Skip empty lines
+    [ -n "$file" ] && process_file "$file"
+done
+
+# This will get info for the whole repository.
+get_git_info "."
+
+# Replace comment in index.html with commit info
+replace "$BUILD_DIR/index.html" "GIT" "$(printf "%s" "$all_commits" | head -n "$COMMITS_NUM")" "true"
+
+# Copy CSS and assets
+cp "$CSS_FILE" "$BUILD_DIR"
+case "$ASSETS_DIR" in
+    http://* | https://*)
+        printf "Assets are hosted remotely at %s. Skipping local copy.\n" "$ASSETS_DIR"
+        ;;
+    *)
+        printf "Copying local assets from %s to %s\n" "$ASSETS_DIR" "$BUILD_DIR"
+        cp -R "$ASSETS_DIR" "$BUILD_DIR"
+        ;;
+esac
+
+# Generate sitemap.xml
+printf "Generating sitemap.xml...\n"
+sitemap_file="$BUILD_DIR/sitemap.xml"
+cat > "$sitemap_file" << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+EOF
+
+# Add URLs for each HTML file in to_build
+printf "%s" "$to_build" | while IFS= read -r file; do
+    [ -z "$file" ] && continue
+    file_name=$(basename "$file")
+    case "$file_name" in
+        *.html)
+            # Get last modification date from git in ISO 8601 format
+            lastmod=$(TZ=UTC git log -1 --format='%cd' --date=format-local:'%Y-%m-%d' -- "$file" 2> /dev/null || date '+%Y-%m-%d')
+            if [ "$file_name" = "index.html" ]; then
+                printf "  <url>\n    <loc>%s/</loc>\n    <lastmod>%s</lastmod>\n  </url>\n" "$site_url" "$lastmod" >> "$sitemap_file"
+            else
+                printf "  <url>\n    <loc>%s/%s</loc>\n    <lastmod>%s</lastmod>\n  </url>\n" "$site_url" "$file_name" "$lastmod" >> "$sitemap_file"
+            fi
+            ;;
+    esac
+done
+
+printf "</urlset>\n" >> "$sitemap_file"
+printf "Generated sitemap.xml with %s URLs\n" "$(grep -c '<url>' "$sitemap_file")"
