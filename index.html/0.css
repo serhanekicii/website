@@ -1,0 +1,52 @@
+#init {
+  margin-bottom: 50px;
+}
+
+#init img {
+  max-height: 200px;
+  max-width: 200px;
+  padding: 20px;
+  float: left;
+}
+
+#posts,
+#commits {
+  background: var(--code-bg-color);
+  border-radius: 10px;
+}
+
+#posts h2,
+#commits h2 {
+  padding-top: 10px;
+  padding-left: 10px;
+  text-align: center;
+}
+
+#posts ul,
+#commits ul {
+  padding-bottom: 10px;
+  padding-left: 10px;
+  overflow-x: auto;
+}
+
+#posts li,
+#commits li {
+  list-style-position: inside;
+  white-space: nowrap;
+}
+
+#posts li time,
+#commits li time {
+  font-family:
+    "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+}
+
+/* Center the intro image on very small screens */
+@media (width <= 300px) {
+  #init img {
+    float: none; /* Remove the float property */
+    display: block; /* Allow margin:auto to work */
+    margin: 0 auto 20px; /* Center the image and add space below it */
+  }
+}

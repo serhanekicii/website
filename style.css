@@ -1,0 +1,317 @@
+:root {
+  --behind: linear-gradient(
+      90deg,
+      rgb(0 0 0 / 100%) 0%,
+      rgb(36 35 35 / 100%) 54%,
+      rgb(63 70 82 / 100%) 100%
+    )
+    fixed;
+  --main-bg-color: #222;
+  --main-fg-color: white;
+  --main-border-color: white;
+  --code-bg-color: #282828;
+  --code-selection-bg-color: #7b7b7b;
+  --code-fg-color: white;
+  --link: cornsilk;
+  --header: beige;
+}
+
+body {
+  background: var(--behind);
+  color: var(--main-fg-color);
+  margin: 0;
+  padding: 1ex;
+}
+
+/* HTML5 semantic tags: some (older) browsers display this inline by default */
+article,
+figcaption,
+figure,
+header,
+main,
+nav {
+  display: block;
+  font-family:
+    Garamond, Georgia, serif, "Noto Color Emoji", "Apple Color Emoji",
+    "Segoe UI Emoji";
+  line-height: 1.5;
+}
+
+header {
+  display: block;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: var(--link);
+}
+
+footer {
+  margin-top: 2em;
+  text-align: center;
+}
+
+footer a {
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+a:hover {
+  color: var(--main-fg-color);
+  text-decoration: underline;
+}
+
+footer ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+table,
+img {
+  border: 0;
+}
+
+footer ul li img {
+  width: 1em;
+  vertical-align: middle;
+}
+
+::selection {
+  color: var(--main-bg-color);
+  background: var(--main-fg-color);
+}
+
+table {
+  background: var(--code-bg-color);
+}
+
+table tr td {
+  padding: 2px 10px 2px 0;
+}
+
+table:not(#menu),
+th,
+td:not(#links, #links-contact) {
+  border: 1px solid var(--code-fg-color) !important;
+}
+
+code {
+  background-color: var(--code-bg-color);
+  color: var(--main-fg-color);
+  font-family: monospace;
+  padding: 5px;
+  word-wrap: normal;
+  font-weight: bold;
+}
+
+pre {
+  background: var(--code-bg-color);
+  padding: 1em;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+pre code {
+  display: block;
+  color: var(--code-fg-color);
+  font-weight: normal;
+  background: none;
+  padding: 0;
+  white-space: inherit;
+}
+
+pre code::selection {
+  color: var(--main-bg-color);
+  background: var(--main-fg-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--header);
+}
+
+article h2 {
+  text-align: center;
+}
+
+header h1 {
+  font-size: 45px;
+}
+
+.hidden {
+  display: none;
+}
+
+.hidden-element {
+  display: none;
+}
+
+.hover-div:hover .hidden-element {
+  display: block;
+}
+
+.hover-div:hover .hover-element {
+  display: none;
+}
+
+.hoverspan:hover .hidden-element {
+  display: inline;
+}
+
+.hoverspan:hover .hover-element {
+  display: none;
+}
+
+#article-timestamp {
+  display: grid;
+  grid-template-columns: auto auto; /* Two columns sized to their content */
+  gap: 1em 3em; /* Space between rows and columns */
+  justify-content: center; /* Center the grid container itself */
+  text-align: center;
+  margin: 2em auto; /* Add vertical spacing and center horizontally */
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+#article-metadata {
+  border-radius: 10px;
+  background: var(--code-bg-color);
+  padding: 1em;
+}
+
+#article-timestamp p {
+  margin: 0;
+}
+
+#article-commit-history {
+  border-radius: 10px;
+}
+
+#article-commit-history ul {
+  padding-left: 25px;
+  overflow-x: auto;
+}
+
+#article-commit-history ul li {
+  white-space: nowrap;
+}
+
+/* Apply monospace font to dates in all relevant lists */
+#posts li time,
+#commits li time,
+#article-commit-history li time {
+  font-family:
+    "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+}
+
+#menu td {
+  padding: 1ex 0;
+}
+
+#main {
+  border-top: 3px solid var(--main-border-color);
+  border-bottom: 3px solid var(--main-border-color);
+  background: var(--main-bg-color);
+  padding: 1em;
+}
+
+#menuwrap,
+#menu,
+#main {
+  margin: 0 auto;
+  max-width: 130ex;
+}
+
+#menuwrap,
+#menu {
+  background: var(--behind);
+}
+
+#menu a {
+  font-weight: bold;
+  vertical-align: middle;
+  padding: 5px;
+  background: var(--behind);
+}
+
+#menu a:hover {
+  background: var(--main-fg-color);
+  color: var(--main-bg-color);
+}
+
+.short-date {
+  display: none;
+}
+
+/* -- Responsive rules for mobile devices -- */
+@media (width <= 768px) {
+  body {
+    /* Reduce the base font size for the whole page */
+    font-size: 14px;
+  }
+
+  header h1 {
+    /* Significantly reduce the main title's size */
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  #init {
+    /* Reduce the space below the entire introduction section */
+    margin-bottom: 10px;
+  }
+
+  #init img {
+    /* Reduce image size to give text more room to wrap */
+    max-width: 120px;
+    max-height: 120px;
+
+    /* Reduce padding to tighten the layout */
+    padding: 10px;
+
+    /* The 'float: left' property from the desktop style is not overridden, 
+       so the image remains next to the text. */
+  }
+
+  /* Hide author names in the commit list on mobile */
+
+  /* #article-commit-history li strong */
+  #commits li strong {
+    display: none;
+  }
+
+  pre,
+  pre code {
+    font-size: 10px;
+  }
+
+  /* Reduce font size for dates on mobile */
+  #posts li time,
+  #commits li time {
+    font-size: 13px;
+  }
+
+  .full-date {
+    display: none;
+  }
+
+  .short-date {
+    display: inline;
+  }
+
+  #article-timestamp {
+    grid-template-columns: 1fr; /* Switch to a single column */
+    text-align: left; /* Align text to the left for readability */
+    gap: 0.8em; /* Reduce the gap for a more compact vertical layout */
+  }
+}
