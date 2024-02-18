@@ -1,0 +1,34 @@
+name: Sync Assets to R2
+
+on:
+  # This workflow runs on pushes to the main branch.
+  # You can change this to a different branch if you prefer.
+  push:
+    branches:
+      - main
+    paths:
+      - "assets/**" # Only run when files in the assets directory change
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  sync-to-r2:
+    runs-on: ubuntu-latest
+    name: Sync assets directory to Cloudflare R2
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Sync files to R2 with AWS CLI
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          # The AWS region is required, but for R2 it can be a placeholder.
+          # 'auto' is a good default.
+          AWS_DEFAULT_REGION: "auto"
+        run: |
+          aws s3 sync assets/ s3://${{ secrets.R2_BUCKET_NAME }} \
+          --endpoint-url ${{ secrets.R2_ENDPOINT_URL }} \
+          --delete

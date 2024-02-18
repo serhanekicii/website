@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.11.0-1
+    hooks:
+      - id: shfmt
+        args: ["-p", "-i", "4", "-ci", "-bn", "-sr", "-d", "-w"]
+        files: gen
+
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.10.0
+    hooks:
+      - id: shellcheck
+        args: ["-x"]
+        files: gen
+
+  - repo: https://github.com/thibaudcolas/pre-commit-stylelint
+    rev: v16.21.1
+    hooks:
+      - id: stylelint
+        args: ["**/*.html", "**/*.css", "--fix"]
+        files: \.(html|css)$
+        additional_dependencies:
+          - stylelint@16.21.1
+          - stylelint-config-standard@38.0.0
+          - stylelint-config-html@1.1.0
+          - stylelint-prettier@5.0.3
+          - postcss-html@1.8.0
+
+  - repo: local
+    hooks:
+      - id: prettier
+        name: Prettier
+        entry: prettier --write --ignore-unknown
+        # Tell pre-commit this is a Node.js tool
+        language: node
+        # Tell pre-commit which files to run on
+        types_or: [yaml, json, markdown]
+        additional_dependencies: ["prettier@3.6.2"]

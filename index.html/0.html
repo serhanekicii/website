@@ -1,0 +1,85 @@
+<div id="init">
+  <style>
+    #init {
+      margin-bottom: 50px;
+    }
+
+    #init img {
+      width: clamp(110px, 25vw, 150px);
+      aspect-ratio: 3 / 4;
+      height: auto;
+      float: left;
+      margin: 0 14px 8px 0;
+      padding: 5px;
+      box-sizing: content-box;
+    }
+
+    @media (width <= 340px) {
+      #init { margin-bottom: 10px; }
+
+      #init img {
+        float: none;
+        display: block;
+        margin: 0 auto 16px;
+        padding: 12px;
+      }
+    }
+
+    @media (width <= 768px) {
+      #init img { padding: 0; }
+    }
+  </style>
+  <!-- 3:4 -->
+  <img src="https://assets.serhanekici.com/me.webp"
+    alt="Serhan Ekici"
+    width="150"
+    height="200"
+    decoding="async"
+    fetchpriority="high">
+  <div class="hover-div">
+    <h2 class="hover-element">Introduction</h2>
+    <h2 class="hidden-element">$ whoami</h2>
+  </div>
+  <p>
+    Hi, I'm Serhan Ekici and this is my website. I'm mostly into
+    <span style="font-style: italic;">boring stuff</span>,
+    I'm glad you stopped by!
+  </p>
+  <p>
+    This site is a <strong>Git-driven static site</strong>,
+    automatically built with a custom static site generator that integrates Git metadata.
+    Each page reflects its full commit history including timestamps, author contributions, and change logs.
+    Contributions are always welcome. If you'd like to suggest edits or report issues, please visit the
+    <a href="https://github.com/serhanekicii/website" target="_blank" rel="noopener noreferrer">GitHub repository</a>
+    to open an issue or submit a pull request. Your feedback is greatly appreciated!
+  </p>
+</div>
+<div id="posts">
+  <h2>📚 Posts &amp Articles</h2>
+  <ul>
+    <!-- POSTS -->
+  </ul>
+</div>
+<div id="commits">
+  <h2>
+    <a target="_blank" href="https://git-scm.com/" rel="noopener noreferrer"
+      ><span
+        ><img
+          src="${ASSETS_DIR}/git.webp"
+          alt="Git logo"
+          style="width: 1.2em; vertical-align: middle" /></span
+    ></a>
+    Latest Commits
+  </h2>
+  <ul>
+    <!-- GIT -->
+    <li>
+      <a
+        target="_blank"
+        href="https://github.com/serhanekicii/website/commits/master"
+        rel="noopener noreferrer"
+        >[ ... ]</a
+      >
+    </li>
+  </ul>
+</div>

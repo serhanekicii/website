@@ -1,0 +1,15 @@
+table:not(#menu),
+th,
+td:not(#links, #links-contact) {
+  border: 1px solid black;
+}
+
+table:not(#menu) {
+  table-layout: fixed;
+  width: 100%;
+}
+
+table:not(#menu) td:not(#links, #links-contact) {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}

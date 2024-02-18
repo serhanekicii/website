@@ -1,0 +1,11 @@
+title="Notes to Myself - Dealing with People"
+description="Few thoughts and quotes to myself on dealing with people."
+keywords="people, relation, notes, guide, serhan, ekici"
+
+is_markdown="true" # Convert .md file and append to this file after <!-- MARKDOWN -->
+
+link_index="true" # Link this file to index after '<!-- POSTS -->'
+link_rss="true" # Link this file to RSS feed after '<!-- POSTS -->'
+
+add_header="true" # automatically add footer 'true, false or path'
+add_footer="true" # add footer 'true, false or path'

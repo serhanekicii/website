@@ -1,0 +1,32 @@
+#posts,
+#commits {
+  background: var(--code-bg-color);
+  border-radius: 10px;
+}
+
+#posts h2,
+#commits h2 {
+  padding-top: 10px;
+  padding-left: 10px;
+  text-align: center;
+}
+
+#posts ul,
+#commits ul {
+  padding-bottom: 10px;
+  padding-left: 10px;
+  overflow-x: auto;
+}
+
+#posts li,
+#commits li {
+  list-style-position: inside;
+  white-space: nowrap;
+}
+
+#posts li time,
+#commits li time {
+  font-family:
+    "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+}
