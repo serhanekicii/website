@@ -1,0 +1,6 @@
+title="$site_title"
+keywords="$site_keywords"
+description="$site_description"
+
+add_header="true"
+add_footer="true"
