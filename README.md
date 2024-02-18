@@ -18,5 +18,5 @@ chmod +x gen
 Add following to your Vim or Neovim config:
 
 ```
-autocmd BufWritePost */webpage/*/*.md,*/webpage/*/*.html,*/webpage/*/conf ! sed -i "s/^date_updated=.*/date_updated=$(date +"\"\%a, \%d \%b \%Y \%H:\%M:\%S \%z\"")/" %:p:h/conf
+autocmd BufWritePost */website/*/*.md,*/website/*/*.html,*/website/*/conf ! sed -i "s/^date_updated=.*/date_updated=$(date +"\"\%a, \%d \%b \%Y \%H:\%M:\%S \%z\"")/" %:p:h/conf
 ```

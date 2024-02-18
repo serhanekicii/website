@@ -7,10 +7,10 @@ default_footer="footer.html"
 
 site_lang="en"
 site_keywords="serhan, ekici, website, webpage, software, articles, blog, donate"
-site_title="Serhan Ekici's Webpage"
+site_title="Serhan Ekici's Website"
 site_url="https://serhanekici.com"
 site_mail="me@serhanekici.com"
-site_description="Serhan Ekici's personal webpage."
+site_description="Serhan Ekici's personal website."
 site_author="Serhan Ekici"
 
 # Files to build in order

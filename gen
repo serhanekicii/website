@@ -91,7 +91,7 @@ done
 
 # Add last n commits to index
 COMMITS_NUM=7
-REPO="https://api.github.com/repos/serhanekicii/webpage"
+REPO="https://api.github.com/repos/serhanekicii/website"
 USERNAME="serhanekicii" # Github username
 TOKEN=""                # Github Personal Access Token
 
