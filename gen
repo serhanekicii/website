@@ -1,0 +1,123 @@
+#!/bin/sh
+
+# shellcheck source=./conf
+CONF_FILE=./conf
+. $CONF_FILE
+
+safe_replace() {
+	DELIM=$(printf "\001") # Rare sed delimiter to use
+	sed -i "s$DELIM\${$1}$DELIM$2$DELIM g" "$BUILD_DIR"/"$file_name"
+}
+
+[ -d "$BUILD_DIR" ] && rm -rf "$BUILD_DIR" # Delete build dir if exist
+mkdir "$BUILD_DIR"
+
+echo "$to_build" | sed '/^$/d' | while read -r file; do
+
+	file=$(realpath "$file")
+	file_name=$(basename "$file")
+	file_ext="${file_name##*.}"
+
+	! [ -d "$file" ] &&
+		echo "ERROR: $file doesn't exist." &&
+		exit
+
+	touch "$BUILD_DIR"/"$file_name" # Create file to write later
+
+	echo "Started generating... => $BUILD_DIR/$file_name"
+
+	( # Subshell to maintain variables sourced from confs across files
+		[ -f "$file"/conf ] && . "$file"/conf
+
+		# Write default header.
+		# shellcheck disable=SC2154 # Variable assigned from config file.
+		# TODO: Support custom path
+		[ "$file_ext" = "html" ] && [ -z "$add_header" ] || [ "$add_header" = "true" ] &&
+			cat "$(realpath "$default_header")" >>"$BUILD_DIR"/"$file_name"
+
+		# Write ext files if exist
+		for ext_file in "$file"/*."$file_ext"; do
+			cat "$ext_file" >>"$BUILD_DIR"/"$file_name"
+		done
+
+		# Convert and write md file if is_markdown true
+		[ "$file_ext" = "html" ] && [ -n "$is_markdown" ] && [ "$is_markdown" = "true" ] &&
+			for md in "$(realpath "$file")"/*.md; do
+				converted_md=$(pandoc "$md") # Convert md to html using pandoc
+				# Write converted markdown to build file
+				echo "$converted_md" |
+					sed -i "/<!-- MARKDOWN -->/r /dev/stdin" "$BUILD_DIR"/"$file_name"
+				printf "Markdown file %s successfully converted to HTML using Pandoc and aggregated into %s\n" "$BUILD_DIR/$file_name" "$md"
+			done
+
+		# TODO: Support custom path
+		# shellcheck disable=SC2154
+		[ "$file_ext" = "html" ] && [ -z "$add_footer" ] || [ "$add_footer" = "true" ] &&
+			cat "$(realpath "$default_footer")" >>"$BUILD_DIR"/"$file_name"
+
+		# Get placeholders.
+		# TODO: Make sure this regex works with double quotes.
+		placeholders=$(awk -v RS='\\${[^}]*}' 'RT{gsub(/^\${|}$/,"",RT);print RT}' "$BUILD_DIR"/"$file_name" | sort -u)
+		for key in $placeholders; do
+			eval val=\$"$key" # Get variable value from variable named stored as string
+
+			# Value is not found for the key.
+			# shellcheck disable=SC2154
+			[ "$val" = "" ] &&
+				echo "WARNING: Value for key \"$key\" in $BUILD_DIR/$file_name was not found in $file/conf or in global configuration ($CONF_FILE)."
+
+			printf "Replacing placeholder/key \"%s\" with value => \"%s\"\n" "$key" "$val"
+			safe_replace "$key" "$val" "$BUILD_DIR"/"$file_name"
+		done
+
+		# TODO: Link in order by creation time or update time
+		# Link files in index.html
+		# shellcheck disable=SC2154
+		[ "$file_name" != "index.html" ] && [ "$link_index" = "true" ] &&
+			sed -i "/^    <!-- POSTS -->/a <li><time datetime=$date_created>$(echo "$date_created" | rev | cut -c15- | rev)</time> &ndash; <a href=$file_name>$title</a></li>" "$BUILD_DIR"/index.html &&
+			printf "File linked in index.html => %s\n" "$site_url/$file_name"
+
+		# Link files to RSS
+		# shellcheck disable=SC2154
+		[ "$file_name" != "rss.xml" ] && [ "$link_rss" = "true" ] &&
+			sed -i "/^<!-- POSTS -->/a <item>\n<title>$title</title>\n<guid>$site_url/$file_name</guid>\n<pubDate>$date_created</pubDate>\n<link>$site_url/$file_name</link>\n<description>$site_description</description>\n</item>" "$BUILD_DIR"/rss.xml &&
+			printf "File linked in rss.xml => %s\n" "$site_url/$file_name"
+	) # Subshell to maintain variables parsed from confs across files
+
+	# shellcheck disable=SC2031
+	printf "Finished generation => %s\n\n" $BUILD_DIR/"$file_name"
+
+done
+
+# Add last n commits to index
+COMMITS_NUM=7
+REPO="https://api.github.com/repos/serhanekicii/webpage"
+USERNAME="serhanekicii" # Github username
+TOKEN=""                # Github Personal Access Token
+
+commit_history=$(curl --silent -u "$USERNAME":"$TOKEN" \
+	-H "Accept: application/vnd.github.v3+json" \
+	$REPO/commits |
+	jq '.[] | "|\(.commit.author.date)|\(.commit.message)|\(.html_url)|" | gsub("[\n\t]"; "")' |
+	head -$COMMITS_NUM)
+
+# Reverse order without tac or tail -r nonsense
+commit_history=$(echo "$commit_history" | awk '{a[NR]=$0} END {for(i=NR; i>=1; i--) printf("%s\n",a[i]);}')
+
+echo "$commit_history" | while read -r line; do
+	date=$(echo "$line" | awk -F "|" '{print $2}')
+	# Convert ISO 8601 date to RSS format
+	date=$(date --date="$date" +"%a, %d %b %Y")
+
+	commit_msg=$(echo "$line" | awk -F "|" '{print $3}')
+	commit_url=$(echo "$line" | awk -F "|" '{print $4}')
+
+	# shellcheck disable=SC2031
+	sed -i "/^    <!-- GIT -->/a <li><time datetime=$date>$date</time> &ndash; <a target=_blank href=$commit_url>$commit_msg</a></li>" "$BUILD_DIR"/index.html
+done
+
+# shellcheck disable=SC2031
+cp "$CSS_FILE" "$BUILD_DIR"
+
+# shellcheck disable=SC2031
+cp -r "$PICS_DIR" "$BUILD_DIR"

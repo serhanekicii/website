@@ -1,0 +1,28 @@
+<article>
+<h2>${title}</h2>
+
+<!-- MARKDOWN -->
+
+<div id="article-timestamp">
+	<p><strong>This page;</strong></p>
+	<p><strong>Created on</strong> <time datetime="${date_created}">
+			${date_created}</time></p>
+	<p><strong>Last modification on </strong><time datetime="${date_updated}">
+		${date_updated}</time></p>
+</div>
+</article>
+
+<style>
+table:not(#menu), th, td:not(#links, #links-contact) {
+  border: 1px solid black;
+}
+table:not(#menu) {
+    table-layout: fixed;
+    width: 100%;
+}
+
+table:not(#menu) td:not(#links, #links-contact) {
+    word-wrap: break-word;         /* All browsers since IE 5.5+ */
+    overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
+}
+</style>

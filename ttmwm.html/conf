@@ -1,0 +1,14 @@
+title="The True Minimalistic Window Manager Does Not Exist"
+description="Article about an imaginary window manager that truly follows the UNIX philosophy; the true minimalistic window manager."
+keywords="window, manager, minimalist, approach, wm, minimalistic, suckless, true, serhan, ekici, website"
+
+date_created="Sat, 28 May 2022 23:35:49 +0300" # Creation
+date_updated="Mon, 06 Jun 2022 17:16:06 +0300" # Latest update
+
+is_markdown="true" # Convert .md file and append to this file after <!-- MARKDOWN -->
+
+link_index="true" # Link this file to index after '<!-- POSTS -->'
+link_rss="true" # Link this file to RSS feed after '<!-- POSTS -->'
+
+add_header="true" # automatically add footer 'true, false or path'
+add_footer="true" # add footer 'true, false or path'

@@ -1,0 +1,174 @@
+:root {
+  --behind: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(36,35,35,1) 54%, rgba(63,70,82,1) 100%) fixed;
+  --main-bg-color: #222;
+  --main-fg-color: white;
+  --main-border-color: white;
+  --code-bg-color: #282828;
+  --code-fg-color: white;
+  --link: cornsilk;
+  --header: beige;
+}
+
+body {
+	background: var(--behind);
+	color: var(--main-fg-color);
+	margin: 0;
+	padding: 1ex; } /* HTML5 semantic tags: some (older) browsers display this inline by default */ article, figcaption, figure, header, main, nav {
+	display: block;
+}
+
+header {
+	display: block;
+	text-align: center;
+}
+
+footer {
+	margin-top: 2em;
+	text-align: center;
+}
+
+footer a {
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+footer ul {
+	list-style-type: none;
+	margin:0;
+	padding:0;
+}
+
+footer ul li img {
+	width: 1em;
+	vertical-align: middle;
+}
+
+a {
+	color: var(--main-fg-color);
+	text-decoration: none;
+	color: var(--link);
+}
+
+a:hover {
+	color: var(--main-fg-color);
+	text-decoration: underline;
+}
+
+::selection {
+	color: var(--main-bg-color);
+	background: var(--main-fg-color);
+}
+
+table {
+	background: var(--code-bg-color);
+}
+
+table, img {
+	border: 0;
+}
+
+table tr td {
+	padding: 2px 10px 2px 0px;
+}
+
+table:not(#menu), th, td:not(#links, #links-contact) {
+    border: 1px solid var(--code-fg-color)!important;
+}
+
+code {
+	background-color: var(--code-bg-color);
+	color: var(--main-fg-color);
+	font-family: monospace;
+	overflow-x: auto;
+	padding: 5px;
+	word-wrap: normal;
+	display: contents;
+	font-weight: bold;
+}
+
+pre code {
+	display: block;
+	color: var(--code-fg-color);
+	font-weight: normal;
+}
+
+pre code::selection {
+	color: var(--main-fg-color);
+	background: var(--main-bg-color);
+}
+
+article h2{
+	text-align: center;
+}
+
+header h1 {
+	font-size: 45px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: var(--header);
+}
+
+.hidden {
+	display: none;
+}
+
+.hidden_elmnt {
+	display: none;
+}
+
+.hoverdiv:hover .hidden_elmnt {
+	display: block;
+}
+
+.hoverdiv:hover .hover_elmnt {
+	display:none;
+}
+
+.hoverspan:hover .hidden_elmnt {
+	display: inline;
+}
+
+.hoverspan:hover .hover_elmnt {
+	display:none;
+}
+
+#article-timestamp {
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border: 1px solid var(--main-fg-color);
+}
+
+#menu td {
+	padding: 1ex 0;
+}
+#main {
+	border-top: 3px solid var(--main-border-color);
+	border-bottom: 3px solid var(--main-border-color);
+	background: var(--main-bg-color);
+	padding: 1em;
+}
+
+#menuwrap,
+#menu,
+#main {
+	margin: 0px auto;
+	max-width: 120ex;
+}
+
+#menuwrap,
+#menu {
+	background: var(--behind);
+}
+
+#menu a {
+	font-weight: bold;
+	vertical-align: middle;
+	padding: 5px;
+	background: var(--behind);
+}
+#menu a:hover {
+	background: var(--main-fg-color);
+	color: var(--main-bg-color);
+}

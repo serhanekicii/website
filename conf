@@ -1,0 +1,27 @@
+BUILD_DIR="build"
+PICS_DIR="pix"
+CSS_FILE="style.css"
+
+default_header="header.html"
+default_footer="footer.html"
+
+site_lang="en"
+site_keywords="serhan, ekici, website, webpage, software, articles, blog, donate"
+site_title="Serhan Ekici's Webpage"
+site_url="https://serhanekici.com"
+site_mail="me@serhanekici.com"
+site_description="Serhan Ekici's personal webpage."
+site_author="Serhan Ekici"
+
+# Files to build in order
+to_build="
+./index.html
+./rss.xml
+./contact.html
+./mailserver-openbsd.html
+./ttmwm.html
+./people.html
+"
+
+# Custom variables
+onion_url="http://serhanewcgro6rg3xrh42at5hm553xfwivdf5layisyooaa2rxald4yd.onion"
