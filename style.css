@@ -15,6 +15,7 @@ body {
 	margin: 0;
 	padding: 1ex; } /* HTML5 semantic tags: some (older) browsers display this inline by default */ article, figcaption, figure, header, main, nav {
 	display: block;
+	font-family: "Garamond", Georgia, serif, 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji'
 }
 
 header {
