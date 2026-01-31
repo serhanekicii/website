@@ -5,7 +5,7 @@ on:
   # You can change this to a different branch if you prefer.
   push:
     branches:
-      - main
+      - master
     paths:
       - "assets/**" # Only run when files in the assets directory change
 

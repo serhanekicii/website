@@ -35,4 +35,5 @@ to_build="
 ./rss.xml
 ./contact.html
 ./highlights.html
+./openclaw-helm.html
 "
