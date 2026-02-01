@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap");
+
 /* GitHub Dark (default) */
 :root {
   --behind: #010409;
@@ -32,6 +34,10 @@
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -40,16 +46,24 @@ body {
   background: var(--behind);
   color: var(--main-fg-color);
   margin: 0;
-  padding: 1ex;
+  padding: 1rem;
+  font-family: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 @media (width > 500px) {
   body {
-    padding: 1ex 3em;
+    padding: 1.5rem 3rem;
   }
 }
 
-/* HTML5 semantic tags: some (older) browsers display this inline by default */
+/* Semantic elements */
 article,
 figcaption,
 figure,
@@ -57,36 +71,30 @@ header,
 main,
 nav {
   display: block;
-  font-family:
-    Garamond, Georgia, serif, "Noto Color Emoji", "Apple Color Emoji",
-    "Segoe UI Emoji";
-  line-height: 1.5;
 }
 
 header {
-  display: block;
   text-align: center;
+  padding: 2rem 0 1rem;
 }
 
+/* Links */
 a {
   text-decoration: underline;
   color: var(--main-fg-color);
   transition: opacity 0.15s ease;
 }
 
-/* Make links distinguishable without color */
 a:any-link {
-  text-underline-offset: 0.18em; /* a hair more breathing room */
-  text-decoration-thickness: 0.11em; /* slightly sturdier on dark bg */
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 0.11em;
 }
 
-/* Keyboard focus must be visible */
 a:focus-visible {
   outline: 2px dashed currentcolor;
   outline-offset: 3px;
 }
 
-/* Keep good contrast for visited links */
 a:visited {
   color: var(--main-fg-color);
   opacity: 0.7;
@@ -96,57 +104,65 @@ a:hover {
   opacity: 0.6;
 }
 
-table,
-img {
-  border: 0;
+#posts a,
+#commits a {
+  text-decoration: none;
 }
 
-footer ul li img {
-  width: 1em;
-  vertical-align: middle;
-}
-
+/* Selection */
 ::selection {
   color: var(--main-bg-color);
   background: var(--main-fg-color);
 }
 
+/* Tables */
+table {
+  border-collapse: collapse;
+  background: var(--code-bg-color);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
 table,
 th,
 td {
-  border: 1px solid var(--code-fg-color);
-}
-
-table {
-  background: var(--code-bg-color);
+  border: 1px solid var(--main-border-color);
 }
 
 table tr td {
-  padding: 2px 10px 2px 0;
+  padding: 0.75rem 1rem;
 }
 
+/* Horizontal Rule */
 hr {
   border: none;
-  border-top: 1px solid var(--main-border-color);
-  margin: 2em 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--main-border-color),
+    transparent
+  );
+  margin: 3rem 0;
 }
 
+/* Code */
 code {
   background-color: var(--code-bg-color);
   color: var(--main-fg-color);
-  font-family: monospace;
+  font-family: "IBM Plex Mono", "SF Mono", Consolas, monospace;
   padding: 0.2em 0.4em;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 0.9em;
 }
 
 pre {
   background: var(--code-bg-color);
   border: 1px solid var(--main-border-color);
-  border-radius: 6px;
-  padding: 1em;
-  white-space: pre;
+  border-radius: 16px;
+  padding: 1.25rem;
   overflow-x: auto;
+  position: relative;
 }
 
 pre code {
@@ -154,17 +170,12 @@ pre code {
   color: var(--code-fg-color);
   background: none;
   border: none;
-  border-radius: 0;
   padding: 0;
-  font-size: inherit;
-  white-space: inherit;
+  font-size: 0.875rem;
+  line-height: 1.7;
 }
 
-pre code::selection {
-  color: var(--main-bg-color);
-  background: var(--main-fg-color);
-}
-
+/* Headings */
 h1,
 h2,
 h3,
@@ -172,17 +183,45 @@ h4,
 h5,
 h6 {
   color: var(--header);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
-/* Article typography */
+/* Main Title */
+header h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  margin: 0;
+  padding: 0.5rem 0;
+  background: linear-gradient(90deg, var(--header), #f78166, var(--header));
+  background-size: 200% auto;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shine 3s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0%,
+  100% {
+    background-position: 0% center;
+  }
+
+  50% {
+    background-position: 100% center;
+  }
+}
+
+/* Article Typography */
 article {
-  font-size: 1.1rem;
-  line-height: 1.7;
+  font-size: 1.125rem;
+  line-height: 1.8;
 }
 
 article h2 {
   text-align: center;
-  margin-bottom: 1.5em;
+  margin: 2.5rem 0 1.5rem;
+  font-size: 1.75rem;
 }
 
 article h3 {
@@ -190,8 +229,14 @@ article h3 {
   margin-bottom: 0.75em;
 }
 
+article h4 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.125rem;
+}
+
 article p {
-  margin-bottom: 1.25em;
+  margin-bottom: 1.5rem;
 }
 
 article blockquote {
@@ -204,27 +249,16 @@ article blockquote {
 
 article ul,
 article ol {
-  margin-bottom: 1.25em;
-  padding-left: 1.5em;
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
 }
 
 article li {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.75rem;
 }
 
-header h1 {
-  font-size: 45px;
-  transition: opacity 0.15s ease;
-}
-
-header h1:hover {
-  opacity: 0.8;
-}
-
-.hidden {
-  display: none;
-}
-
+/* Utility Classes */
+.hidden,
 .hidden-element {
   display: none;
 }
@@ -245,19 +279,20 @@ header h1:hover {
   display: none;
 }
 
+/* Article Metadata */
 #article-metadata {
-  margin-top: 3em;
-  padding-top: 2em;
+  margin-top: 4rem;
+  padding-top: 2rem;
   border-top: 1px solid var(--main-border-color);
 }
 
 #article-timestamp {
   display: grid;
   grid-template-columns: auto auto;
-  gap: 1em 3em;
+  gap: 1rem 3rem;
   justify-content: center;
   text-align: center;
-  font-size: 0.85em;
+  font-size: 0.875rem;
   color: var(--muted);
 }
 
@@ -272,33 +307,28 @@ header h1:hover {
 
 #article-timestamp a {
   color: var(--muted);
-  font-size: 0.9em;
-}
-
-#article-timestamp a:hover {
-  opacity: 0.6;
 }
 
 #article-commit-history {
-  margin-top: 1.5em;
+  margin-top: 2rem;
   text-align: left;
 }
 
 #article-commit-history p {
-  margin: 0 0 0.75em;
-  font-size: 0.9em;
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
   color: var(--muted);
 }
 
 #article-commit-history ul {
   margin: 0;
-  padding-left: 1.25em;
-  font-size: 0.85em;
+  padding-left: 1.25rem;
+  font-size: 0.85rem;
 }
 
 #article-commit-history ul li {
   white-space: nowrap;
-  padding: 0.25em 0;
+  padding: 0.15em 0;
   color: var(--muted);
 }
 
@@ -306,23 +336,23 @@ header h1:hover {
   color: var(--main-fg-color);
 }
 
-/* Apply monospace font to dates in all relevant lists */
+/* Monospace dates */
 #posts li time,
 #commits li time,
 #article-commit-history li time {
-  font-family:
-    "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
-    monospace;
+  font-family: "IBM Plex Mono", "SF Mono", Consolas, monospace;
+  font-size: 0.875em;
 }
 
+/* Navigation */
 #menu {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0 auto;
+  width: 100%;
   max-width: 130ex;
   padding: 0.75em 1em;
-  border-bottom: 1px solid var(--main-border-color);
 }
 
 #nav-left,
@@ -335,7 +365,7 @@ header h1:hover {
   font-weight: 600;
   padding: 0.4em 0.8em;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 8px;
   transition: background-color 0.15s ease;
 }
 
@@ -347,7 +377,7 @@ header h1:hover {
   background: var(--hover-bg);
   color: var(--main-fg-color);
   border-bottom: 2px solid #f78166;
-  border-radius: 6px 6px 0 0;
+  border-radius: 8px 8px 0 0;
 }
 
 #menu a:focus-visible {
@@ -355,10 +385,12 @@ header h1:hover {
   outline-offset: 2px;
 }
 
+/* Main Content */
 #main {
-  border-bottom: 1px solid var(--main-border-color);
+  border: 1px solid var(--main-border-color);
+  border-radius: 16px;
   background: var(--main-bg-color);
-  padding: 1.5em 1em;
+  padding: 1.5em;
   margin: 0 auto;
   max-width: 130ex;
 }
@@ -377,69 +409,76 @@ footer {
 
 #footer-content {
   color: var(--muted);
-  font-size: 0.9em;
+  font-size: 0.875rem;
 }
 
 #footer-content p {
-  margin: 0.5em 0;
+  margin: 0.5rem 0;
 }
 
 #footer-content a {
   color: var(--muted);
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 #footer-content a:hover {
-  opacity: 0.6;
+  color: var(--accent);
 }
 
 #footer-content .separator {
-  margin: 0 0.5em;
-  opacity: 0.5;
+  margin: 0 0.75rem;
+  opacity: 0.4;
 }
 
 #footer-content .copyright {
-  font-size: 0.85em;
+  font-size: 0.8rem;
   color: var(--main-fg-color);
 }
 
-/* -- Responsive rules for mobile devices -- */
+footer ul li img {
+  width: 1.25em;
+  vertical-align: middle;
+  filter: grayscale(100%);
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+footer ul li img:hover {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+
+/* Responsive */
 @media (width <= 768px) {
   body {
-    /* Reduce the base font size for the whole page */
-    font-size: 13px;
+    font-size: 15px;
   }
 
   header h1 {
-    /* Significantly reduce the main title's size */
-    font-size: 32px;
+    font-size: 1.75rem;
   }
 
   h2 {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 
   #init {
-    /* Reduce the space below the entire introduction section */
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
   }
 
-  /* Hide author names in the commit list on mobile */
-
-  /* #article-commit-history li strong */
   #commits li strong {
     display: none;
   }
 
   pre,
   pre code {
-    font-size: 10px;
+    font-size: 0.75rem;
   }
 
-  /* Reduce font size for dates on mobile */
   #posts li time,
   #commits li time {
-    font-size: 13px;
+    font-size: 0.8rem;
   }
 
   .full-date {
@@ -453,7 +492,7 @@ footer {
   #article-timestamp {
     grid-template-columns: 1fr;
     text-align: left;
-    gap: 1.5em;
+    gap: 1.5rem;
   }
 
   #article-commit-history ul {
@@ -462,15 +501,19 @@ footer {
 
   article {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.7;
   }
 
   article h3 {
-    margin-top: 1.5em;
+    margin-top: 2rem;
+  }
+
+  #main {
+    padding: 1em;
   }
 }
 
-/* Print styles */
+/* Print */
 @media print {
   body {
     background: white;
@@ -486,6 +529,7 @@ footer {
 
   #main {
     border: none;
+    box-shadow: none;
     max-width: 100%;
   }
 
@@ -504,5 +548,9 @@ footer {
   code {
     background: #f5f5f5;
     border: 1px solid #ddd;
+  }
+
+  header h1 {
+    color: black;
   }
 }
