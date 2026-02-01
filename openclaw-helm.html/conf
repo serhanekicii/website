@@ -1,10 +1,10 @@
-title="Deploying OpenClaw on Kubernetes with Helm and ArgoCD"
-description="A practical guide to deploying OpenClaw, the viral AI assistant, on Kubernetes using Helm charts and ArgoCD for GitOps-driven infrastructure management."
+title="Deploy OpenClaw Securely on Kubernetes with ArgoCD and Helm"
+description="OpenClaw is powerful but risky—shell access, untrusted input, and third-party skills create real attack surfaces. This guide covers deploying OpenClaw on Kubernetes with Helm and ArgoCD, where container isolation and network policies contain the blast radius."
 site_description="$description"
 page_title="$title"
 page_path="openclaw-helm.html"
 page_type="article"
-site_keywords="openclaw, kubernetes, helm, argocd, gitops, homelab, ai assistant, cloudflare tunnel, vault, secrets management"
+site_keywords="openclaw, moltbot, clawdbot, kubernetes, helm, argocd, gitops, security, container isolation, ai agent, homelab, cloudflare tunnel, vault, secrets management"
 
 is_markdown="true"
 link_index="true"
