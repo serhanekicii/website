@@ -355,7 +355,7 @@ JSONLD
 }
 
 # List of required commands
-required_commands="cmark-gfm git"
+required_commands="cmark-gfm chroma git"
 
 # Dynamically check each command
 for cmd in $required_commands; do

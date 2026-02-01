@@ -43,6 +43,7 @@ Placeholders like `${title}` in templates are replaced at build time. The script
 
 - Light/dark theme via CSS `prefers-color-scheme` (GitHub colors)
 - Active nav highlighting injected at build time
+- Syntax highlighting via chroma (build-time)
 
 **SEO**
 
@@ -61,5 +62,6 @@ Built files go to `build/`.
 ## Dependencies
 
 - [cmark-gfm](https://github.com/github/cmark-gfm) for Markdown
+- [chroma](https://github.com/alecthomas/chroma) for syntax highlighting
 - [git](https://git-scm.com/)
 - Standard POSIX utilities
