@@ -6,6 +6,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends curl git jq nodejs npm cmark-gfm && \
     rm -rf /var/lib/apt/lists/*
 
+# Install chroma for syntax highlighting
+RUN curl -sSL https://github.com/alecthomas/chroma/releases/download/v2.23.1/chroma-2.23.1-linux-amd64.tar.gz | tar xz -C /usr/local/bin chroma
+
 # Set the working directory
 WORKDIR /website
 
