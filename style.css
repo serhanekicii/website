@@ -222,6 +222,11 @@ article h2 {
   font-size: 1.75rem;
 }
 
+article img {
+  max-width: 100%;
+  height: auto;
+}
+
 article h3 {
   margin-top: 2em;
   margin-bottom: 0.75em;
@@ -500,6 +505,10 @@ footer ul li img:hover {
   article {
     font-size: 1rem;
     line-height: 1.7;
+  }
+
+  article h2 {
+    font-size: 1.25rem;
   }
 
   article h3 {
