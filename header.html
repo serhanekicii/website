@@ -47,10 +47,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    <!-- Google Fonts - async load -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap"></noscript>
+
     <link rel="preload" href="style.css" as="style">
-    <link rel="preload" href="syntax.css" as="style">
     <link rel="stylesheet" href="style.css" media="all" />
-    <link rel="stylesheet" href="syntax.css" media="all" />
+
+    <!-- Syntax highlighting - async load (non-critical) -->
+    <link rel="preload" href="syntax.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="syntax.css"></noscript>
 
     <link rel="alternate" type="application/rss+xml" title="${site_title} RSS Feed" href="rss.xml" />
 
