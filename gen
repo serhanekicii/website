@@ -247,8 +247,8 @@ process_file() {
                     fi
                 done
 
-                # Convert the substituted markdown to HTML
-                converted_md=$(cmark-gfm --unsafe --extension table "$temp_md")
+                # Convert the substituted markdown to HTML and apply syntax highlighting
+                converted_md=$(cmark-gfm --unsafe --extension table "$temp_md" | ./highlight)
                 rm "$temp_md" # Clean up the temporary file
 
                 # Inject the final, converted HTML into the main file
@@ -395,6 +395,7 @@ replace "$BUILD_DIR/index.html" "GIT" "$(printf "%s" "$all_commits" | head -n "$
 
 # Copy CSS and assets
 cp "$CSS_FILE" "$BUILD_DIR"
+[ -f "syntax.css" ] && cp "syntax.css" "$BUILD_DIR"
 case "$ASSETS_DIR" in
     http://* | https://*)
         printf "Assets are hosted remotely at %s. Skipping local copy.\n" "$ASSETS_DIR"

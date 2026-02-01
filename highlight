@@ -1,0 +1,96 @@
+#!/bin/sh
+# Post-process HTML to add syntax highlighting using chroma
+# Reads from stdin, writes to stdout
+# Replaces <pre><code class="language-xxx">...</code></pre> with chroma output
+
+# HTML entity decoder (common entities)
+html_unescape() {
+    sed -e 's/&amp;/\&/g' \
+        -e 's/&lt;/</g' \
+        -e 's/&gt;/>/g' \
+        -e 's/&quot;/"/g' \
+        -e "s/&#39;/'/g" \
+        -e "s/&apos;/'/g"
+}
+
+# Create temp files
+input=$(mktemp)
+output=$(mktemp)
+code_tmp=$(mktemp)
+trap 'rm -f "$input" "$output" "$code_tmp"' EXIT
+
+cat > "$input"
+
+in_code=0
+lang=""
+code=""
+
+while IFS= read -r line || [ -n "$line" ]; do
+    if [ "$in_code" -eq 0 ]; then
+        # Check if line contains opening tag
+        case "$line" in
+            *'<pre><code class="language-'*)
+                # Extract language
+                rest="${line#*<pre><code class=\"language-}"
+                lang="${rest%%\"*}"
+
+                # Get content after opening tag
+                after_tag="${line#*<pre><code class=\"language-$lang\">}"
+
+                # Check if closing tag is on same line
+                case "$after_tag" in
+                    *'</code></pre>'*)
+                        # Single line code block
+                        code="${after_tag%%</code></pre>*}"
+                        printf '%s' "$code" | html_unescape > "$code_tmp"
+                        if highlighted=$(chroma --lexer="$lang" --html --html-only < "$code_tmp" 2>/dev/null); then
+                            printf '%s\n' "$highlighted" >> "$output"
+                        else
+                            printf '<pre class="chroma"><code>%s</code></pre>\n' "$code" >> "$output"
+                        fi
+                        lang=""
+                        code=""
+                        ;;
+                    *)
+                        # Multi-line code block starts
+                        in_code=1
+                        code="$after_tag"
+                        ;;
+                esac
+                ;;
+            *)
+                # Normal line, pass through
+                printf '%s\n' "$line" >> "$output"
+                ;;
+        esac
+    else
+        # We're inside a code block
+        case "$line" in
+            *'</code></pre>'*)
+                # End of code block
+                before_close="${line%%</code></pre>*}"
+                code="$code
+$before_close"
+
+                # Unescape HTML entities, write code and process with chroma
+                printf '%s' "$code" | html_unescape > "$code_tmp"
+                if highlighted=$(chroma --lexer="$lang" --html --html-only < "$code_tmp" 2>/dev/null); then
+                    printf '%s\n' "$highlighted" >> "$output"
+                else
+                    printf '<pre class="chroma"><code>%s</code></pre>\n' "$code" >> "$output"
+                fi
+
+                in_code=0
+                lang=""
+                code=""
+                ;;
+            *)
+                # Continue collecting code
+                code="$code
+$line"
+                ;;
+        esac
+    fi
+done < "$input"
+
+cat "$output"
