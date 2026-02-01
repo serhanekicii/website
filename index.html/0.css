@@ -33,12 +33,6 @@
 #commits li {
   list-style: none;
   padding: 0.4em 0;
-  border-bottom: 1px solid var(--main-border-color);
-}
-
-#posts li:last-child,
-#commits li:last-child {
-  border-bottom: none;
 }
 
 #posts li time,

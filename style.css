@@ -43,6 +43,12 @@ body {
   padding: 1ex;
 }
 
+@media (width > 500px) {
+  body {
+    padding: 1ex 3em;
+  }
+}
+
 /* HTML5 semantic tags: some (older) browsers display this inline by default */
 article,
 figcaption,
