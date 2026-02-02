@@ -45,8 +45,10 @@
     }
     </script>
 
-    <!-- Preload critical font -->
+    <!-- Preload critical fonts (400=body, 600=nav, 700=headings) -->
     <link rel="preload" href="${ASSETS_DIR}/fonts/ibm-plex-serif-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="${ASSETS_DIR}/fonts/ibm-plex-serif-600-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="${ASSETS_DIR}/fonts/ibm-plex-serif-700-latin.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Inlined CSS (fonts + style + page-specific + syntax if needed) -->
     <style>${INLINE_STYLES}</style>
