@@ -1,5 +1,5 @@
 BUILD_DIR="build"
-ASSETS_DIR="https://assets.serhanekici.com"
+ASSETS_DIR="https://serhanekici.com/assets"
 CSS_FILE="style.css"
 
 GITHUB_REPO="website"
