@@ -37,9 +37,6 @@
 
 #posts li time,
 #commits li time {
-  font-family:
-    "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
-    monospace;
   font-size: 0.9em;
   color: var(--muted);
 }

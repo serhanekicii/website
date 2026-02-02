@@ -45,7 +45,7 @@ body {
   color: var(--main-fg-color);
   margin: 0;
   padding: 1rem;
-  font-family: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  font-family: "IBM Plex Serif", serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -148,7 +148,8 @@ hr {
 code {
   background-color: var(--code-bg-color);
   color: var(--main-fg-color);
-  font-family: "IBM Plex Mono", "SF Mono", Consolas, monospace;
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 400;
   padding: 0.2em 0.4em;
   border-radius: 6px;
   font-size: 0.9em;
@@ -350,7 +351,8 @@ article li {
 #posts li time,
 #commits li time,
 #article-commit-history li time {
-  font-family: "IBM Plex Mono", "SF Mono", Consolas, monospace;
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 400;
   font-size: 0.875em;
 }
 

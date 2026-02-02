@@ -293,17 +293,23 @@ $(cat "$CSS_FILE")"
         [ -n "$page_css" ] && INLINE_STYLES="$INLINE_STYLES
 $page_css"
 
-        # Conditionally add syntax.css only if page has code blocks
+        # Conditionally add syntax.css if page has code blocks
         if grep -q 'class="chroma"' "$BUILD_DIR/$file_name" 2> /dev/null; then
             INLINE_STYLES="$INLINE_STYLES
 $(cat "syntax.css")"
             printf "Including syntax.css for %s (has code blocks)\n" "$file_name"
+        fi
+
+        # Preload mono font if page uses it (code blocks or timestamps)
+        if grep -qE 'class="chroma"|id="(posts|commits|article-commit-history)"' "$BUILD_DIR/$file_name" 2> /dev/null; then
+            MONO_FONT_PRELOAD="<link rel=\"preload\" href=\"$ASSETS_DIR/fonts/ibm-plex-mono-400-latin.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>"
+            printf "Including mono font preload for %s\n" "$file_name"
         else
-            printf "Skipping syntax.css for %s (no code blocks)\n" "$file_name"
+            MONO_FONT_PRELOAD=""
         fi
 
         # Export for placeholder replacement
-        export INLINE_STYLES
+        export INLINE_STYLES MONO_FONT_PRELOAD
         printf "Built inline CSS for %s\n" "$file_name"
     fi
 
