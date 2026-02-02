@@ -47,94 +47,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Critical CSS - inlined for FCP -->
-    <style>
-      :root {
-        --behind: #010409;
-        --main-bg-color: #0d1117;
-        --main-fg-color: #e6edf3;
-        --main-border-color: #30363d;
-        --code-bg-color: #161b22;
-        --header: #e6edf3;
-        --muted: #8b949e;
-        --hover-bg: #161b22;
-      }
-      @media (prefers-color-scheme: light) {
-        :root {
-          --behind: #f6f8fa;
-          --main-bg-color: #fff;
-          --main-fg-color: #1f2328;
-          --main-border-color: #d0d7de;
-          --code-bg-color: #f6f8fa;
-          --header: #1f2328;
-          --muted: #656d76;
-          --hover-bg: #eaeef2;
-        }
-      }
-      * { box-sizing: border-box; }
-      body {
-        background: var(--behind);
-        color: var(--main-fg-color);
-        margin: 0;
-        padding: 1rem;
-        font-family: "IBM Plex Serif", Georgia, "Times New Roman", serif;
-        line-height: 1.6;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      @media (width > 500px) { body { padding: 1.5rem 3rem; } }
-      header { text-align: center; padding: 2rem 0 1rem; }
-      header h1 {
-        font-size: clamp(2rem, 5vw, 3rem);
-        font-weight: 800;
-        margin: 0;
-        padding: 0.5rem 0;
-        background: linear-gradient(90deg, var(--header), #f78166, var(--header));
-        background-size: 200% auto;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-      #menu {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin: 0 auto;
-        width: 100%;
-        max-width: 130ex;
-        padding: 0.75em 1em;
-      }
-      #nav-left, #nav-right { display: flex; gap: 0.5em; }
-      #menu a {
-        font-weight: 600;
-        padding: 0.4em 0.8em;
-        text-decoration: none;
-        border-radius: 8px;
-        color: var(--main-fg-color);
-      }
-      #main {
-        border: 1px solid var(--main-border-color);
-        border-radius: 16px;
-        background: var(--main-bg-color);
-        padding: 1.5em;
-        margin: 0 auto;
-        max-width: 130ex;
-      }
-      @media (width <= 768px) {
-        body { font-size: 15px; }
-        header h1 { font-size: 1.75rem; }
-        #main { padding: 1em; }
-      }
-    </style>
-
     <!-- Google Fonts - async load -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap"></noscript>
 
-    <!-- Main stylesheet - async load (non-critical) -->
-    <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="style.css"></noscript>
+    <link rel="preload" href="style.css" as="style">
+    <link rel="stylesheet" href="style.css" media="all" />
 
     <!-- Syntax highlighting - async load (non-critical) -->
     <link rel="preload" href="syntax.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
