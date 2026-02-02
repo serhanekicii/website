@@ -192,11 +192,18 @@ header h1 {
   font-weight: 800;
   margin: 0;
   padding: 0.5rem 0;
-  background: linear-gradient(90deg, var(--header), #f78166, var(--header));
-  background-size: 200% auto;
+  background: linear-gradient(
+    90deg,
+    #1a1a1a,
+    var(--header),
+    #f78166,
+    var(--header),
+    #1a1a1a
+  );
+  background-size: 300% auto;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shine 3s ease-in-out infinite;
+  animation: shine 8s ease-in-out infinite;
 }
 
 @keyframes shine {
