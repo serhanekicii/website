@@ -3,6 +3,8 @@
   <head>
     <!-- HEAD -->
     <meta charset="UTF-8" />
+    <link rel="preconnect" href="${ASSETS_DIR}" crossorigin>
+    <link rel="dns-prefetch" href="${ASSETS_DIR}">
     <meta http-equiv="Content-Language" content="${site_lang}" />
     <meta name="viewport" content="width=device-width" />
     <meta name="keywords" content="${site_keywords}" />
@@ -42,8 +44,6 @@
       }
     }
     </script>
-
-    <link rel="preconnect" href="${ASSETS_DIR}" crossorigin>
 
     <!-- Self-hosted fonts - async load to avoid render blocking -->
     <link rel="preload" href="${ASSETS_DIR}/fonts/ibm-plex-serif-400-latin.woff2" as="font" type="font/woff2" crossorigin>
