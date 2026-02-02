@@ -172,7 +172,6 @@ process_file() {
     file=$(posix_realpath "$file")
     file_name=$(basename "$file")
     file_ext="${file_name##*.}"
-    file_wext=${file_name%.*}
 
     # Check if file is a directory
     [ -d "$file" ] || {
@@ -258,14 +257,12 @@ process_file() {
         done
     fi
 
-    # Aggregate CSS files
-    [ "$file_ext" = "html" ] && ls "$file"/*.css > /dev/null 2>&1 \
-        && cat "$file"/*.css > "$BUILD_DIR/$file_wext.css" \
-        && stylesheet=$(printf '%s\n%s' \
-            "<link rel=\"preload\" href=\"$file_wext.css\" as=\"style\">" \
-            "<link rel=\"stylesheet\" href=\"$file_wext.css\" media=\"all\">") \
-        && replace "$BUILD_DIR/$file_name" "HEAD" "$stylesheet" "true" \
-        && printf "Aggregated CSS files into %s\n" "$BUILD_DIR/$file_wext.css"
+    # Aggregate page-specific CSS (will be inlined later)
+    page_css=""
+    if [ "$file_ext" = "html" ] && ls "$file"/*.css > /dev/null 2>&1; then
+        page_css=$(cat "$file"/*.css)
+        printf "Found page-specific CSS for %s\n" "$file_name"
+    fi
 
     # Link file to index.html if link_index is true and file_name is not index.html
     [ "$file_name" != "index.html" ] && [ "$link_index" = "true" ] \
@@ -282,6 +279,33 @@ process_file() {
     # Write default footer if applicable
     [ "$file_ext" = "html" ] && [ "${add_footer:-"false"}" = "true" ] \
         && cat "$(posix_realpath "$default_footer")" >> "$BUILD_DIR/$file_name"
+
+    # Build inline CSS for HTML files
+    if [ "$file_ext" = "html" ]; then
+        # Start with fonts.css (replace ASSETS_DIR placeholder)
+        INLINE_STYLES=$(sed "s|\${ASSETS_DIR}|$ASSETS_DIR|g" "fonts.css")
+
+        # Add main style.css
+        INLINE_STYLES="$INLINE_STYLES
+$(cat "$CSS_FILE")"
+
+        # Add page-specific CSS if exists
+        [ -n "$page_css" ] && INLINE_STYLES="$INLINE_STYLES
+$page_css"
+
+        # Conditionally add syntax.css only if page has code blocks
+        if grep -q 'class="chroma"' "$BUILD_DIR/$file_name" 2> /dev/null; then
+            INLINE_STYLES="$INLINE_STYLES
+$(cat "syntax.css")"
+            printf "Including syntax.css for %s (has code blocks)\n" "$file_name"
+        else
+            printf "Skipping syntax.css for %s (no code blocks)\n" "$file_name"
+        fi
+
+        # Export for placeholder replacement
+        export INLINE_STYLES
+        printf "Built inline CSS for %s\n" "$file_name"
+    fi
 
     # Extract and process placeholders
     placeholders=$(extract_placeholders "$BUILD_DIR/$file_name")
@@ -393,10 +417,7 @@ get_git_info "."
 # Replace comment in index.html with commit info
 replace "$BUILD_DIR/index.html" "GIT" "$(printf "%s" "$all_commits" | head -n "$COMMITS_NUM")" "true"
 
-# Copy CSS and assets
-cp "$CSS_FILE" "$BUILD_DIR"
-[ -f "syntax.css" ] && cp "syntax.css" "$BUILD_DIR"
-[ -f "fonts.css" ] && cp "fonts.css" "$BUILD_DIR" && sed -i "s|\${ASSETS_DIR}|$ASSETS_DIR|g" "$BUILD_DIR/fonts.css"
+# Copy assets (CSS is now inlined in HTML files)
 case "$ASSETS_DIR" in
     http://* | https://*)
         printf "Assets are hosted remotely at %s. Skipping local copy.\n" "$ASSETS_DIR"
