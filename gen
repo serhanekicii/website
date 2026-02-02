@@ -396,6 +396,7 @@ replace "$BUILD_DIR/index.html" "GIT" "$(printf "%s" "$all_commits" | head -n "$
 # Copy CSS and assets
 cp "$CSS_FILE" "$BUILD_DIR"
 [ -f "syntax.css" ] && cp "syntax.css" "$BUILD_DIR"
+[ -f "fonts.css" ] && cp "fonts.css" "$BUILD_DIR" && sed -i "s|\${ASSETS_DIR}|$ASSETS_DIR|g" "$BUILD_DIR/fonts.css"
 case "$ASSETS_DIR" in
     http://* | https://*)
         printf "Assets are hosted remotely at %s. Skipping local copy.\n" "$ASSETS_DIR"

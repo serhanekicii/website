@@ -44,12 +44,10 @@
     </script>
 
     <link rel="preconnect" href="${ASSETS_DIR}" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Google Fonts - async load -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap"></noscript>
+    <!-- Self-hosted fonts with preload for critical font -->
+    <link rel="preload" href="${ASSETS_DIR}/fonts/ibm-plex-serif-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="fonts.css" />
 
     <link rel="preload" href="style.css" as="style">
     <link rel="stylesheet" href="style.css" media="all" />
