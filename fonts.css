@@ -3,7 +3,7 @@
   font-family: "IBM Plex Mono";
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
+  font-display: optional;
   src: url("${ASSETS_DIR}/fonts/ibm-plex-mono-400-latin.woff2") format("woff2");
 }
 
@@ -11,7 +11,7 @@
   font-family: "IBM Plex Mono";
   font-style: normal;
   font-weight: 500;
-  font-display: swap;
+  font-display: optional;
   src: url("${ASSETS_DIR}/fonts/ibm-plex-mono-500-latin.woff2") format("woff2");
 }
 
@@ -19,7 +19,7 @@
   font-family: "IBM Plex Mono";
   font-style: normal;
   font-weight: 600;
-  font-display: swap;
+  font-display: optional;
   src: url("${ASSETS_DIR}/fonts/ibm-plex-mono-600-latin.woff2") format("woff2");
 }
 
@@ -28,7 +28,7 @@
   font-family: "IBM Plex Serif";
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
+  font-display: optional;
   src: url("${ASSETS_DIR}/fonts/ibm-plex-serif-400-latin.woff2") format("woff2");
 }
 
@@ -36,7 +36,7 @@
   font-family: "IBM Plex Serif";
   font-style: normal;
   font-weight: 500;
-  font-display: swap;
+  font-display: optional;
   src: url("${ASSETS_DIR}/fonts/ibm-plex-serif-500-latin.woff2") format("woff2");
 }
 
@@ -44,7 +44,7 @@
   font-family: "IBM Plex Serif";
   font-style: normal;
   font-weight: 600;
-  font-display: swap;
+  font-display: optional;
   src: url("${ASSETS_DIR}/fonts/ibm-plex-serif-600-latin.woff2") format("woff2");
 }
 
@@ -52,6 +52,6 @@
   font-family: "IBM Plex Serif";
   font-style: normal;
   font-weight: 700;
-  font-display: swap;
+  font-display: optional;
   src: url("${ASSETS_DIR}/fonts/ibm-plex-serif-700-latin.woff2") format("woff2");
 }
