@@ -195,26 +195,26 @@ header h1 {
   padding: 0.5rem 0;
   background: linear-gradient(
     90deg,
-    #1a1a1a,
-    var(--header),
-    #f78166,
-    var(--header),
-    #1a1a1a
+    var(--header) 0%,
+    var(--header) 30%,
+    #f78166 45%,
+    #f78166 55%,
+    var(--header) 70%,
+    var(--header) 100%
   );
   background-size: 300% auto;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shine 8s ease-in-out infinite;
+  animation: shine 18s linear infinite;
 }
 
 @keyframes shine {
-  0%,
-  100% {
-    background-position: 0% center;
+  0% {
+    background-position: 100% center;
   }
 
-  50% {
-    background-position: 100% center;
+  100% {
+    background-position: 0% center;
   }
 }
 
