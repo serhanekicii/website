@@ -56,6 +56,10 @@
   #posts li,
   #commits li {
     white-space: nowrap;
+  }
+
+  #posts ul,
+  #commits ul {
     overflow-x: auto;
   }
 }
