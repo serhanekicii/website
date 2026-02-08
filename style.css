@@ -193,28 +193,15 @@ header h1 {
   font-weight: 800;
   margin: 0;
   padding: 0.5rem 0;
-  background: linear-gradient(
-    90deg,
-    var(--header) 0%,
-    var(--header) 30%,
-    #f78166 45%,
-    #f78166 55%,
-    var(--header) 70%,
-    var(--header) 100%
-  );
-  background-size: 300% auto;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shine 18s linear infinite;
+  color: var(--header);
+  border-bottom: 2px solid transparent;
+  display: inline;
+  animation: underline-reveal 3s ease-in-out 1s forwards;
 }
 
-@keyframes shine {
-  0% {
-    background-position: 100% center;
-  }
-
-  100% {
-    background-position: 0% center;
+@keyframes underline-reveal {
+  to {
+    border-bottom-color: #f78166;
   }
 }
 
@@ -567,6 +554,6 @@ footer ul li img:hover {
   }
 
   header h1 {
-    color: black;
+    color: var(--header);
   }
 }
