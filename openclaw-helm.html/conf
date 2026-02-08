@@ -4,6 +4,8 @@ site_description="$description"
 page_title="$title"
 page_path="openclaw-helm.html"
 page_type="article"
+og_type="article"
+og_image="$ASSETS_DIR/openclaw-helm/openclaw-logo-text.webp"
 site_keywords="openclaw, moltbot, clawdbot, kubernetes, helm, argocd, gitops, security, container isolation, ai agent, homelab, cloudflare tunnel, vault, secrets management"
 
 is_markdown="true"

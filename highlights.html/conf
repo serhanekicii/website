@@ -4,6 +4,7 @@ site_description="$description"
 page_title="$title"
 page_path="highlights.html"
 page_type="article"
+og_type="article"
 site_keywords="highlights, notes, reading, kindle, books, quotes"
 
 is_markdown="true"

@@ -24,6 +24,8 @@ site_author_skills="Site Reliability Engineering, Platform Engineering, Kubernet
 page_title="$site_title"
 page_path=""
 page_type="website"
+og_type="website"
+og_image="$ASSETS_DIR/me.webp"
 
 # Only link if explicitly set to.
 link_index=false
