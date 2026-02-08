@@ -1,4 +1,4 @@
-title="Deploy OpenClaw Securely on Kubernetes with ArgoCD and Helm"
+title="Running OpenClaw on Kubernetes"
 description="OpenClaw is powerful but risky—shell access, untrusted input, and third-party skills create real attack surfaces. This guide covers deploying OpenClaw on Kubernetes with Helm and ArgoCD, where container isolation and network policies contain the blast radius."
 site_description="$description"
 page_title="$title"
