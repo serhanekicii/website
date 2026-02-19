@@ -11,7 +11,7 @@
   --link-visited: #8b949e;
   --header: #e6edf3;
   --muted: #8b949e;
-  --hover-bg: #161b22;
+  --hover-bg: #1c2333;
 }
 
 /* GitHub Light */
@@ -28,7 +28,7 @@
     --link-visited: #6639ba;
     --header: #1f2328;
     --muted: #656d76;
-    --hover-bg: #eaeef2;
+    --hover-bg: #dde3ea;
   }
 }
 
@@ -46,6 +46,7 @@ body {
   margin: 0;
   padding: 1rem;
   font-family: "IBM Plex Serif", serif;
+  font-size: 14px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -103,7 +104,7 @@ a:hover {
 }
 
 #posts a,
-#commits a {
+.commit-list a {
   text-decoration: none;
 }
 
@@ -189,32 +190,21 @@ h6 {
 
 /* Main Title */
 header h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 800;
   margin: 0;
   padding: 0.5rem 0;
   color: var(--header);
-  border-bottom: 2px solid transparent;
-  display: inline;
-  animation: underline-reveal 3s ease-in-out 1s forwards;
-}
-
-@keyframes underline-reveal {
-  to {
-    border-bottom-color: #f78166;
-  }
 }
 
 /* Article Typography */
 article {
-  font-size: 1.125rem;
   line-height: 1.8;
 }
 
 article h2 {
-  text-align: center;
   margin: 2.5rem 0 1.5rem;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 }
 
 article img {
@@ -230,7 +220,7 @@ article h3 {
 article h4 {
   margin-top: 2rem;
   margin-bottom: 0.75rem;
-  font-size: 1.125rem;
+  font-size: 1rem;
 }
 
 article p {
@@ -277,14 +267,39 @@ article li {
   display: none;
 }
 
-/* Article Metadata */
-#article-metadata {
-  margin-top: 4rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--main-border-color);
+/* Article Description */
+#article-description {
+  padding: 0.5rem 0 2rem;
+}
+
+#article-description h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+}
+
+#article-description p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+#article-description p + p {
+  margin-top: 0.4rem;
+}
+
+.article-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em 1.5em;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.5rem !important;
 }
 
 #article-timestamp {
+  margin-top: 1.5rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--main-border-color);
   display: grid;
   grid-template-columns: auto auto;
   gap: 1rem 3rem;
@@ -307,40 +322,133 @@ article li {
   color: var(--muted);
 }
 
-#article-commit-history {
-  margin-top: 2rem;
-  text-align: left;
+/* Post & Commit List Containers */
+#posts,
+.commit-list {
+  background: var(--code-bg-color);
+  border: 1px solid var(--main-border-color);
+  border-radius: 10px;
+  margin-top: 1em;
 }
 
-#article-commit-history p {
-  margin: 0 0 0.5rem;
-  font-size: 0.875rem;
+#posts h2,
+.commit-list h2 {
+  padding: 1.75em 1.5em 0.75em;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--muted);
 }
 
-#article-commit-history ul {
+#posts ul,
+.commit-list ul {
+  list-style: none;
   margin: 0;
-  padding-left: 1.25rem;
+  padding: 0 0.5em 1.25em;
   font-size: 0.85rem;
 }
 
-#article-commit-history ul li {
-  white-space: nowrap;
-  padding: 0.15em 0;
+/* Post & Commit List Items */
+#posts li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 0.5em 0.75em;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+#posts li a {
+  flex: 1;
+  min-width: 0;
+}
+
+.post-title {
+  display: block;
+  font-weight: 600;
+}
+
+.post-desc {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 0.2em;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.commit-list li {
+  padding: 1em 1.25em;
+  margin-bottom: 0.35em;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+#posts li:hover,
+.commit-list li:hover {
+  background: var(--hover-bg);
+  border-color: var(--main-border-color);
+}
+
+/* Commit items: title on top, metadata below */
+.commit-list li > a {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25em;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.commit-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em 1.25em;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
-#article-commit-history ul li a {
+.meta-label {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.7rem;
+}
+
+.meta-value {
   color: var(--main-fg-color);
 }
 
+.commit-meta code {
+  font-size: 0.75rem;
+  padding: 0.1em 0.3em;
+}
+
+.commit-meta a.meta-value {
+  color: var(--main-fg-color);
+  text-decoration: none;
+}
+
+.commit-meta a.meta-value:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
 /* Monospace dates */
-#posts li time,
-#commits li time,
-#article-commit-history li time {
+#posts li time {
+  flex-shrink: 0;
+  color: var(--muted);
+  margin-top: 0.15em;
   font-family: "IBM Plex Mono", monospace;
   font-weight: 400;
-  font-size: 0.875em;
+  font-size: 0.8em;
 }
 
 /* Navigation */
@@ -351,7 +459,7 @@ article li {
   margin: 0 auto;
   width: 100%;
   max-width: 130ex;
-  padding: 0.75em 1em;
+  padding: 0.75em 1.5em;
 }
 
 #nav-left,
@@ -375,7 +483,7 @@ article li {
 #menu a.active {
   background: var(--hover-bg);
   color: var(--main-fg-color);
-  border-bottom: 2px solid #f78166;
+  border-bottom: 2px solid var(--main-fg-color);
   border-radius: 8px 8px 0 0;
 }
 
@@ -451,23 +559,19 @@ footer ul li img:hover {
 /* Responsive */
 @media (width <= 768px) {
   body {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   header h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
   h2 {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
 
   #init {
-    margin-bottom: 1rem;
-  }
-
-  #commits li strong {
-    display: none;
+    margin-bottom: 0.25rem;
   }
 
   pre,
@@ -475,9 +579,22 @@ footer ul li img:hover {
     font-size: 0.75rem;
   }
 
-  #posts li time,
-  #commits li time {
-    font-size: 0.8rem;
+  #posts li time {
+    font-size: 0.7rem;
+  }
+
+  #posts li {
+    gap: 0.5em;
+  }
+
+  .commit-list li {
+    border-bottom: 1px solid var(--main-border-color);
+    border-radius: 0;
+    margin-bottom: 0;
+  }
+
+  .commit-list li:last-child {
+    border-bottom: none;
   }
 
   .full-date {
@@ -492,19 +609,15 @@ footer ul li img:hover {
     grid-template-columns: 1fr;
     text-align: left;
     gap: 1.5rem;
-  }
-
-  #article-commit-history ul {
-    overflow-x: auto;
+    padding: 1.5rem 1em;
   }
 
   article {
-    font-size: 1rem;
     line-height: 1.7;
   }
 
   article h2 {
-    font-size: 1.25rem;
+    font-size: 1.15rem;
   }
 
   article h3 {

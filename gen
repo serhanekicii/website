@@ -130,15 +130,15 @@ get_git_info() {
 
     # Generate all commits list with newline after each entry
     all_commits=$(printf "%s" "$git_info" | while IFS='|' read -r commit_date commit_hash commit_author commit_message; do
-        # Create a human-readable version of the date (e.g., "Sun, 07 Jul 2025")
-        commit_date_human=$(printf "%s" "$commit_date" | cut -d' ' -f1,2,3,4)
-        # Create a truncated version for mobile (e.g., "07 Jul 2025")
+        # Create a human-readable version of the date (e.g., "07 Jul 2025")
         commit_date_short=$(printf "%s" "$commit_date" | cut -d' ' -f2,3,4)
 
-        # Use the full date for 'datetime' and the human-readable one for display
-        printf "<li><time datetime=\"%s\"><span class=\"full-date\">%s</span><span class=\"short-date\">%s</span></time> &ndash; <strong>%s:</strong> <a target=\"_blank\" href=\"%s\">%s</a></li>\n" \
-            "$commit_date" "$commit_date_human" "$commit_date_short" "$commit_author" "$commit_base_url/$commit_hash" "$commit_message"
+        printf "<li><a target=\"_blank\" href=\"%s\">%s</a><span class=\"commit-meta\"><span><span class=\"meta-label\">HASH:</span> <a class=\"meta-value\" target=\"_blank\" href=\"%s\"><code>%s</code></a></span><span><span class=\"meta-label\">AUTHOR:</span> <span class=\"meta-value\">%s</span></span><span><span class=\"meta-label\">DATE:</span> <span class=\"meta-value\">%s</span></span></span></li>\n" \
+            "$commit_base_url/$commit_hash" "$commit_message" "$commit_base_url/$commit_hash" "$commit_hash" "$commit_author" "$commit_date_short"
     done)
+
+    # shellcheck disable=SC2034
+    article_commits=$(printf "%s" "$all_commits" | head -n 5)
 }
 
 # Function to check if a command exists
@@ -196,8 +196,10 @@ process_file() {
     fi
 
     # Create a human-readable version of the final post date
-    date_created_human=$(printf "%s" "$date_created" | cut -d' ' -f1,2,3,4)
+    date_created_human=$(printf "%s" "$date_created" | cut -d' ' -f2,3,4)
     date_created_short=$(printf "%s" "$date_created" | cut -d' ' -f2,3,4)
+    # shellcheck disable=SC2034
+    date_updated_short=$(printf "%s" "$git_modification_date" | cut -d' ' -f2,3,4)
 
     # Set active nav item based on current file (dynamic)
     # shellcheck disable=SC2034
@@ -266,7 +268,7 @@ process_file() {
 
     # Link file to index.html if link_index is true and file_name is not index.html
     [ "$file_name" != "index.html" ] && [ "$link_index" = "true" ] \
-        && post_content="<li><time datetime=\"${date_created:-}\"><span class=\"full-date\">${date_created_human:-}</span><span class=\"short-date\">${date_created_short:-}</span></time> &ndash; <a href=\"$file_name\">${title:-"Untitled"}</a></li>" \
+        && post_content="<li><a href=\"$file_name\"><span class=\"post-title\">${title:-"Untitled"}</span>${description:+<span class=\"post-desc\">$description</span>}</a><time datetime=\"${date_created:-}\"><span class=\"full-date\">${date_created_human:-}</span><span class=\"short-date\">${date_created_short:-}</span></time></li>" \
         && replace "$BUILD_DIR/index.html" "POSTS" "$post_content" "true" \
         && printf "File linked in index.html => %s\n" "$site_url/$file_name"
 
@@ -340,7 +342,7 @@ $(cat "syntax.css")"
 
     [ "$file_name" != "index.html" ] && {
         [ "$link_index" = "true" ] \
-            && post_content="<li><time datetime=\"$date_created\">$date_created</time> &ndash; <a href=\"$file_name\">$title</a></li>" \
+            && post_content="<li><time datetime=\"$date_created\">$date_created</time><a href=\"$file_name\">$title</a></li>" \
             && printf "%s\n" "$post_content" >> "$BUILD_DIR/posts_updates.txt" \
             && printf "File linked in index.html => %s\n" "$site_url/$file_name"
 

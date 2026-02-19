@@ -1,10 +1,25 @@
 <!-- ARTICLE_JSONLD -->
-<article>
+<div id="article-description">
   <h2>${title}</h2>
-
+  <p>${description}</p>
+  <p class="article-dates">
+    <span><span class="meta-label">PUBLISHED</span> <a class="meta-value" href="${git_creation_commit_link}" target="_blank" rel="noopener"><time datetime="${date_created}">${date_created_short}</time></a></span>
+    <span><span class="meta-label">LAST UPDATED</span> <a class="meta-value" href="${git_modification_commit_link}" target="_blank" rel="noopener"><time datetime="${date_updated}">${date_updated_short}</time></a></span>
+  </p>
+</div>
+<article>
   <!-- MARKDOWN -->
 
-  <div id="article-metadata">
+</article>
+<hr>
+<div id="article-commit-history" class="commit-list">
+  <h2>Latest Updates</h2>
+  <ul>
+    ${article_commits}
+    <li>
+      <a target="_blank" href="https://github.com/${GITHUB_USER}/${GITHUB_REPO}/commits/master/${page_path}" rel="noopener noreferrer">[ ... ]</a>
+    </li>
+  </ul>
   <div id="article-timestamp">
     <div class="creation-column">
       <p>
@@ -13,7 +28,7 @@
       </p>
       <p>
         <strong>Created on:</strong>
-        <time datetime="${date_created}">${date_created}</time>
+        <time datetime="${date_created}">${date_created_short}</time>
       </p>
       <p>
         <a target="_blank" href="${git_creation_commit_link}">
@@ -28,7 +43,7 @@
       </p>
       <p>
         <strong>Last modification on:</strong>
-        <time datetime="${date_updated}">${date_updated}</time>
+        <time datetime="${date_updated}">${date_updated_short}</time>
       </p>
       <p>
         <a target="_blank" href="${git_modification_commit_link}">
@@ -37,11 +52,4 @@
       </p>
     </div>
   </div>
-  <div id="article-commit-history">
-    <p><strong>Commit history for this page:</strong></p>
-    <ul>
-      ${all_commits}
-    </ul>
-  </div>
-  </div>
-</article>
+</div>

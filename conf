@@ -5,7 +5,7 @@ CSS_FILE="style.css"
 GITHUB_REPO="website"
 GITHUB_USER="serhanekicii"
 # Add last n commits to index
-COMMITS_NUM=10
+COMMITS_NUM=5
 
 default_header="header.html"
 default_footer="footer.html"

@@ -1,6 +1,5 @@
 /* Introduction */
 #init {
-  font-size: 1.1rem;
   line-height: 1.7;
 }
 
@@ -8,58 +7,9 @@
   margin-bottom: 1em;
 }
 
-/* Posts and Commits sections */
-#posts,
-#commits {
-  background: var(--code-bg-color);
-  border-radius: 10px;
-  margin-top: 1em;
-}
-
-#posts h2,
-#commits h2 {
-  padding: 0.75em 1em 0.5em;
-  margin: 0;
-  font-size: 1.25rem;
-}
-
-#posts ul,
-#commits ul {
-  padding: 0 1em 1em;
-  margin: 0;
-}
-
-#posts li,
-#commits li {
-  list-style: none;
-  padding: 0.25em 0;
-}
-
-#posts li time,
-#commits li time {
-  font-size: 0.9em;
-  color: var(--muted);
-}
-
-#posts li a,
-#commits li a {
-  margin-left: 0.5em;
-}
-
 /* Mobile */
 @media (width <= 768px) {
   #init {
-    font-size: 1rem;
     line-height: 1.6;
-  }
-
-  #posts li,
-  #commits li {
-    white-space: nowrap;
-  }
-
-  #posts ul,
-  #commits ul {
-    overflow-x: auto;
   }
 }
