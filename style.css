@@ -475,7 +475,9 @@ article li {
   border-radius: 6px;
   position: relative;
   color: var(--muted);
-  transition: color 0.15s ease, background-color 0.15s ease;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
   opacity: 1;
 }
 
