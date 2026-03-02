@@ -122,7 +122,7 @@ get_git_info() {
     git_modification_author=$(printf "%s" "$git_modification_info" | cut -d'|' -f3)
 
     # Construct base URL
-    commit_base_url="https://github.com/$GITHUB_USER/$GITHUB_REPO/commit"
+    commit_base_url="$GITHUB_REPO_URL/commit"
     # shellcheck disable=SC2034
     git_creation_commit_link="$commit_base_url/$git_creation_hash"
     # shellcheck disable=SC2034
@@ -163,196 +163,48 @@ check_var() {
     }
 }
 
-process_file() {
-    file="$1"
+# Build inline CSS for an HTML page
+# Uses: file_ext, file, file_name, page_css, ASSETS_DIR, CSS_FILE, BUILD_DIR
+build_inline_css() {
+    [ "$file_ext" = "html" ] || return 0
 
-    # Unset variables at the start of processing each file
-    unset title date_created date_updated description is_markdown add_header add_footer link_index link_rss
+    # Start with fonts.css (replace ASSETS_DIR placeholder)
+    INLINE_STYLES=$(sed "s|\${ASSETS_DIR}|$ASSETS_DIR|g" "fonts.css")
 
-    file=$(posix_realpath "$file")
-    file_name=$(basename "$file")
-    file_ext="${file_name##*.}"
-
-    # Check if file is a directory
-    [ -d "$file" ] || {
-        printf "ERROR: %s doesn't exist.\n" "$file"
-        return 1
-    }
-
-    touch "$BUILD_DIR/$file_name"
-
-    printf "Started generating => %s/%s\n" "$BUILD_DIR" "$file_name"
-
-    # Source file-specific conf
-    [ -f "$file/conf" ] && . "$file/conf"
-
-    # Get git info using the correct source path
-    get_git_info "$file"
-
-    # Fallback to git for creation date if not set in conf
-    if [ -z "$date_created" ]; then
-        date_created="$git_creation_date"
-        printf "INFO: Using git creation date for %s\n" "$file_name"
-    fi
-
-    # Create a human-readable version of the final post date
-    date_created_human=$(printf "%s" "$date_created" | cut -d' ' -f2,3,4)
-    date_created_short=$(printf "%s" "$date_created" | cut -d' ' -f2,3,4)
-    # shellcheck disable=SC2034
-    date_updated_short=$(printf "%s" "$git_modification_date" | cut -d' ' -f2,3,4)
-
-    # Set active nav item based on current file (dynamic)
-    # shellcheck disable=SC2034
-    nav_index_active=""
-    # shellcheck disable=SC2034
-    nav_contact_active=""
-    file_base="${file_name%.html}"
-    eval "nav_${file_base}_active=' class=\"active\"'" 2> /dev/null || true
-
-    # Write default header if applicable
-    if [ "$file_ext" = "html" ] && [ "${add_header:-"false"}" != "false" ]; then
-        if [ -f "$default_header" ]; then
-            cat "$(posix_realpath "$default_header")" >> "$BUILD_DIR/$file_name"
-        else
-            printf "ERROR: The default header file '%s' does not exist. Exiting.\n" "$default_header"
-            return 1
-        fi
-    fi
-
-    # Write extension files if they exist
-    for ext_file in "$file"/*."$file_ext"; do
-        [ -e "$ext_file" ] \
-            && printf "Appending content from %s to %s\n" "$ext_file" "$BUILD_DIR/$file_name" \
-            && cat "$ext_file" >> "$BUILD_DIR/$file_name" 2> /dev/null \
-            || printf "WARNING: No such file %s found\n" "$ext_file"
-    done
-
-    # Convert markdown to html if applicable, with placeholder replacement
-    if [ "$file_ext" = "html" ] && [ -n "$is_markdown" ] && [ "$is_markdown" = "true" ]; then
-        for md in "$file"/*.md; do
-            if [ -e "$md" ]; then
-                # Create a temporary file to hold the markdown content for substitution
-                temp_md=$(mktemp)
-                cat "$md" > "$temp_md"
-
-                # Extract placeholders from the markdown file itself
-                md_placeholders=$(extract_placeholders "$temp_md")
-
-                # Replace placeholders within the temporary markdown file before conversion
-                for key in $md_placeholders; do
-                    eval val=\$"$key"
-                    if [ -n "$val" ]; then
-                        replace "$temp_md" "$key" "${val:-}" "false"
-                    else
-                        printf "WARNING: Placeholder \"%s\" in markdown file %s has no value.\n" "$key" "$md"
-                    fi
-                done
-
-                # Convert the substituted markdown to HTML and apply syntax highlighting
-                converted_md=$(cmark-gfm --unsafe --extension table "$temp_md" | ./highlight)
-                rm "$temp_md" # Clean up the temporary file
-
-                # Inject the final, converted HTML into the main file
-                replace "$BUILD_DIR/$file_name" "MARKDOWN" "$converted_md" "true"
-                printf "Markdown file %s successfully converted to HTML and aggregated into %s\n" "$md" "$BUILD_DIR/$file_name"
-            fi
-        done
-    fi
-
-    # Aggregate page-specific CSS (will be inlined later)
-    page_css=""
-    if [ "$file_ext" = "html" ] && ls "$file"/*.css > /dev/null 2>&1; then
-        page_css=$(cat "$file"/*.css)
-        printf "Found page-specific CSS for %s\n" "$file_name"
-    fi
-
-    # Link file to index.html if link_index is true and file_name is not index.html
-    [ "$file_name" != "index.html" ] && [ "$link_index" = "true" ] \
-        && post_content="<li><a href=\"$file_name\"><span class=\"post-title\">${title:-"Untitled"}</span>${description:+<span class=\"post-desc\">$description</span>}</a><time datetime=\"${date_created:-}\"><span class=\"full-date\">${date_created_human:-}</span><span class=\"short-date\">${date_created_short:-}</span></time></li>" \
-        && replace "$BUILD_DIR/index.html" "POSTS" "$post_content" "true" \
-        && printf "File linked in index.html => %s\n" "$site_url/$file_name"
-
-    # Link file to rss.xml if link_rss is set to true
-    [ "$file_name" != "rss.xml" ] && [ "$link_rss" = "true" ] \
-        && rss_content="<item><title>$(xml_escape "$title")</title><guid>$site_url/$file_name</guid><pubDate>$date_created</pubDate><link>$site_url/$file_name</link><description>$(xml_escape "${description:-""}")</description></item>" \
-        && replace "$BUILD_DIR/rss.xml" "POSTS" "$rss_content" "true" \
-        && printf "File linked in RSS feed => %s\n" "$site_url/$file_name"
-
-    # Write default footer if applicable
-    [ "$file_ext" = "html" ] && [ "${add_footer:-"false"}" = "true" ] \
-        && cat "$(posix_realpath "$default_footer")" >> "$BUILD_DIR/$file_name"
-
-    # Build inline CSS for HTML files
-    if [ "$file_ext" = "html" ]; then
-        # Start with fonts.css (replace ASSETS_DIR placeholder)
-        INLINE_STYLES=$(sed "s|\${ASSETS_DIR}|$ASSETS_DIR|g" "fonts.css")
-
-        # Add main style.css
-        INLINE_STYLES="$INLINE_STYLES
+    # Add main style.css
+    INLINE_STYLES="$INLINE_STYLES
 $(cat "$CSS_FILE")"
 
-        # Add page-specific CSS if exists
-        [ -n "$page_css" ] && INLINE_STYLES="$INLINE_STYLES
+    # Add page-specific CSS if exists
+    [ -n "$page_css" ] && INLINE_STYLES="$INLINE_STYLES
 $page_css"
 
-        # Conditionally add syntax.css if page has code blocks
-        if grep -q 'class="chroma"' "$BUILD_DIR/$file_name" 2> /dev/null; then
-            INLINE_STYLES="$INLINE_STYLES
+    # Conditionally add syntax.css if page has code blocks
+    if grep -q 'class="chroma"' "$BUILD_DIR/$file_name" 2> /dev/null; then
+        INLINE_STYLES="$INLINE_STYLES
 $(cat "syntax.css")"
-            printf "Including syntax.css for %s (has code blocks)\n" "$file_name"
-        fi
-
-        # Preload mono font if page uses it (code blocks or timestamps)
-        if grep -qE 'class="chroma"|id="(posts|commits|article-commit-history)"' "$BUILD_DIR/$file_name" 2> /dev/null; then
-            MONO_FONT_PRELOAD="<link rel=\"preload\" href=\"$ASSETS_DIR/fonts/ibm-plex-mono-400-latin.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>"
-            printf "Including mono font preload for %s\n" "$file_name"
-        else
-            MONO_FONT_PRELOAD=""
-        fi
-
-        # Export for placeholder replacement
-        export INLINE_STYLES MONO_FONT_PRELOAD
-        printf "Built inline CSS for %s\n" "$file_name"
+        printf "Including syntax.css for %s (has code blocks)\n" "$file_name"
     fi
 
-    # Extract and process placeholders
-    placeholders=$(extract_placeholders "$BUILD_DIR/$file_name")
+    # Preload mono font if page uses it (code blocks or timestamps)
+    if grep -qE 'class="chroma"|id="(posts|commits|article-commit-history)"' "$BUILD_DIR/$file_name" 2> /dev/null; then
+        MONO_FONT_PRELOAD="<link rel=\"preload\" href=\"$ASSETS_DIR/fonts/ibm-plex-mono-400-latin.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>"
+        printf "Including mono font preload for %s\n" "$file_name"
+    else
+        MONO_FONT_PRELOAD=""
+    fi
 
-    for key in $placeholders; do
-        eval val=\$"$key"
+    # Export for placeholder replacement
+    export INLINE_STYLES MONO_FONT_PRELOAD
+    printf "Built inline CSS for %s\n" "$file_name"
+}
 
-        # Handle git-derived values or warn about undefined placeholders
-        case "$key" in
-            date_created | date_updated)
-                [ -n "$val" ] || {
-                    [ "$key" = "date_created" ] && val="$git_creation_date" && log_msg="creation date" \
-                        || val="$git_modification_date" && log_msg="modification date"
-                    printf "Replacing placeholder/key \"%s\" with git-derived %s => \"%s\" in %s (value not available in config to override)\n" "$key" "$log_msg" "$val" "$file_name"
-                }
-                ;;
-            *)
-                [ -n "$val" ] || printf "WARNING: Placeholder \"%s\" has no value.\n" "$key"
-                ;;
-        esac
-
-        # Replace the placeholder in the file
-        replace "$BUILD_DIR/$file_name" "$key" "${val:-}" "false"
-        printf "Replacing placeholder/key \"%s\" with value => \"%s\" in %s\n" "$key" "$val" "$file_name"
-    done
-
-    [ "$file_name" != "index.html" ] && {
-        [ "$link_index" = "true" ] \
-            && post_content="<li><time datetime=\"$date_created\">$date_created</time><a href=\"$file_name\">$title</a></li>" \
-            && printf "%s\n" "$post_content" >> "$BUILD_DIR/posts_updates.txt" \
-            && printf "File linked in index.html => %s\n" "$site_url/$file_name"
-
-        [ "$file_name" != "rss.xml" ] && [ "$link_rss" = "true" ] \
-            && rss_content="<item><title>$(xml_escape "$title")</title><guid>$site_url/$file_name</guid><pubDate>$date_created</pubDate><link>$site_url/$file_name</link><description>$(xml_escape "${description:-""}")</description></item>" \
-            && printf "%s\n" "$rss_content" >> "$BUILD_DIR/rss_updates.txt" \
-            && printf "File linked in RSS feed => %s\n" "$site_url/$file_name"
-    }
-
+# Generate and inject JSON-LD structured data
+# Uses: page_type, title, description, site_url, page_path, date_created,
+#       git_modification_date, site_author, add_header, file_name, BUILD_DIR
+inject_jsonld() {
     # Inject Article JSON-LD for article pages
+    # shellcheck disable=SC2154
     if [ "$page_type" = "article" ]; then
         article_jsonld=$(
             cat << JSONLD
@@ -433,6 +285,191 @@ JSONLD
         replace "$BUILD_DIR/$file_name" "BREADCRUMB_JSONLD" "$breadcrumb_jsonld" "true"
         printf "Injected BreadcrumbList JSON-LD for %s\n" "$file_name"
     fi
+}
+
+process_file() {
+    file="$1"
+
+    # Unset variables at the start of processing each file
+    unset title date_created date_updated description is_markdown add_header add_footer link_index link_rss
+
+    file=$(posix_realpath "$file")
+    file_name=$(basename "$file")
+    file_ext="${file_name##*.}"
+
+    # Check if file is a directory
+    [ -d "$file" ] || {
+        printf "ERROR: %s doesn't exist.\n" "$file"
+        return 1
+    }
+
+    touch "$BUILD_DIR/$file_name"
+
+    printf "Started generating => %s/%s\n" "$BUILD_DIR" "$file_name"
+
+    # Source file-specific conf
+    [ -f "$file/conf" ] && . "$file/conf"
+
+    # Apply article defaults
+    if [ "$page_type" = "article" ]; then
+        is_markdown="${is_markdown:-true}"
+        link_index="${link_index:-true}"
+        link_rss="${link_rss:-true}"
+        add_header="${add_header:-true}"
+        add_footer="${add_footer:-true}"
+    fi
+
+    # Get git info using the correct source path
+    get_git_info "$file"
+
+    # Fallback to git for creation date if not set in conf
+    if [ -z "$date_created" ]; then
+        date_created="$git_creation_date"
+        printf "INFO: Using git creation date for %s\n" "$file_name"
+    fi
+
+    # Create a human-readable version of the final post date
+    date_created_human=$(printf "%s" "$date_created" | cut -d' ' -f2,3,4)
+    date_created_short=$(printf "%s" "$date_created" | cut -d' ' -f2,3,4)
+    # shellcheck disable=SC2034
+    date_updated_short=$(printf "%s" "$git_modification_date" | cut -d' ' -f2,3,4)
+
+    # Set active nav item based on current file (dynamic)
+    # shellcheck disable=SC2034
+    nav_index_active=""
+    # shellcheck disable=SC2034
+    nav_contact_active=""
+    file_base="${file_name%.html}"
+    eval "nav_${file_base}_active=' class=\"active\"'" 2> /dev/null || true
+
+    # Write default header if applicable
+    if [ "$file_ext" = "html" ] && [ "${add_header:-"false"}" != "false" ]; then
+        if [ -f "$default_header" ]; then
+            cat "$(posix_realpath "$default_header")" >> "$BUILD_DIR/$file_name"
+        else
+            printf "ERROR: The default header file '%s' does not exist. Exiting.\n" "$default_header"
+            return 1
+        fi
+    fi
+
+    # Write article template wrapper (before content) for article pages
+    if [ "$page_type" = "article" ] && [ -f "article.html" ]; then
+        article_template=$(posix_realpath "article.html")
+        # Split at <!-- ARTICLE_CONTENT --> and write the "before" portion
+        sed '/<!-- ARTICLE_CONTENT -->/,$d' "$article_template" >> "$BUILD_DIR/$file_name"
+        printf "Prepended article template (before content) for %s\n" "$file_name"
+    fi
+
+    # Write extension files if they exist
+    for ext_file in "$file"/*."$file_ext"; do
+        [ -e "$ext_file" ] \
+            && printf "Appending content from %s to %s\n" "$ext_file" "$BUILD_DIR/$file_name" \
+            && cat "$ext_file" >> "$BUILD_DIR/$file_name" 2> /dev/null \
+            || printf "WARNING: No such file %s found\n" "$ext_file"
+    done
+
+    # Write article template wrapper (after content) for article pages
+    if [ "$page_type" = "article" ] && [ -f "article.html" ]; then
+        # Write everything after <!-- ARTICLE_CONTENT --> line
+        sed -n '/<!-- ARTICLE_CONTENT -->/,$ { /<!-- ARTICLE_CONTENT -->/d; p; }' "$article_template" >> "$BUILD_DIR/$file_name"
+        printf "Appended article template (after content) for %s\n" "$file_name"
+    fi
+
+    # Convert markdown to html if applicable, with placeholder replacement
+    if [ "$file_ext" = "html" ] && [ -n "$is_markdown" ] && [ "$is_markdown" = "true" ]; then
+        for md in "$file"/*.md; do
+            if [ -e "$md" ]; then
+                # Create a temporary file to hold the markdown content for substitution
+                temp_md=$(mktemp)
+                cat "$md" > "$temp_md"
+
+                # Extract placeholders from the markdown file itself
+                md_placeholders=$(extract_placeholders "$temp_md")
+
+                # Replace placeholders within the temporary markdown file before conversion
+                for key in $md_placeholders; do
+                    eval val=\$"$key"
+                    if [ -n "$val" ]; then
+                        replace "$temp_md" "$key" "${val:-}" "false"
+                    else
+                        printf "WARNING: Placeholder \"%s\" in markdown file %s has no value.\n" "$key" "$md"
+                    fi
+                done
+
+                # Convert the substituted markdown to HTML and apply syntax highlighting
+                converted_md=$(cmark-gfm --unsafe --extension table "$temp_md" | ./highlight)
+                rm "$temp_md" # Clean up the temporary file
+
+                # Inject the final, converted HTML into the main file
+                replace "$BUILD_DIR/$file_name" "MARKDOWN" "$converted_md" "true"
+                printf "Markdown file %s successfully converted to HTML and aggregated into %s\n" "$md" "$BUILD_DIR/$file_name"
+            fi
+        done
+    fi
+
+    # Aggregate page-specific CSS (will be inlined later)
+    page_css=""
+    if [ "$file_ext" = "html" ] && ls "$file"/*.css > /dev/null 2>&1; then
+        page_css=$(cat "$file"/*.css)
+        printf "Found page-specific CSS for %s\n" "$file_name"
+    fi
+
+    # Link file to index.html if link_index is true and file_name is not index.html
+    [ "$file_name" != "index.html" ] && [ "$link_index" = "true" ] \
+        && post_content="<li><a href=\"$file_name\"><span class=\"post-title\">${title:-"Untitled"}</span>${description:+<span class=\"post-desc\">$description</span>}</a><time datetime=\"${date_created:-}\"><span class=\"full-date\">${date_created_human:-}</span><span class=\"short-date\">${date_created_short:-}</span></time></li>" \
+        && replace "$BUILD_DIR/index.html" "POSTS" "$post_content" "true" \
+        && printf "File linked in index.html => %s\n" "$site_url/$file_name"
+
+    # Link file to rss.xml if link_rss is set to true
+    [ "$file_name" != "rss.xml" ] && [ "$link_rss" = "true" ] \
+        && rss_content="<item><title>$(xml_escape "$title")</title><guid>$site_url/$file_name</guid><pubDate>$date_created</pubDate><link>$site_url/$file_name</link><description>$(xml_escape "${description:-""}")</description></item>" \
+        && replace "$BUILD_DIR/rss.xml" "POSTS" "$rss_content" "true" \
+        && printf "File linked in RSS feed => %s\n" "$site_url/$file_name"
+
+    # Write default footer if applicable
+    [ "$file_ext" = "html" ] && [ "${add_footer:-"false"}" = "true" ] \
+        && cat "$(posix_realpath "$default_footer")" >> "$BUILD_DIR/$file_name"
+
+    build_inline_css
+
+    # Extract and process placeholders
+    placeholders=$(extract_placeholders "$BUILD_DIR/$file_name")
+
+    for key in $placeholders; do
+        eval val=\$"$key"
+
+        # Handle git-derived values or warn about undefined placeholders
+        case "$key" in
+            date_created | date_updated)
+                [ -n "$val" ] || {
+                    [ "$key" = "date_created" ] && val="$git_creation_date" && log_msg="creation date" \
+                        || val="$git_modification_date" && log_msg="modification date"
+                    printf "Replacing placeholder/key \"%s\" with git-derived %s => \"%s\" in %s (value not available in config to override)\n" "$key" "$log_msg" "$val" "$file_name"
+                }
+                ;;
+            *)
+                [ -n "$val" ] || printf "WARNING: Placeholder \"%s\" has no value.\n" "$key"
+                ;;
+        esac
+
+        # Replace the placeholder in the file
+        replace "$BUILD_DIR/$file_name" "$key" "${val:-}" "false"
+        printf "Replacing placeholder/key \"%s\" with value => \"%s\" in %s\n" "$key" "$val" "$file_name"
+    done
+
+    [ "$file_name" != "index.html" ] && {
+        [ "$link_index" = "true" ] \
+            && post_content="<li><time datetime=\"$date_created\">$date_created</time><a href=\"$file_name\">$title</a></li>" \
+            && printf "%s\n" "$post_content" >> "$BUILD_DIR/posts_updates.txt" \
+            && printf "File linked in index.html => %s\n" "$site_url/$file_name"
+
+        [ "$file_name" != "rss.xml" ] && [ "$link_rss" = "true" ] \
+            && rss_content="<item><title>$(xml_escape "$title")</title><guid>$site_url/$file_name</guid><pubDate>$date_created</pubDate><link>$site_url/$file_name</link><description>$(xml_escape "${description:-""}")</description></item>" \
+            && printf "%s\n" "$rss_content" >> "$BUILD_DIR/rss_updates.txt" \
+            && printf "File linked in RSS feed => %s\n" "$site_url/$file_name"
+    }
+
+    inject_jsonld
 
     printf "Finished generating %s\n\n" "$BUILD_DIR/$file_name"
 }

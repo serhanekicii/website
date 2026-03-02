@@ -12,6 +12,12 @@
   --header: #e6edf3;
   --muted: #8b949e;
   --hover-bg: #1c2333;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 16px;
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
 }
 
 /* GitHub Light */
@@ -81,7 +87,7 @@ header {
 a {
   text-decoration: underline;
   color: var(--main-fg-color);
-  transition: opacity 0.15s ease;
+  transition: opacity var(--transition-fast);
 }
 
 a:any-link {
@@ -118,7 +124,7 @@ a:hover {
 table {
   border-collapse: collapse;
   background: var(--code-bg-color);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 
@@ -152,14 +158,14 @@ code {
   font-family: "IBM Plex Mono", monospace;
   font-weight: 400;
   padding: 0.2em 0.4em;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   font-size: 0.9em;
 }
 
 pre {
   background: var(--code-bg-color);
   border: 1px solid var(--main-border-color);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   padding: 1.25rem;
   overflow-x: auto;
   position: relative;
@@ -327,7 +333,7 @@ article li {
 .commit-list {
   background: var(--code-bg-color);
   border: 1px solid var(--main-border-color);
-  border-radius: 10px;
+  border-radius: var(--radius-lg);
   margin-top: 1em;
 }
 
@@ -357,8 +363,8 @@ article li {
   justify-content: space-between;
   gap: 1em;
   padding: 0.5em 0.75em;
-  border-radius: 8px;
-  transition: background-color 0.15s ease;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
 }
 
 #posts li a {
@@ -383,8 +389,8 @@ article li {
 .commit-list li {
   padding: 1em 1.25em;
   margin-bottom: 0.35em;
-  border-radius: 8px;
-  transition: background-color 0.15s ease;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
 }
 
 #posts li:hover,
@@ -426,6 +432,7 @@ article li {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-size: 0.7rem;
+  font-weight: 700;
 }
 
 .meta-value {
@@ -478,12 +485,12 @@ article li {
   font-weight: 400;
   padding: 0.3em 0.5em;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   position: relative;
   color: var(--muted);
   transition:
-    color 0.15s ease,
-    background-color 0.15s ease;
+    color var(--transition-fast),
+    background-color var(--transition-fast);
   opacity: 1;
 }
 
@@ -518,7 +525,7 @@ article li {
 /* Main Content */
 #main {
   border: 1px solid var(--main-border-color);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   background: var(--main-bg-color);
   padding: 1.5em;
   margin: 0 auto;
@@ -549,7 +556,7 @@ footer {
 #footer-content a {
   color: var(--muted);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color var(--transition-normal);
 }
 
 #footer-content a:hover {
@@ -571,7 +578,7 @@ footer ul li img {
   vertical-align: middle;
   filter: grayscale(100%);
   opacity: 0.7;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
 }
 
 footer ul li img:hover {
