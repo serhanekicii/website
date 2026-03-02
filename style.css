@@ -358,10 +358,7 @@ article li {
   gap: 1em;
   padding: 0.5em 0.75em;
   border-radius: 8px;
-  border: 1px solid transparent;
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease;
+  transition: background-color 0.15s ease;
 }
 
 #posts li a {
@@ -387,16 +384,25 @@ article li {
   padding: 1em 1.25em;
   margin-bottom: 0.35em;
   border-radius: 8px;
-  border: 1px solid transparent;
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease;
+  transition: background-color 0.15s ease;
 }
 
 #posts li:hover,
-.commit-list li:hover {
+.commit-list li:not(:last-child):hover {
   background: var(--hover-bg);
-  border-color: var(--main-border-color);
+}
+
+.commit-list li:last-child {
+  text-align: center;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+}
+
+.commit-list li:last-child a {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
 }
 
 /* Commit items: title on top, metadata below */
@@ -605,13 +611,8 @@ footer ul li img:hover {
   }
 
   .commit-list li {
-    border-bottom: 1px solid var(--main-border-color);
     border-radius: 0;
     margin-bottom: 0;
-  }
-
-  .commit-list li:last-child {
-    border-bottom: none;
   }
 
   .full-date {
