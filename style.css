@@ -277,12 +277,16 @@ article li {
 
 /* Article Description */
 #article-description {
-  padding: 0.5rem 0;
+  padding: 0;
 }
 
 #article-description h2 {
   margin: 0 0 0.5rem;
   font-size: 1.5rem;
+}
+
+#article-description hr {
+  margin: 1.5rem 0;
 }
 
 #article-description p:not(.article-dates) {
@@ -301,7 +305,7 @@ article li {
   gap: 0.25em 1.5em;
   font-size: 0.75rem;
   color: var(--muted);
-  margin-bottom: 1rem;
+  margin: 0 0 1rem;
 }
 
 /* Keyword Badges */
@@ -320,7 +324,7 @@ article li {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4em;
-  margin-bottom: 0;
+  margin-bottom: 0.75rem;
 }
 
 .post-keywords {
