@@ -334,6 +334,18 @@ process_file() {
     # shellcheck disable=SC2034
     date_updated_short=$(printf "%s" "$git_modification_date" | cut -d' ' -f2,3,4)
 
+    # Generate keyword badges from site_keywords
+    keywords_html=""
+    if [ -n "${site_keywords:-}" ]; then
+        old_ifs="$IFS"
+        IFS=","
+        for kw in $site_keywords; do
+            kw=$(printf "%s" "$kw" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+            [ -n "$kw" ] && keywords_html="$keywords_html<span class=\"keyword\">$kw</span>"
+        done
+        IFS="$old_ifs"
+    fi
+
     # Set active nav item based on current file (dynamic)
     # shellcheck disable=SC2034
     nav_index_active=""
@@ -416,7 +428,7 @@ process_file() {
 
     # Link file to index.html if link_index is true and file_name is not index.html
     [ "$file_name" != "index.html" ] && [ "$link_index" = "true" ] \
-        && post_content="<li><a href=\"$file_name\"><span class=\"post-title\">${title:-"Untitled"}</span>${description:+<span class=\"post-desc\">$description</span>}</a><time datetime=\"${date_created:-}\"><span class=\"full-date\">${date_created_human:-}</span><span class=\"short-date\">${date_created_short:-}</span></time></li>" \
+        && post_content="<li><a href=\"$file_name\"><span class=\"post-title\">${title:-"Untitled"}</span>${description:+<span class=\"post-desc\">$description</span>}${keywords_html:+<span class=\"post-keywords\">$keywords_html</span>}</a><time datetime=\"${date_created:-}\"><span class=\"full-date\">${date_created_human:-}</span><span class=\"short-date\">${date_created_short:-}</span></time></li>" \
         && replace "$BUILD_DIR/index.html" "POSTS" "$post_content" "true" \
         && printf "File linked in index.html => %s\n" "$site_url/$file_name"
 

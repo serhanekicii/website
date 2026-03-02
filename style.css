@@ -12,6 +12,7 @@
   --header: #e6edf3;
   --muted: #8b949e;
   --hover-bg: #1c2333;
+  --keyword-bg: #252d3d;
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 10px;
@@ -35,6 +36,7 @@
     --header: #1f2328;
     --muted: #656d76;
     --hover-bg: #dde3ea;
+    --keyword-bg: #e8ecf1;
   }
 }
 
@@ -299,7 +301,33 @@ article li {
   gap: 0.25em 1.5em;
   font-size: 0.75rem;
   color: var(--muted);
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Keyword Badges */
+.keyword {
+  display: inline-block;
+  font-size: 0.65rem;
+  padding: 0.2em 0.6em;
+  border-radius: 9999px;
+  background: var(--keyword-bg);
+  color: var(--muted);
+  font-family: "IBM Plex Mono", monospace;
+  letter-spacing: 0.02em;
+}
+
+.article-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em;
+  margin-bottom: 1rem;
+}
+
+.post-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
+  margin-top: 0.35em;
 }
 
 #article-timestamp {
