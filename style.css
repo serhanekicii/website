@@ -315,7 +315,8 @@ article li {
   padding: 0.2em 0.6em;
   border-radius: 9999px;
   background: var(--keyword-bg);
-  color: var(--muted);
+  color: var(--main-fg-color);
+  opacity: 0.7;
   font-family: "IBM Plex Mono", monospace;
   letter-spacing: 0.02em;
 }
