@@ -320,7 +320,7 @@ article li {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4em;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 .post-keywords {
@@ -427,12 +427,14 @@ article li {
 }
 
 .commit-list li:last-child {
-  text-align: center;
+  display: flex;
+  justify-content: center;
   padding-top: 0.25em;
   padding-bottom: 0.25em;
 }
 
 .commit-list li:last-child a {
+  display: inline-block;
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.8rem;
   color: var(--muted);
