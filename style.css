@@ -208,6 +208,7 @@ header h1 {
 /* Article Typography */
 article {
   line-height: 1.8;
+  margin-top: 1.25rem;
 }
 
 article h2 {
@@ -281,22 +282,18 @@ article li {
 }
 
 #article-description h2 {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.75rem;
   font-size: 1.5rem;
 }
 
 #article-description hr {
-  margin: 1.5rem 0;
+  margin: 0 0 1.25rem;
 }
 
 #article-description p:not(.article-dates) {
-  margin: 0;
+  margin: 0 0 0.75rem;
   color: var(--muted);
   font-size: 0.9rem;
-}
-
-#article-description p:not(.article-dates) + p:not(.article-dates) {
-  margin-top: 0.4rem;
 }
 
 .article-dates {
@@ -305,7 +302,7 @@ article li {
   gap: 0.25em 1.5em;
   font-size: 0.75rem;
   color: var(--muted);
-  margin: 0 0 1rem;
+  margin: 0 0 0.75rem;
 }
 
 /* Keyword Badges */
@@ -325,7 +322,7 @@ article li {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4em;
-  margin-bottom: 0.75rem;
+  margin: 0 0 1.25rem;
 }
 
 .post-keywords {

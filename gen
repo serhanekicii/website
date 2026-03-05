@@ -322,6 +322,17 @@ process_file() {
     # Get git info using the correct source path
     get_git_info "$file"
 
+    # Set commit template variables
+    # shellcheck disable=SC2034
+    if [ "$file_name" = "index.html" ]; then
+        commit_section_id="commits"
+        commit_history_url="$GITHUB_REPO_URL/commits/master"
+        commit_timestamp_block=""
+    else
+        commit_section_id="article-commit-history"
+        commit_history_url="$GITHUB_REPO_URL/commits/master/${page_path:-$file_name}"
+    fi
+
     # Fallback to git for creation date if not set in conf
     if [ -z "$date_created" ]; then
         date_created="$git_creation_date"
@@ -333,6 +344,26 @@ process_file() {
     date_created_short=$(printf "%s" "$date_created" | cut -d' ' -f2,3,4)
     # shellcheck disable=SC2034
     date_updated_short=$(printf "%s" "$git_modification_date" | cut -d' ' -f2,3,4)
+
+    # shellcheck disable=SC2034
+    date_updated="${date_updated:-$git_modification_date}"
+
+    # Generate commit timestamp block for article pages
+    # shellcheck disable=SC2034
+    if [ "$page_type" = "article" ]; then
+        commit_timestamp_block="<div id=\"article-timestamp\">
+    <div class=\"creation-column\">
+      <p><strong>Created by:</strong> $git_creation_author</p>
+      <p><strong>Created on:</strong> <time datetime=\"$date_created\">$date_created_short</time></p>
+      <p><a target=\"_blank\" href=\"$git_creation_commit_link\">View creation commit $git_creation_hash</a></p>
+    </div>
+    <div class=\"edit-column\">
+      <p><strong>Last edited by:</strong> $git_modification_author</p>
+      <p><strong>Last modification on:</strong> <time datetime=\"$date_updated\">$date_updated_short</time></p>
+      <p><a target=\"_blank\" href=\"$git_modification_commit_link\">View latest commit $git_modification_hash</a></p>
+    </div>
+  </div>"
+    fi
 
     # Generate keyword badges from site_keywords
     keywords_html=""
@@ -442,6 +473,18 @@ process_file() {
     [ "$file_ext" = "html" ] && [ "${add_footer:-"false"}" = "true" ] \
         && cat "$(posix_realpath "$default_footer")" >> "$BUILD_DIR/$file_name"
 
+    # Inject shared commits template
+    if [ -f "commits.html" ] && grep -q '<!-- COMMITS_TEMPLATE -->' "$BUILD_DIR/$file_name" 2> /dev/null; then
+        commits_template_content=$(cat "commits.html")
+        replace "$BUILD_DIR/$file_name" "COMMITS_TEMPLATE" "$commits_template_content" "true"
+        printf "Injected commits template for %s\n" "$file_name"
+
+        # Inject article commits for article pages
+        if [ "$page_type" = "article" ]; then
+            replace "$BUILD_DIR/$file_name" "COMMITS" "$article_commits" "true"
+        fi
+    fi
+
     build_inline_css
 
     # Extract and process placeholders
@@ -523,7 +566,7 @@ done
 get_git_info "."
 
 # Replace comment in index.html with commit info
-replace "$BUILD_DIR/index.html" "GIT" "$(printf "%s" "$all_commits" | head -n "$COMMITS_NUM")" "true"
+replace "$BUILD_DIR/index.html" "COMMITS" "$(printf "%s" "$all_commits" | head -n "$COMMITS_NUM")" "true"
 
 # Copy assets (CSS is now inlined in HTML files)
 case "$ASSETS_DIR" in
