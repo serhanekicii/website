@@ -283,7 +283,7 @@ article li {
 
 #article-description h2 {
   margin: 0 0 0.75rem;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
 }
 
 #article-description hr {
@@ -673,12 +673,17 @@ footer ul li img:hover {
     line-height: 1.7;
   }
 
+  #article-description h2 {
+    font-size: 1.35rem;
+  }
+
   article h2 {
     font-size: 1.15rem;
   }
 
   article h3 {
     margin-top: 2rem;
+    font-size: 1rem;
   }
 
   #main {
